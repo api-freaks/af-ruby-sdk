@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Apifreaks
   class Client
     # Get detailed geolocation data for an IP address including country, city, timezone, currency, and optional security
@@ -253,7 +254,7 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GeocoderSearchResponseItem.load(response.body) 
+        Apifreaks::Types::GeocoderSearchResponseItem.load(response.body)
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
         raise error_class.new(response.body, code: code)
@@ -3347,7 +3348,7 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::VatRateByIPResponseItem.load(response.body) 
+        Apifreaks::Types::VatRateByIPResponseItem.load(response.body)
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
         raise error_class.new(response.body, code: code)
