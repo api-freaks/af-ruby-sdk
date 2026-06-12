@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Apifreaks
   class Client
     # Get detailed geolocation data for an IP address including country, city, timezone, currency, and optional security
@@ -99,10 +98,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkGeolocationLookupResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Get comprehensive security information for a given IP address. Detects VPNs, proxies, Tor nodes, and other
@@ -194,10 +195,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkIPSecurityLookupResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Convert a given address or place name into geographic coordinates (latitude and longitude).
@@ -249,10 +252,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::GeocoderSearchResponseItem.load(response.body) 
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Convert geographic coordinates (latitude and longitude) into a human-readable address or place name.
@@ -1001,10 +1006,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkPhoneValidateResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Retrieve comprehensive SSL certificate information without the certificate chain.
@@ -2186,10 +2193,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        response.body
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # This API checks the status of a previously initiated PDF processing task using its unique task ID.
@@ -2531,10 +2540,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        response.body
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Our Bulk Screenshot API allows you to capture screenshots of multiple webpages simultaneously, saving you time and
@@ -3335,10 +3346,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::VatRateByIPResponseItem.load(response.body) 
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Fetches VAT rates for a single country or state provided via query parameters.
@@ -3377,10 +3390,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::VatRateByCountryResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Retrieves VAT details for multiple countries or country-state combinations in a single request. Maximum of `100`
@@ -3553,10 +3568,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        response.body
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Fetches detailed information about a SWIFT code.
@@ -4734,10 +4751,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::GetSupportedFlagsResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Retrieve the flag for a specific country
@@ -4780,10 +4799,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        response.body
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Retrieve current time, date, and timezone-related information by specifying a timezone name, location address,
@@ -4993,10 +5014,12 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      return if code.between?(200, 299)
-
-      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-      raise error_class.new(response.body, code: code)
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkUserAgentLookupResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
     end
 
     # Perform Optical Character Recognition (OCR) on images, PDFs, or ZIP archives. Supports two models: `mini-ocr-v1`
