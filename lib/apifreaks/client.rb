@@ -40,7 +40,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -94,7 +94,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -139,7 +139,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -189,7 +189,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -244,7 +244,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -291,7 +291,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -335,7 +335,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -380,7 +380,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -422,7 +422,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -464,7 +464,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -507,7 +507,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -561,7 +561,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -608,7 +608,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -656,7 +656,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -704,7 +704,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -754,7 +754,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -814,7 +814,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -859,7 +859,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -904,7 +904,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -950,7 +950,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -996,7 +996,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1040,7 +1040,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1085,7 +1085,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1130,7 +1130,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1177,7 +1177,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1224,7 +1224,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1275,7 +1275,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1321,7 +1321,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1368,7 +1368,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1415,7 +1415,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1463,7 +1463,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1510,7 +1510,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1558,7 +1558,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1605,7 +1605,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1654,7 +1654,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1701,7 +1701,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1752,7 +1752,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1802,7 +1802,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1852,7 +1852,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1903,7 +1903,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1954,7 +1954,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2004,7 +2004,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2054,7 +2054,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2094,7 +2094,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2139,7 +2139,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2181,7 +2181,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2221,7 +2221,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2264,7 +2264,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2306,7 +2306,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2348,7 +2348,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2526,7 +2526,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2572,7 +2572,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2618,7 +2618,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2664,7 +2664,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2712,7 +2712,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2760,7 +2760,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2808,7 +2808,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2856,7 +2856,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2904,7 +2904,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2944,7 +2944,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2984,7 +2984,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3024,7 +3024,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3070,7 +3070,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3114,7 +3114,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3160,7 +3160,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3206,7 +3206,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3246,7 +3246,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3288,7 +3288,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3330,7 +3330,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3372,7 +3372,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3416,7 +3416,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3460,7 +3460,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3502,7 +3502,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3548,7 +3548,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3588,7 +3588,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3630,7 +3630,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3675,7 +3675,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3721,7 +3721,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3765,7 +3765,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3817,7 +3817,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3862,7 +3862,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3907,7 +3907,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3959,7 +3959,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4007,7 +4007,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4067,7 +4067,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4122,7 +4122,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4179,7 +4179,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4237,7 +4237,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4296,7 +4296,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4354,7 +4354,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4398,7 +4398,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4438,7 +4438,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4476,7 +4476,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4516,7 +4516,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4558,7 +4558,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4603,7 +4603,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4647,7 +4647,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4691,7 +4691,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4729,7 +4729,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4775,7 +4775,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4832,7 +4832,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4903,7 +4903,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4943,7 +4943,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4988,7 +4988,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5050,7 +5050,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5094,7 +5094,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5138,7 +5138,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5182,7 +5182,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5230,7 +5230,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5287,7 +5287,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @client.send(request)
+        response = @raw_client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end

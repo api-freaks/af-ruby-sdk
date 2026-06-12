@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
-# Custom gemspec configuration file
-# This file is automatically loaded by the main gemspec file. The 'spec' variable is available
-# in this context from the main gemspec file. You can modify this file to add custom metadata,
-# dependencies, or other gemspec configurations. If you do make changes to this file, you will
-# need to add it to the .fernignore file to prevent your changes from being overwritten.
-
 def add_custom_gemspec_data(spec)
-  # Example custom configurations (uncomment and modify as needed)
+  spec.email = ["support@apifreaks.com"]
+  spec.homepage = "https://github.com/api-freaks/af-ruby-sdk"
+  spec.license = "MIT"
 
-  # spec.authors = ["Your name"]
-  # spec.email = ["your.email@example.com"]
-  # spec.homepage = "https://github.com/your-org/apifreaks-ruby"
-  # spec.license = "Your license"
+  spec.metadata = {
+    "homepage_uri" => "https://github.com/api-freaks/af-ruby-sdk",
+    "source_code_uri" => "https://github.com/api-freaks/af-ruby-sdk",
+    "bug_tracker_uri" => "https://github.com/api-freaks/af-ruby-sdk/issues",
+    "documentation_uri" => "https://github.com/api-freaks/af-ruby-sdk#readme",
+    "rubygems_mfa_required" => "true"
+  }
 end

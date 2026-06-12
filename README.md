@@ -21,6 +21,14 @@ The Apifreaks Ruby library provides convenient access to the Apifreaks APIs from
 
 A full reference for this library is available [here](./reference.md).
 
+## Installation
+
+Install the SDK with:
+
+```sh
+gem install apifreaks
+```
+
 ## Usage
 
 Instantiate and use the client with the following:
