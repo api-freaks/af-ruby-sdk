@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    apifreaks (1.0.1)
+    apifreaks (1.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -83,7 +83,7 @@ DEPENDENCIES
 
 CHECKSUMS
   addressable (2.9.0)
-  apifreaks (1.0.1)
+  apifreaks (1.0.2)
   ast (2.4.3)
   bigdecimal (4.1.2)
   bundler (4.0.14) sha256=d09a0a965cf772266a7e49e83610be7c2f4e49e61134c42a56804bb383cc24b8
