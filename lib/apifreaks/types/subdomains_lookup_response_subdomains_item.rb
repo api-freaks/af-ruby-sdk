@@ -7,7 +7,7 @@ module Apifreaks
 
       field :first_seen, -> { String }, optional: false, nullable: false
 
-      field :last_seen, -> { String }, optional: true, nullable: false
+      field :last_seen, -> { String }, optional: false, nullable: false
 
       field :inactive_from, -> { String }, optional: true, nullable: false
     end

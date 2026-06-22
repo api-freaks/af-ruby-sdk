@@ -5,13 +5,11 @@ module Apifreaks
     class CommodityHistoricalRatesResponse < Internal::Types::Model
       field :success, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
-      field :timestamp, -> { Integer }, optional: true, nullable: false
+      field :timestamp, -> { Float }, optional: false, nullable: false
 
-      field :metadata, -> { Internal::Types::Hash[String, Apifreaks::Types::CommodityHistoricalRatesResponseMetadataValue] }, optional: true, nullable: false
+      field :rates, -> { Internal::Types::Hash[String, Float] }, optional: false, nullable: false
 
-      field :date, -> { String }, optional: false, nullable: false
-
-      field :rates, -> { Internal::Types::Hash[String, Apifreaks::Types::CommodityHistoricalRatesResponseRatesValue] }, optional: false, nullable: false
+      field :metadata, -> { Internal::Types::Hash[String, Apifreaks::Types::CommodityHistoricalRatesResponseMetadataValue] }, optional: false, nullable: false
     end
   end
 end

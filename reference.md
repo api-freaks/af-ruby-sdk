@@ -1252,7 +1252,7 @@ client.domain_dns_lookup(
 <dl>
 <dd>
 
-**type:** `String` — A comma-separated list of DNS record types for lookup. Possible values: A, AAAA, MX, NS, SOA, SPF, TXT, CNAME, or all. When ipAddress is provided, type must be "all".
+**type:** `String` — A comma-separated list of DNS record types for lookup. Possible values: A, AAAA, MX, NS, SOA, SPF, TXT, CNAME, or all. When ipAddress is provided, type must be "all". **Required**
     
 </dd>
 </dl>
@@ -1335,7 +1335,7 @@ client.bulk_domain_dns_lookup(
 <dl>
 <dd>
 
-**type:** `String` 
+**type:** `String` **Required**
 
 A comma-separated list of DNS record types for lookup.
 Possible values: A, AAAA, MX, NS, SOA, SPF, TXT, CNAME, or all
@@ -1347,6 +1347,14 @@ Possible values: A, AAAA, MX, NS, SOA, SPF, TXT, CNAME, or all
 <dd>
 
 **domain_names:** `Internal::Types::Array[String]` — List of hostnames to lookup DNS records for
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ip_addresses:** `Internal::Types::Array[String]` — Optional list of IP addresses to perform reverse DNS (PTR) lookups for.
     
 </dd>
 </dl>
@@ -1437,7 +1445,7 @@ client.domain_dns_history(
 <dl>
 <dd>
 
-**type:** `String` 
+**type:** `String` **Required**
 
 A comma-separated list of DNS record types for lookup.
 Possible values: A, AAAA, MX, NS, SOA, SPF, TXT, CNAME, or all
@@ -1834,7 +1842,7 @@ client.email_validate(
 <dl>
 <dd>
 
-**email:** `String` — Email address to validate
+**email:** `String` — Email address to validate **Required**
     
 </dd>
 </dl>
@@ -1933,7 +1941,7 @@ client.bulk_email_validate(
 <dl>
 <dd>
 
-**email_data:** `Internal::Types::Array[Apifreaks::Types::BulkEmailValidateRequestEmailDataItem]` — Array of email objects for bulk validation
+**email_data:** `Internal::Types::Array[Apifreaks::Types::BulkEmailValidateRequestEmailDataItem]` — Array of email objects for bulk validation **Required**
     
 </dd>
 </dl>
@@ -2573,6 +2581,14 @@ client.domain_availability_suggestions(
 <dd>
 
 **count:** `Integer` — Number of suggestions to retrieve.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**sug:** `Boolean` — Whether to return spelling/keyword-based domain name suggestions.
     
 </dd>
 </dl>
@@ -5020,6 +5036,14 @@ client.pdf_upload_resources(api_key: "apiKey")
 <dl>
 <dd>
 
+**file:** `File` — The PDF file to upload. **Required**
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `Apifreaks::RequestOptions` 
     
 </dd>
@@ -6406,7 +6430,7 @@ client.currency_convert_latest(
 <dl>
 <dd>
 
-**amount:** `Integer` — Amount to convert
+**amount:** `String` — Amount to convert
     
 </dd>
 </dl>
@@ -6513,7 +6537,7 @@ client.currency_convert_historical(
 <dl>
 <dd>
 
-**amount:** `Integer` — The Amount to be converted
+**amount:** `String` — The Amount to be converted
     
 </dd>
 </dl>
@@ -6837,7 +6861,7 @@ client.currency_convert_by_ip(
 <dl>
 <dd>
 
-**amount:** `Integer` — Amount to convert
+**amount:** `String` — Amount to convert
     
 </dd>
 </dl>
@@ -7235,7 +7259,7 @@ client.commodity_historical_rates(
 <dl>
 <dd>
 
-**symbols:** `String` — Comma-separated list of commodity symbols
+**symbols:** `String` — Comma-separated list of commodity symbols **Required**
     
 </dd>
 </dl>
@@ -7318,7 +7342,7 @@ client.commodity_fluctuation(
 <dl>
 <dd>
 
-**symbols:** `String` — Comma-separated list of commodity symbols
+**symbols:** `String` — Comma-separated list of commodity symbols **Required**
     
 </dd>
 </dl>
@@ -7417,7 +7441,7 @@ client.commodity_time_series(
 <dl>
 <dd>
 
-**symbols:** `String` — Comma-separated list of commodity symbols
+**symbols:** `String` — Comma-separated list of commodity symbols **Required**
     
 </dd>
 </dl>
@@ -11082,6 +11106,14 @@ client.user_agent_lookup(api_key: "apiKey")
 <dd>
 
 **format:** `Apifreaks::Types::UserAgentLookupRequestFormat` — Format of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**user_agent:** `String` — The User-Agent string to parse. Sent as the `User-Agent` HTTP header. **Required**
     
 </dd>
 </dl>

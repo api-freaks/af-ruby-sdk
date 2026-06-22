@@ -18,6 +18,8 @@ module Apifreaks
       field :txt, -> { Integer }, optional: true, nullable: false, api_name: "TXT"
 
       field :spf, -> { Integer }, optional: true, nullable: false, api_name: "SPF"
+
+      field :ptr, -> { Integer }, optional: true, nullable: false, api_name: "PTR"
     end
   end
 end

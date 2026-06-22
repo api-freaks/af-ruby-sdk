@@ -7,7 +7,7 @@ module Apifreaks
 
       field :domain_name, -> { String }, optional: false, nullable: false, api_name: "domainName"
 
-      field :domain_registered, -> { Internal::Types::Boolean }, optional: false, nullable: false, api_name: "domainRegistered"
+      field :domain_registered, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "domainRegistered"
 
       field :dns_types, -> { Apifreaks::Types::DomainDNSReverseResponseReverseDNSRecordsItemDNSTypes }, optional: false, nullable: false, api_name: "dnsTypes"
 

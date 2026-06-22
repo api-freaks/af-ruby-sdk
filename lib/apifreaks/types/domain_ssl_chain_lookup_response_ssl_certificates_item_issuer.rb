@@ -5,7 +5,7 @@ module Apifreaks
     class DomainSslChainLookupResponseSslCertificatesItemIssuer < Internal::Types::Model
       field :common_name, -> { String }, optional: false, nullable: false, api_name: "commonName"
 
-      field :organization, -> { String }, optional: true, nullable: false
+      field :organization, -> { String }, optional: false, nullable: false
 
       field :organizational_unit, -> { String }, optional: true, nullable: false, api_name: "organizationalUnit"
 
@@ -13,7 +13,7 @@ module Apifreaks
 
       field :state, -> { String }, optional: true, nullable: false
 
-      field :country, -> { String }, optional: true, nullable: false
+      field :country, -> { String }, optional: false, nullable: false
 
       field :inc_country, -> { String }, optional: true, nullable: false, api_name: "incCountry"
 

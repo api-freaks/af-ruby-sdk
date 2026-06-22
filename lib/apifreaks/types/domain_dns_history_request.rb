@@ -9,7 +9,7 @@ module Apifreaks
 
       field :host_name, -> { String }, optional: false, nullable: false, api_name: "host-name"
 
-      field :type, -> { String }, optional: true, nullable: false
+      field :type, -> { String }, optional: false, nullable: false
 
       field :page, -> { Integer }, optional: true, nullable: false
     end

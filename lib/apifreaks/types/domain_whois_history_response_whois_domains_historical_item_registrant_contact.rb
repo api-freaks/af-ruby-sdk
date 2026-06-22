@@ -19,13 +19,13 @@ module Apifreaks
 
       field :country_code, -> { String }, optional: true, nullable: false
 
-      field :emailaddress, -> { String }, optional: true, nullable: false
+      field :email_address, -> { String }, optional: true, nullable: false
 
       field :phone, -> { String }, optional: true, nullable: false
 
       field :fax, -> { String }, optional: true, nullable: false
 
-      field :mailingaddress, -> { String }, optional: true, nullable: false
+      field :mailing_address, -> { String }, optional: true, nullable: false
     end
   end
 end

@@ -7,9 +7,9 @@ module Apifreaks
 
       field :location, -> { Apifreaks::Types::TimezoneLookupResponseLocation }, optional: true, nullable: false
 
-      field :time_zone, -> { Apifreaks::Types::TimezoneLookupResponseTimeZone }, optional: false, nullable: false
+      field :time_zone, -> { Apifreaks::Types::TimezoneLookupResponseTimeZone }, optional: true, nullable: false
 
-      field :airport_details, -> { Apifreaks::Types::TimezoneLookupResponseAirportDetails }, optional: true, nullable: false
+      field :airport_detail, -> { Apifreaks::Types::TimezoneLookupResponseAirportDetails }, optional: true, nullable: false
 
       field :lo_code_details, -> { Apifreaks::Types::TimezoneLookupResponseLoCodeDetails }, optional: true, nullable: false
     end

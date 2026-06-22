@@ -6,7 +6,9 @@ module Apifreaks
       extend Apifreaks::Internal::Types::Enum
 
       VALID = "valid"
-      INVALID = "invalid"
+      INVALID = "Invalid"
+      UNKNOWN = "Unknown"
+      RISKY = "Risky"
     end
   end
 end

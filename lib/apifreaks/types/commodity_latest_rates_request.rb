@@ -7,7 +7,7 @@ module Apifreaks
 
       field :format, -> { Apifreaks::Types::CommodityLatestRatesRequestFormat }, optional: true, nullable: false
 
-      field :symbols, -> { String }, optional: true, nullable: false
+      field :symbols, -> { String }, optional: false, nullable: false
 
       field :updates, -> { Apifreaks::Types::CommodityLatestRatesRequestUpdates }, optional: false, nullable: false
 

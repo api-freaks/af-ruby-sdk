@@ -594,7 +594,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::DomainDNSLookupRequestFormat, nil] :format
     # @option params [String, nil] :host_name
     # @option params [String, nil] :ip_address
-    # @option params [String, nil] :type
+    # @option params [String] :type
     #
     # @return [Apifreaks::Types::DomainDNSLookupResponse]
     def domain_dns_lookup(request_options: {}, **params)
@@ -639,7 +639,8 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkDomainDNSLookupRequestFormat, nil] :format
-    # @option params [String, nil] :type
+    # @option params [String] :type
+    # @option params [Internal::Types::Array[String], nil] :ip_addresses
     #
     # @return [Apifreaks::Types::BulkDomainDNSLookupResponse]
     def bulk_domain_dns_lookup(request_options: {}, **params)
@@ -689,7 +690,7 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::DomainDNSHistoryRequestFormat, nil] :format
     # @option params [String] :host_name
-    # @option params [String, nil] :type
+    # @option params [String] :type
     # @option params [Integer, nil] :page
     #
     # @return [Apifreaks::Types::DomainDNSHistoryResponse]
@@ -1213,6 +1214,7 @@ module Apifreaks
     # @option params [String] :domain
     # @option params [Apifreaks::Types::DomainAvailabilitySuggestionsRequestSource, nil] :source
     # @option params [Integer, nil] :count
+    # @option params [Boolean, nil] :sug
     #
     # @return [Apifreaks::Types::DomainAvailabilitySuggestionsResponse]
     def domain_availability_suggestions(request_options: {}, **params)
@@ -1223,6 +1225,7 @@ module Apifreaks
       query_params["domain"] = params[:domain] if params.key?(:domain)
       query_params["source"] = params[:source] if params.key?(:source)
       query_params["count"] = params[:count] if params.key?(:count)
+      query_params["sug"] = params[:sug] if params.key?(:sug)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -2086,6 +2089,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfUploadResourcesRequestFormat, nil] :format
+    # @option params [File] :file
     #
     # @return [Apifreaks::Types::PdfUploadResourcesResponse]
     def pdf_upload_resources(request_options: {}, **params)
@@ -2702,7 +2706,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertLatestRequestFormat, nil] :format
     # @option params [String] :from
     # @option params [String] :to
-    # @option params [Integer, nil] :amount
+    # @option params [String, nil] :amount
     # @option params [Apifreaks::Types::CurrencyConvertLatestRequestUpdates, nil] :updates
     #
     # @return [Apifreaks::Types::CurrencyConvertLatestResponse]
@@ -2750,7 +2754,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertHistoricalRequestFormat, nil] :format
     # @option params [String] :from
     # @option params [String] :to
-    # @option params [Integer, nil] :amount
+    # @option params [String, nil] :amount
     # @option params [String] :date
     #
     # @return [Apifreaks::Types::CurrencyConvertHistoricalResponse]
@@ -2895,7 +2899,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertByIPRequestUpdates, nil] :updates
     # @option params [String] :from
     # @option params [String, nil] :ip
-    # @option params [Integer, nil] :amount
+    # @option params [String, nil] :amount
     #
     # @return [Apifreaks::Types::CurrencyConvertByIPResponse]
     def currency_convert_by_ip(request_options: {}, **params)
@@ -3060,7 +3064,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityLatestRatesRequestFormat, nil] :format
-    # @option params [String, nil] :symbols
+    # @option params [String] :symbols
     # @option params [Apifreaks::Types::CommodityLatestRatesRequestUpdates] :updates
     # @option params [String, nil] :quote
     #
@@ -3107,7 +3111,7 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityHistoricalRatesRequestFormat, nil] :format
     # @option params [String] :date
-    # @option params [String, nil] :symbols
+    # @option params [String] :symbols
     #
     # @return [Apifreaks::Types::CommodityHistoricalRatesResponse]
     def commodity_historical_rates(request_options: {}, **params)
@@ -3150,7 +3154,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityFluctuationRequestFormat, nil] :format
-    # @option params [String, nil] :symbols
+    # @option params [String] :symbols
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
@@ -3196,7 +3200,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityTimeSeriesRequestFormat, nil] :format
-    # @option params [String, nil] :symbols
+    # @option params [String] :symbols
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
@@ -4949,6 +4953,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::UserAgentLookupRequestFormat, nil] :format
+    # @option params [String] :user_agent
     #
     # @return [Apifreaks::Types::UserAgentLookupResponse]
     def user_agent_lookup(request_options: {}, **params)
@@ -4957,10 +4962,14 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
 
+      headers = {}
+      headers["User-Agent"] = params[:user_agent] if params[:user_agent]
+
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
         method: "GET",
         path: "v1.0/user-agent/lookup",
+        headers: headers,
         query: query_params,
         request_options: request_options
       )

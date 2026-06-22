@@ -21,7 +21,7 @@ module Apifreaks
 
       field :dns, -> { Apifreaks::Types::BulkEmailValidateResponseEmailValidationResponsesItemDNS }, optional: false, nullable: false
 
-      field :ip, -> { String }, optional: true, nullable: false
+      field :ip_address, -> { String }, optional: true, nullable: false, api_name: "ipAddress"
 
       field :address, -> { Apifreaks::Types::BulkEmailValidateResponseEmailValidationResponsesItemAddress }, optional: true, nullable: false
     end

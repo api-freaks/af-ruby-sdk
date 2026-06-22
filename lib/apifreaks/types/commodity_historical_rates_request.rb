@@ -9,7 +9,7 @@ module Apifreaks
 
       field :date, -> { String }, optional: false, nullable: false
 
-      field :symbols, -> { String }, optional: true, nullable: false
+      field :symbols, -> { String }, optional: false, nullable: false
     end
   end
 end

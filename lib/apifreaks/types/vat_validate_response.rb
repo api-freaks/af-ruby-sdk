@@ -7,9 +7,9 @@ module Apifreaks
 
       field :vat_number, -> { String }, optional: false, nullable: false
 
-      field :requester_country_code, -> { String }, optional: true, nullable: false
+      field :requester_country_code, -> { String }, optional: false, nullable: false
 
-      field :requester_vat_number, -> { String }, optional: true, nullable: false
+      field :requester_vat_number, -> { String }, optional: false, nullable: false
 
       field :requested_at, -> { String }, optional: false, nullable: false
 

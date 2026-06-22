@@ -13,7 +13,7 @@ module Apifreaks
 
       field :ip, -> { String }, optional: true, nullable: false
 
-      field :amount, -> { Integer }, optional: true, nullable: false
+      field :amount, -> { String }, optional: true, nullable: false
     end
   end
 end
