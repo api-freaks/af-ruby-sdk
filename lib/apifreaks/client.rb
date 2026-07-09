@@ -53,6 +53,57 @@ module Apifreaks
       end
     end
 
+    # Get detailed geolocation data for an IP address (v2.0) including country, city, timezone, currency, and optional
+    # security and user-agent information
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::GeolocationLookupRequestFormat, nil] :format
+    # @option params [String, nil] :ip
+    # @option params [Apifreaks::Types::GeolocationLookupRequestLang, nil] :lang
+    # @option params [String, nil] :fields
+    # @option params [String, nil] :excludes
+    # @option params [String, nil] :include
+    #
+    # @return [Apifreaks::Types::GeolocationLookupResponse]
+    def geolocation_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["ip"] = params[:ip] if params.key?(:ip)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["fields"] = params[:fields] if params.key?(:fields)
+      query_params["excludes"] = params[:excludes] if params.key?(:excludes)
+      query_params["include"] = params[:include] if params.key?(:include)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/geolocation/lookup",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @raw_client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::GeolocationLookupResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
     # Retrieve detailed geolocation data for multiple IP addresses in a single request.
     # Supports up to `50,000` IP-addresses/host-names per request.
     #
@@ -89,6 +140,60 @@ module Apifreaks
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/geolocation/lookup",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @raw_client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkGeolocationLookupResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Retrieve detailed geolocation data for multiple IP addresses in a single request (v2.0).
+    # Supports up to `50,000` IP-addresses/host-names per request.
+    #
+    # @param request_options [Hash]
+    # @param params [Apifreaks::Types::BulkGeolocationLookupRequest]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::BulkGeolocationLookupRequestFormat, nil] :format
+    # @option params [String, nil] :lang
+    # @option params [String, nil] :fields
+    # @option params [String, nil] :excludes
+    # @option params [String, nil] :include
+    #
+    # @return [Array[Apifreaks::Types::BulkGeolocationLookupResponseItem]]
+    def bulk_geolocation_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      request_data = Apifreaks::Types::BulkGeolocationLookupRequest.new(params).to_h
+      non_body_param_names = %w[apiKey format lang fields excludes include]
+      body = request_data.except(*non_body_param_names)
+
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["fields"] = params[:fields] if params.key?(:fields)
+      query_params["excludes"] = params[:excludes] if params.key?(:excludes)
+      query_params["include"] = params[:include] if params.key?(:include)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v2.0/geolocation/lookup",
         query: query_params,
         body: body,
         request_options: request_options
@@ -354,6 +459,49 @@ module Apifreaks
       end
     end
 
+    # Retrieve live WHOIS information for a single domain name (v2.0), including registration
+    # dates, nameservers, and registrant information.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::DomainWhoisLookupRequestFormat, nil] :format
+    # @option params [String] :domain_name
+    #
+    # @return [Apifreaks::Types::DomainWhoisLookupResponse]
+    def domain_whois_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["domainName"] = params[:domain_name] if params.key?(:domain_name)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/domain/whois/live",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @raw_client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::DomainWhoisLookupResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
     # Retrieve WHOIS information for `100 Domains per Request`.
     #
     # @param request_options [Hash]
@@ -381,6 +529,51 @@ module Apifreaks
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/domain/whois/live",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @raw_client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkDomainWhoisLookupResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Retrieve WHOIS information for `100 Domains per Request` (v2.0).
+    #
+    # @param request_options [Hash]
+    # @param params [Apifreaks::Types::BulkDomainWhoisLookupRequest]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::BulkDomainWhoisLookupRequestFormat, nil] :format
+    #
+    # @return [Apifreaks::Types::BulkDomainWhoisLookupResponse]
+    def bulk_domain_whois_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      request_data = Apifreaks::Types::BulkDomainWhoisLookupRequest.new(params).to_h
+      non_body_param_names = %w[apiKey format]
+      body = request_data.except(*non_body_param_names)
+
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v2.0/domain/whois/live",
         query: query_params,
         body: body,
         request_options: request_options
@@ -4871,6 +5064,65 @@ module Apifreaks
       end
     end
 
+    # Retrieve current time, date, and timezone-related information (v2.0) by specifying a timezone name, location
+    # address, location coordinates, IP address, or use the client IP address if no parameter is passed.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::TimezoneLookupRequestFormat, nil] :format
+    # @option params [String, nil] :ip
+    # @option params [String, nil] :tz
+    # @option params [String, nil] :location
+    # @option params [Integer, nil] :lat
+    # @option params [Integer, nil] :long
+    # @option params [Apifreaks::Types::TimezoneLookupRequestLang, nil] :lang
+    # @option params [String, nil] :iata_code
+    # @option params [String, nil] :icao_code
+    # @option params [String, nil] :lo_code
+    #
+    # @return [Apifreaks::Types::TimezoneLookupResponse]
+    def timezone_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["ip"] = params[:ip] if params.key?(:ip)
+      query_params["tz"] = params[:tz] if params.key?(:tz)
+      query_params["location"] = params[:location] if params.key?(:location)
+      query_params["lat"] = params[:lat] if params.key?(:lat)
+      query_params["long"] = params[:long] if params.key?(:long)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["iata_code"] = params[:iata_code] if params.key?(:iata_code)
+      query_params["icao_code"] = params[:icao_code] if params.key?(:icao_code)
+      query_params["lo_code"] = params[:lo_code] if params.key?(:lo_code)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/geolocation/timezone",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @raw_client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::TimezoneLookupResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
     # Converts a given time from one timezone to another using various input types like timezone name, coordinates,
     # location, or codes.
     #
@@ -5316,6 +5568,64 @@ module Apifreaks
         base_url: request_options[:base_url],
         method: "GET",
         path: "v1.0/geolocation/astronomy",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @raw_client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::AstronomyLookupResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Retrieve sunrise and sunset times, current position of the moon, and other related information (v2.0) by
+    # specifying a location address, location coordinates, IP address, or using the client IP address if no parameter
+    # is passed.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::AstronomyLookupRequestFormat, nil] :format
+    # @option params [String, nil] :location
+    # @option params [Integer, nil] :lat
+    # @option params [Integer, nil] :long
+    # @option params [String, nil] :ip
+    # @option params [String, nil] :lang
+    # @option params [String, nil] :date
+    # @option params [Integer, nil] :elevation
+    # @option params [String, nil] :time_zone
+    #
+    # @return [Apifreaks::Types::AstronomyLookupResponse]
+    def astronomy_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["location"] = params[:location] if params.key?(:location)
+      query_params["lat"] = params[:lat] if params.key?(:lat)
+      query_params["long"] = params[:long] if params.key?(:long)
+      query_params["ip"] = params[:ip] if params.key?(:ip)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["date"] = params[:date] if params.key?(:date)
+      query_params["elevation"] = params[:elevation] if params.key?(:elevation)
+      query_params["time_zone"] = params[:time_zone] if params.key?(:time_zone)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/geolocation/astronomy",
         query: query_params,
         request_options: request_options
       )

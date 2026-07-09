@@ -109,6 +109,116 @@ client.geolocation_lookup(api_key: "apiKey")
 </dl>
 </details>
 
+<details><summary><code>client.<a href="/lib/apifreaks/client.rb">geolocation_lookup_v2</a>() -> Apifreaks::Types::GeolocationLookupResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get detailed geolocation data for an IP address using the `v2.0/geolocation/lookup` endpoint including country, city, timezone, currency, and optional security and user-agent information
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.geolocation_lookup_v2(api_key: "apiKey")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key:** `String` — Your API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `Apifreaks::Types::GeolocationLookupRequestFormat` — Format of the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ip:** `String` — IPv4, IPv6, or hostname for geolocation lookup
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lang:** `Apifreaks::Types::GeolocationLookupRequestLang` — Response language for location fields
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fields:** `String` — Comma separated list of fields to include in response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excludes:** `String` — Comma separated list of fields to exclude from response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**include:** `String` — Additional data to include (location, network, security, currency, time_zone, user_agent, country_metadata , hostname, liveHostname, hostnameFallbackLivet)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Apifreaks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.<a href="/lib/apifreaks/client.rb">bulk_geolocation_lookup</a>(request) -> Internal::Types::Array[Apifreaks::Types::BulkGeolocationLookupResponseItem]</code></summary>
 <dl>
 <dd>
@@ -138,6 +248,120 @@ Supports up to `50,000` IP-addresses/host-names per request.
 
 ```ruby
 client.bulk_geolocation_lookup(
+  api_key: "apiKey",
+  ips: ["ips"]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key:** `String` — Your API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `Apifreaks::Types::BulkGeolocationLookupRequestFormat` — Format of the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lang:** `String` — Language of the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**fields:** `String` — Comma-separated list of fields to include in the response. Can include "geo".
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**excludes:** `String` — Comma-separated list of fields to exclude from the response (except "ip").
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**include:** `String` — Comma-separated list of additional information to include in the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ips:** `Internal::Types::Array[String]` — List of IP addresses or hostnames to lookup
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Apifreaks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/apifreaks/client.rb">bulk_geolocation_lookup_v2</a>(request) -> Internal::Types::Array[Apifreaks::Types::BulkGeolocationLookupResponseItem]</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve detailed geolocation data for multiple IP addresses in a single request using the `v2.0/geolocation/lookup` endpoint.
+Supports up to `50,000` IP-addresses/host-names per request.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.bulk_geolocation_lookup_v2(
   api_key: "apiKey",
   ips: ["ips"]
 )
@@ -724,6 +948,89 @@ client.domain_whois_lookup(
 </dl>
 </details>
 
+<details><summary><code>client.<a href="/lib/apifreaks/client.rb">domain_whois_lookup_v2</a>() -> Apifreaks::Types::DomainWhoisLookupResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve current WHOIS information for a domain name using the `v2.0/domain/whois/live` endpoint.
+This endpoint provides detailed registration information including registrar details,
+dates, nameservers, and registrant information.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.domain_whois_lookup_v2(
+  api_key: "apiKey",
+  domain_name: "domainName"
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key:** `String` — Your API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `Apifreaks::Types::DomainWhoisLookupRequestFormat` — Response format (defaults to json)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**domain_name:** `String` — Domain name for WHOIS lookup
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Apifreaks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.<a href="/lib/apifreaks/client.rb">bulk_domain_whois_lookup</a>(request) -> Apifreaks::Types::BulkDomainWhoisLookupResponse</code></summary>
 <dl>
 <dd>
@@ -752,6 +1059,87 @@ Retrieve WHOIS information for `100 Domains per Request`.
 
 ```ruby
 client.bulk_domain_whois_lookup(
+  api_key: "apiKey",
+  domain_names: ["domainNames"]
+)
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key:** `String` — Your API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `Apifreaks::Types::BulkDomainWhoisLookupRequestFormat` — Format of the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**domain_names:** `Internal::Types::Array[String]` — A list of domain names for which WHOIS data is requested.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Apifreaks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/apifreaks/client.rb">bulk_domain_whois_lookup_v2</a>(request) -> Apifreaks::Types::BulkDomainWhoisLookupResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve WHOIS information for `100 Domains per Request` using the `v2.0/domain/whois/live` endpoint.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.bulk_domain_whois_lookup_v2(
   api_key: "apiKey",
   domain_names: ["domainNames"]
 )
@@ -10865,6 +11253,148 @@ client.timezone_lookup(api_key: "apiKey")
 </dl>
 </details>
 
+<details><summary><code>client.<a href="/lib/apifreaks/client.rb">timezone_lookup_v2</a>() -> Apifreaks::Types::TimezoneLookupResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve current time, date, and timezone-related information using the `v2.0/geolocation/timezone` endpoint by specifying a timezone name, location address, location coordinates, IP address, or use the client IP address if no parameter is passed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.timezone_lookup_v2(api_key: "apiKey")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key:** `String` — Your API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `Apifreaks::Types::TimezoneLookupRequestFormat` — Format of the response
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ip:** `String` — IPv4 or IPv6 address to extract timezone information.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**tz:** `String` — Timezone name (e.g., "Asia/Kolkata") to retrieve information directly.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**location:** `String` — Location string (preferably city and country) to extract timezone.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lat:** `Integer` — Latitude for geolocation lookup.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**long:** `Integer` — Longitude for geolocation lookup.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lang:** `Apifreaks::Types::TimezoneLookupRequestLang` — Language code for response localization (default is "en").
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**iata_code:** `String` — 3-letter IATA airport code (e.g., JFK).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**icao_code:** `String` — 4-letter ICAO airport code (e.g., KJFK).
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lo_code:** `String` — 5-letter UN/LO city code.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Apifreaks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.<a href="/lib/apifreaks/client.rb">timezone_convert</a>() -> Apifreaks::Types::TimezoneConvertResponse</code></summary>
 <dl>
 <dd>
@@ -11704,6 +12234,140 @@ Retrieve sunrise and sunset times, current position of the moon, and other relat
 
 ```ruby
 client.astronomy_lookup(api_key: "apiKey")
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**api_key:** `String` — Your API key
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**format:** `Apifreaks::Types::AstronomyLookupRequestFormat` — Format of the response.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**location:** `String` — Location name or address
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lat:** `Integer` — Latitude for location coordinates
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**long:** `Integer` — Longitude for location coordinates
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**ip:** `String` — IP address for location detection
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**lang:** `String` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**date:** `String` — Date for astronomy data (YYYY-MM-DD)
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**elevation:** `Integer` — Timezone of the location for which astronomy data is required
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**time_zone:** `String` — 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `Apifreaks::RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.<a href="/lib/apifreaks/client.rb">astronomy_lookup_v2</a>() -> Apifreaks::Types::AstronomyLookupResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve sunrise and sunset times, current position of the moon, and other related information using the `v2.0/geolocation/astronomy` endpoint by specifying a location address, location coordinates, IP address, or using the client IP address if no parameter is passed.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```ruby
+client.astronomy_lookup_v2(api_key: "apiKey")
 ```
 </dd>
 </dl>
