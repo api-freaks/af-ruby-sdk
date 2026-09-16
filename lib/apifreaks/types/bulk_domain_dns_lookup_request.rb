@@ -7,11 +7,9 @@ module Apifreaks
 
       field :format, -> { Apifreaks::Types::BulkDomainDNSLookupRequestFormat }, optional: true, nullable: false
 
-      field :type, -> { String }, optional: false, nullable: false
+      field :type, -> { String }, optional: true, nullable: false
 
       field :domain_names, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "domainNames"
-
-      field :ip_addresses, -> { Internal::Types::Array[String] }, optional: true, nullable: false, api_name: "ipAddresses"
     end
   end
 end

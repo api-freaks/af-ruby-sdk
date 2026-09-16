@@ -3,7 +3,7 @@
 module Apifreaks
   module Types
     class BulkEmailValidateResponse < Internal::Types::Model
-      field :email_validation_responses, -> { Internal::Types::Array[Apifreaks::Types::BulkEmailValidateResponseEmailValidationResponsesItem] }, optional: true, nullable: false, api_name: "emailValidationResponses"
+      field :email_response, -> { Internal::Types::Array[Apifreaks::Types::BulkEmailValidateResponseEmailResponseItem] }, optional: false, nullable: false, api_name: "emailResponse"
     end
   end
 end

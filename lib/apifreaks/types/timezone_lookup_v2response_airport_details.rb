@@ -1,0 +1,32 @@
+# frozen_string_literal: true
+
+module Apifreaks
+  module Types
+    # Airport information, present when queried by IATA or ICAO code.
+    class TimezoneLookupV2ResponseAirportDetails < Internal::Types::Model
+      field :type, -> { String }, optional: true, nullable: false
+
+      field :name, -> { String }, optional: true, nullable: false
+
+      field :latitude, -> { Integer }, optional: true, nullable: false
+
+      field :longitude, -> { Integer }, optional: true, nullable: false
+
+      field :elevation_ft, -> { Integer }, optional: true, nullable: false
+
+      field :continent_code, -> { String }, optional: true, nullable: false
+
+      field :country_code, -> { String }, optional: true, nullable: false
+
+      field :state_code, -> { String }, optional: true, nullable: false
+
+      field :city, -> { String }, optional: true, nullable: false
+
+      field :iata_code, -> { String }, optional: true, nullable: false
+
+      field :icao_code, -> { String }, optional: true, nullable: false
+
+      field :faa_code, -> { String }, optional: true, nullable: false
+    end
+  end
+end

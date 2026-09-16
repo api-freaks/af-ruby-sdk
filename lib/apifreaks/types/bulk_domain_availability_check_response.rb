@@ -3,7 +3,7 @@
 module Apifreaks
   module Types
     class BulkDomainAvailabilityCheckResponse < Internal::Types::Model
-      field :bulk_domain_available_response, -> { Internal::Types::Array[Apifreaks::Types::BulkDomainAvailabilityCheckResponseBulkDomainAvailableResponseItem] }, optional: false, nullable: false
+      field :bulk_domain_available_response, -> { Internal::Types::Array[Apifreaks::Types::BulkDomainAvailabilityCheckResponseBulkDomainAvailableResponseItem] }, optional: true, nullable: false
     end
   end
 end

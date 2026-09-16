@@ -33,15 +33,23 @@ module Apifreaks
 
       field :year_abbr, -> { String }, optional: false, nullable: false
 
+      field :current_tz_abbreviation, -> { String }, optional: false, nullable: false
+
+      field :current_tz_full_name, -> { String }, optional: false, nullable: false
+
+      field :standard_tz_abbreviation, -> { String }, optional: false, nullable: false
+
+      field :standard_tz_full_name, -> { String }, optional: false, nullable: false
+
       field :is_dst, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
       field :dst_savings, -> { Integer }, optional: false, nullable: false
 
       field :dst_exists, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
-      field :dst_start, -> { Apifreaks::Types::TimezoneLookupResponseTimeZoneDstStart }, optional: false, nullable: false
+      field :dst_start, -> { Apifreaks::Types::TimezoneLookupResponseTimeZoneDstStart }, optional: true, nullable: false
 
-      field :dst_end, -> { Apifreaks::Types::TimezoneLookupResponseTimeZoneDstEnd }, optional: false, nullable: false
+      field :dst_end, -> { Apifreaks::Types::TimezoneLookupResponseTimeZoneDstEnd }, optional: true, nullable: false
     end
   end
 end

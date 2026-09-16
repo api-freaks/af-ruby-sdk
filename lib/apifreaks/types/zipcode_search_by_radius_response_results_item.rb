@@ -7,6 +7,8 @@ module Apifreaks
 
       field :region, -> { String }, optional: true, nullable: false
 
+      field :region_code, -> { String }, optional: true, nullable: false
+
       field :city, -> { String }, optional: true, nullable: false
 
       field :district, -> { String }, optional: true, nullable: false

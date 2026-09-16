@@ -25,11 +25,7 @@ module Apifreaks
           @base_url = base_url
           @max_retries = max_retries
           @timeout = timeout
-          @default_headers = {
-            "X-Fern-Language": "Ruby",
-            "X-Fern-SDK-Name": "apifreaks",
-            "X-Fern-SDK-Version": "0.0.1"
-          }.merge(headers)
+          @default_headers = headers
         end
 
         # @param request [Apifreaks::Internal::Http::BaseRequest] The HTTP request.

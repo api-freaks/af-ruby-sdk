@@ -17,7 +17,7 @@ module Apifreaks
 
       field :email, -> { String }, optional: true, nullable: false
 
-      field :company_name, -> { String }, optional: true, nullable: false
+      field :companyname, -> { String }, optional: true, nullable: false
     end
   end
 end

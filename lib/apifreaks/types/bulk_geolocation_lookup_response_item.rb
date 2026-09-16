@@ -17,7 +17,7 @@ module Apifreaks
 
       field :security, -> { Apifreaks::Types::BulkGeolocationLookupResponseItemSecurity }, optional: true, nullable: false
 
-      field :abuse, -> { Apifreaks::Types::BulkGeolocationLookupResponseItemAbuseItem }, optional: true, nullable: false
+      field :abuse, -> { Internal::Types::Array[Apifreaks::Types::BulkGeolocationLookupResponseItemAbuseItem] }, optional: true, nullable: false
 
       field :time_zone, -> { Apifreaks::Types::BulkGeolocationLookupResponseItemTimeZone }, optional: true, nullable: false
 

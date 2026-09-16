@@ -7,6 +7,8 @@ module Apifreaks
 
       field :domain_name, -> { String }, optional: false, nullable: false, api_name: "domainName"
 
+      field :domain_registered, -> { Internal::Types::Boolean }, optional: false, nullable: false, api_name: "domainRegistered"
+
       field :dns_types, -> { Apifreaks::Types::DomainDNSHistoryResponseHistoricalDNSRecordsItemDNSTypes }, optional: false, nullable: false, api_name: "dnsTypes"
 
       field :dns_records, -> { Internal::Types::Array[Apifreaks::Types::DomainDNSHistoryResponseHistoricalDNSRecordsItemDNSRecordsItem] }, optional: false, nullable: false, api_name: "dnsRecords"

@@ -40,58 +40,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
-      rescue Net::HTTPRequestTimeout
-        raise Apifreaks::Errors::TimeoutError
-      end
-      code = response.code.to_i
-      if code.between?(200, 299)
-        Apifreaks::Types::GeolocationLookupResponse.load(response.body)
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
-    end
-
-    # Get detailed geolocation data for an IP address (v2.0) including country, city, timezone, currency, and optional
-    # security and user-agent information
-    #
-    # @param request_options [Hash]
-    # @param params [Hash]
-    # @option request_options [String] :base_url
-    # @option request_options [Hash{String => Object}] :additional_headers
-    # @option request_options [Hash{String => Object}] :additional_query_parameters
-    # @option request_options [Hash{String => Object}] :additional_body_parameters
-    # @option request_options [Integer] :timeout_in_seconds
-    # @option params [String] :api_key
-    # @option params [Apifreaks::Types::GeolocationLookupRequestFormat, nil] :format
-    # @option params [String, nil] :ip
-    # @option params [Apifreaks::Types::GeolocationLookupRequestLang, nil] :lang
-    # @option params [String, nil] :fields
-    # @option params [String, nil] :excludes
-    # @option params [String, nil] :include
-    #
-    # @return [Apifreaks::Types::GeolocationLookupResponse]
-    def geolocation_lookup_v2(request_options: {}, **params)
-      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      query_params = {}
-      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["format"] = params[:format] if params.key?(:format)
-      query_params["ip"] = params[:ip] if params.key?(:ip)
-      query_params["lang"] = params[:lang] if params.key?(:lang)
-      query_params["fields"] = params[:fields] if params.key?(:fields)
-      query_params["excludes"] = params[:excludes] if params.key?(:excludes)
-      query_params["include"] = params[:include] if params.key?(:include)
-
-      request = Apifreaks::Internal::JSON::Request.new(
-        base_url: request_options[:base_url],
-        method: "GET",
-        path: "v2.0/geolocation/lookup",
-        query: query_params,
-        request_options: request_options
-      )
-      begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -145,61 +94,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
-      rescue Net::HTTPRequestTimeout
-        raise Apifreaks::Errors::TimeoutError
-      end
-      code = response.code.to_i
-      if code.between?(200, 299)
-        Apifreaks::Types::BulkGeolocationLookupResponseItem.load(response.body)
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
-    end
-
-    # Retrieve detailed geolocation data for multiple IP addresses in a single request (v2.0).
-    # Supports up to `50,000` IP-addresses/host-names per request.
-    #
-    # @param request_options [Hash]
-    # @param params [Apifreaks::Types::BulkGeolocationLookupRequest]
-    # @option request_options [String] :base_url
-    # @option request_options [Hash{String => Object}] :additional_headers
-    # @option request_options [Hash{String => Object}] :additional_query_parameters
-    # @option request_options [Hash{String => Object}] :additional_body_parameters
-    # @option request_options [Integer] :timeout_in_seconds
-    # @option params [String] :api_key
-    # @option params [Apifreaks::Types::BulkGeolocationLookupRequestFormat, nil] :format
-    # @option params [String, nil] :lang
-    # @option params [String, nil] :fields
-    # @option params [String, nil] :excludes
-    # @option params [String, nil] :include
-    #
-    # @return [Array[Apifreaks::Types::BulkGeolocationLookupResponseItem]]
-    def bulk_geolocation_lookup_v2(request_options: {}, **params)
-      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      request_data = Apifreaks::Types::BulkGeolocationLookupRequest.new(params).to_h
-      non_body_param_names = %w[apiKey format lang fields excludes include]
-      body = request_data.except(*non_body_param_names)
-
-      query_params = {}
-      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["format"] = params[:format] if params.key?(:format)
-      query_params["lang"] = params[:lang] if params.key?(:lang)
-      query_params["fields"] = params[:fields] if params.key?(:fields)
-      query_params["excludes"] = params[:excludes] if params.key?(:excludes)
-      query_params["include"] = params[:include] if params.key?(:include)
-
-      request = Apifreaks::Internal::JSON::Request.new(
-        base_url: request_options[:base_url],
-        method: "POST",
-        path: "v2.0/geolocation/lookup",
-        query: query_params,
-        body: body,
-        request_options: request_options
-      )
-      begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -246,7 +141,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -296,7 +191,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -353,7 +248,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -402,7 +297,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -446,50 +341,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
-      rescue Net::HTTPRequestTimeout
-        raise Apifreaks::Errors::TimeoutError
-      end
-      code = response.code.to_i
-      if code.between?(200, 299)
-        Apifreaks::Types::DomainWhoisLookupResponse.load(response.body)
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
-    end
-
-    # Retrieve live WHOIS information for a single domain name (v2.0), including registration
-    # dates, nameservers, and registrant information.
-    #
-    # @param request_options [Hash]
-    # @param params [Hash]
-    # @option request_options [String] :base_url
-    # @option request_options [Hash{String => Object}] :additional_headers
-    # @option request_options [Hash{String => Object}] :additional_query_parameters
-    # @option request_options [Hash{String => Object}] :additional_body_parameters
-    # @option request_options [Integer] :timeout_in_seconds
-    # @option params [String] :api_key
-    # @option params [Apifreaks::Types::DomainWhoisLookupRequestFormat, nil] :format
-    # @option params [String] :domain_name
-    #
-    # @return [Apifreaks::Types::DomainWhoisLookupResponse]
-    def domain_whois_lookup_v2(request_options: {}, **params)
-      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      query_params = {}
-      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["format"] = params[:format] if params.key?(:format)
-      query_params["domainName"] = params[:domain_name] if params.key?(:domain_name)
-
-      request = Apifreaks::Internal::JSON::Request.new(
-        base_url: request_options[:base_url],
-        method: "GET",
-        path: "v2.0/domain/whois/live",
-        query: query_params,
-        request_options: request_options
-      )
-      begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -534,52 +386,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
-      rescue Net::HTTPRequestTimeout
-        raise Apifreaks::Errors::TimeoutError
-      end
-      code = response.code.to_i
-      if code.between?(200, 299)
-        Apifreaks::Types::BulkDomainWhoisLookupResponse.load(response.body)
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
-    end
-
-    # Retrieve WHOIS information for `100 Domains per Request` (v2.0).
-    #
-    # @param request_options [Hash]
-    # @param params [Apifreaks::Types::BulkDomainWhoisLookupRequest]
-    # @option request_options [String] :base_url
-    # @option request_options [Hash{String => Object}] :additional_headers
-    # @option request_options [Hash{String => Object}] :additional_query_parameters
-    # @option request_options [Hash{String => Object}] :additional_body_parameters
-    # @option request_options [Integer] :timeout_in_seconds
-    # @option params [String] :api_key
-    # @option params [Apifreaks::Types::BulkDomainWhoisLookupRequestFormat, nil] :format
-    #
-    # @return [Apifreaks::Types::BulkDomainWhoisLookupResponse]
-    def bulk_domain_whois_lookup_v2(request_options: {}, **params)
-      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      request_data = Apifreaks::Types::BulkDomainWhoisLookupRequest.new(params).to_h
-      non_body_param_names = %w[apiKey format]
-      body = request_data.except(*non_body_param_names)
-
-      query_params = {}
-      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["format"] = params[:format] if params.key?(:format)
-
-      request = Apifreaks::Internal::JSON::Request.new(
-        base_url: request_options[:base_url],
-        method: "POST",
-        path: "v2.0/domain/whois/live",
-        query: query_params,
-        body: body,
-        request_options: request_options
-      )
-      begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -621,7 +428,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -663,7 +470,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -706,7 +513,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -760,7 +567,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -787,7 +594,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::DomainDNSLookupRequestFormat, nil] :format
     # @option params [String, nil] :host_name
     # @option params [String, nil] :ip_address
-    # @option params [String] :type
+    # @option params [String, nil] :type
     #
     # @return [Apifreaks::Types::DomainDNSLookupResponse]
     def domain_dns_lookup(request_options: {}, **params)
@@ -807,7 +614,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -832,8 +639,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkDomainDNSLookupRequestFormat, nil] :format
-    # @option params [String] :type
-    # @option params [Internal::Types::Array[String], nil] :ip_addresses
+    # @option params [String, nil] :type
     #
     # @return [Apifreaks::Types::BulkDomainDNSLookupResponse]
     def bulk_domain_dns_lookup(request_options: {}, **params)
@@ -856,7 +662,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -883,7 +689,7 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::DomainDNSHistoryRequestFormat, nil] :format
     # @option params [String] :host_name
-    # @option params [String] :type
+    # @option params [String, nil] :type
     # @option params [Integer, nil] :page
     #
     # @return [Apifreaks::Types::DomainDNSHistoryResponse]
@@ -904,7 +710,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -954,7 +760,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1014,7 +820,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1059,7 +865,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1104,7 +910,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1150,7 +956,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1196,7 +1002,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1242,7 +1048,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1287,7 +1093,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1332,7 +1138,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1379,7 +1185,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1407,7 +1213,6 @@ module Apifreaks
     # @option params [String] :domain
     # @option params [Apifreaks::Types::DomainAvailabilitySuggestionsRequestSource, nil] :source
     # @option params [Integer, nil] :count
-    # @option params [Boolean, nil] :sug
     #
     # @return [Apifreaks::Types::DomainAvailabilitySuggestionsResponse]
     def domain_availability_suggestions(request_options: {}, **params)
@@ -1418,7 +1223,6 @@ module Apifreaks
       query_params["domain"] = params[:domain] if params.key?(:domain)
       query_params["source"] = params[:source] if params.key?(:source)
       query_params["count"] = params[:count] if params.key?(:count)
-      query_params["sug"] = params[:sug] if params.key?(:sug)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -1428,7 +1232,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1479,13 +1283,642 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
       if code.between?(200, 299)
         Apifreaks::Types::SubdomainsLookupResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # The Domain Typosquatting API searches for registered domains that are typo or look-alike variants of a brand
+    # keyword, or that match a wildcard pattern. Results include registration lifecycle data and drop status across
+    # 1529+ TLDs, paginated at 100 domains per page.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::DomainTyposquattingRequestFormat, nil] :format
+    # @option params [String, nil] :keyword
+    # @option params [String, nil] :pattern
+    # @option params [String, nil] :page_token
+    #
+    # @return [Apifreaks::Types::DomainTyposquattingResponse]
+    def domain_typosquatting(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["keyword"] = params[:keyword] if params.key?(:keyword)
+      query_params["pattern"] = params[:pattern] if params.key?(:pattern)
+      query_params["pageToken"] = params[:page_token] if params.key?(:page_token)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v1.0/domain/typosquatting",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::DomainTyposquattingResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # The Domain Reputation API evaluates a domain against threat intelligence sources, DGA (domain generation
+    # algorithm) scoring, trust signals, and email deliverability configuration, returning a consolidated risk
+    # assessment with a verdict, severity, and supporting evidence.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::DomainReputationRequestFormat, nil] :format
+    # @option params [String] :domain_name
+    #
+    # @return [Apifreaks::Types::DomainReputationResponse]
+    def domain_reputation(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["domainName"] = params[:domain_name] if params.key?(:domain_name)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v1.0/domain/reputation",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::DomainReputationResponse.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Retrieve sunrise and sunset times, current position of the moon, and other related information by specifying a
+    # location address, location coordinates, IP address, or using the client IP address if no parameter is passed.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::AstronomyLookupV2RequestFormat, nil] :format
+    # @option params [String, nil] :location
+    # @option params [Integer, nil] :lat
+    # @option params [Integer, nil] :long
+    # @option params [String, nil] :ip
+    # @option params [Apifreaks::Types::AstronomyLookupV2RequestLang, nil] :lang
+    # @option params [String, nil] :date
+    # @option params [Integer, nil] :elevation
+    # @option params [String, nil] :time_zone
+    #
+    # @return [Apifreaks::Types::AstronomyLookupV2Response]
+    def astronomy_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["location"] = params[:location] if params.key?(:location)
+      query_params["lat"] = params[:lat] if params.key?(:lat)
+      query_params["long"] = params[:long] if params.key?(:long)
+      query_params["ip"] = params[:ip] if params.key?(:ip)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["date"] = params[:date] if params.key?(:date)
+      query_params["elevation"] = params[:elevation] if params.key?(:elevation)
+      query_params["time_zone"] = params[:time_zone] if params.key?(:time_zone)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/geolocation/astronomy",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::AstronomyLookupV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Get current time, date, and timezone details by specifying a timezone name, location address, GPS coordinates, IP
+    # address, IATA/ICAO airport code, UN/LOCODE, or use the client IP if no parameter is provided.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::TimezoneLookupV2RequestFormat, nil] :format
+    # @option params [String, nil] :ip
+    # @option params [String, nil] :tz
+    # @option params [String, nil] :location
+    # @option params [Integer, nil] :lat
+    # @option params [Integer, nil] :long
+    # @option params [Apifreaks::Types::TimezoneLookupV2RequestLang, nil] :lang
+    # @option params [String, nil] :iata_code
+    # @option params [String, nil] :icao_code
+    # @option params [String, nil] :lo_code
+    #
+    # @return [Apifreaks::Types::TimezoneLookupV2Response]
+    def timezone_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["ip"] = params[:ip] if params.key?(:ip)
+      query_params["tz"] = params[:tz] if params.key?(:tz)
+      query_params["location"] = params[:location] if params.key?(:location)
+      query_params["lat"] = params[:lat] if params.key?(:lat)
+      query_params["long"] = params[:long] if params.key?(:long)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["iata_code"] = params[:iata_code] if params.key?(:iata_code)
+      query_params["icao_code"] = params[:icao_code] if params.key?(:icao_code)
+      query_params["lo_code"] = params[:lo_code] if params.key?(:lo_code)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/geolocation/timezone",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::TimezoneLookupV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Get detailed IP geolocation data for an IP address including country, city, timezone, currency, and optional
+    # threat intelligence and user-agent information.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::GeolocationLookupV2RequestFormat, nil] :format
+    # @option params [String, nil] :ip
+    # @option params [Apifreaks::Types::GeolocationLookupV2RequestLang, nil] :lang
+    # @option params [String, nil] :fields
+    # @option params [String, nil] :excludes
+    # @option params [String, nil] :include
+    #
+    # @return [Apifreaks::Types::GeolocationLookupV2Response]
+    def geolocation_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["ip"] = params[:ip] if params.key?(:ip)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["fields"] = params[:fields] if params.key?(:fields)
+      query_params["excludes"] = params[:excludes] if params.key?(:excludes)
+      query_params["include"] = params[:include] if params.key?(:include)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/geolocation/lookup",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::GeolocationLookupV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Get detailed IP geolocation data for multiple IP addresses including country, city, timezone, currency, and
+    # optional threat intelligence information. Supports up to 50,000 IP addresses per request.
+    #
+    # @param request_options [Hash]
+    # @param params [Apifreaks::Types::BulkGeolocationLookupV2Request]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::BulkGeolocationLookupV2RequestFormat, nil] :format
+    # @option params [Apifreaks::Types::BulkGeolocationLookupV2RequestLang, nil] :lang
+    # @option params [String, nil] :fields
+    # @option params [String, nil] :excludes
+    # @option params [String, nil] :include
+    #
+    # @return [Array[Apifreaks::Types::BulkGeolocationLookupV2ResponseItem]]
+    def bulk_geolocation_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      request_data = Apifreaks::Types::BulkGeolocationLookupV2Request.new(params).to_h
+      non_body_param_names = %w[apiKey format lang fields excludes include]
+      body = request_data.except(*non_body_param_names)
+
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["lang"] = params[:lang] if params.key?(:lang)
+      query_params["fields"] = params[:fields] if params.key?(:fields)
+      query_params["excludes"] = params[:excludes] if params.key?(:excludes)
+      query_params["include"] = params[:include] if params.key?(:include)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v2.0/geolocation/lookup",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkGeolocationLookupV2ResponseItem.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns the current WHOIS record for the specified domain, including registrar details,
+    # registrant/administrative/technical/billing/reseller contacts, name servers, status codes, and raw WHOIS text.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::DomainWhoisLookupV2RequestFormat, nil] :format
+    # @option params [String] :domain_name
+    #
+    # @return [Apifreaks::Types::DomainWhoisLookupV2Response]
+    def domain_whois_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["domainName"] = params[:domain_name] if params.key?(:domain_name)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/domain/whois/live",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::DomainWhoisLookupV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns the current WHOIS record for each requested domain, in request order. Supports up to 100 domain names per
+    # request; a domain that fails to resolve yields an error item instead of failing the whole batch.
+    #
+    # @param request_options [Hash]
+    # @param params [Apifreaks::Types::BulkDomainWhoisLookupV2Request]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::BulkDomainWhoisLookupV2RequestFormat, nil] :format
+    #
+    # @return [Apifreaks::Types::BulkDomainWhoisLookupV2Response]
+    def bulk_domain_whois_lookup_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      request_data = Apifreaks::Types::BulkDomainWhoisLookupV2Request.new(params).to_h
+      non_body_param_names = %w[apiKey format]
+      body = request_data.except(*non_body_param_names)
+
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v2.0/domain/whois/live",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::BulkDomainWhoisLookupV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns the current live price for the requested commodity symbols. Unresolved symbols degrade to a 206 partial
+    # response instead of failing the whole request.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::CommodityLatestRatesV2RequestFormat, nil] :format
+    # @option params [String, nil] :symbols
+    # @option params [String, nil] :quote
+    #
+    # @return [Apifreaks::Types::CommodityLatestRatesV2Response]
+    def commodity_latest_rates_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["quote"] = params[:quote] if params.key?(:quote)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/commodity/rates/latest",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::CommodityLatestRatesV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns OHLC price data for the requested commodity symbols on a specific date. Falls back to the nearest earlier
+    # rate if none exists for the exact date. Unresolved symbols degrade to a 206 partial response instead of failing
+    # the whole request.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::CommodityHistoricalRatesV2RequestFormat, nil] :format
+    # @option params [String, nil] :symbols
+    # @option params [String] :date
+    #
+    # @return [Apifreaks::Types::CommodityHistoricalRatesV2Response]
+    def commodity_historical_rates_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["date"] = params[:date] if params.key?(:date)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/commodity/rates/historical",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::CommodityHistoricalRatesV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns price fluctuation metrics (start, end, change, percent change) for the requested commodity symbols over a
+    # date range. For monthly-updated commodities the range snaps to month boundaries. Unresolved symbols degrade to a
+    # 206 partial response instead of failing the whole request.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::CommodityFluctuationV2RequestFormat, nil] :format
+    # @option params [String, nil] :symbols
+    # @option params [String] :start_date
+    # @option params [String] :end_date
+    #
+    # @return [Apifreaks::Types::CommodityFluctuationV2Response]
+    def commodity_fluctuation_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["startDate"] = params[:start_date] if params.key?(:start_date)
+      query_params["endDate"] = params[:end_date] if params.key?(:end_date)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/commodity/fluctuation",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::CommodityFluctuationV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns day-by-day OHLC data for the requested commodity symbols within a date range, indexed by date. Non-trading
+    # days are excluded. Unresolved symbols degrade to a 206 partial response instead of failing the whole request.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::CommodityTimeSeriesV2RequestFormat, nil] :format
+    # @option params [String, nil] :symbols
+    # @option params [String] :start_date
+    # @option params [String] :end_date
+    #
+    # @return [Apifreaks::Types::CommodityTimeSeriesV2Response]
+    def commodity_time_series_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["startDate"] = params[:start_date] if params.key?(:start_date)
+      query_params["endDate"] = params[:end_date] if params.key?(:end_date)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/commodity/time-series",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::CommodityTimeSeriesV2Response.load(response.body)
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        raise error_class.new(response.body, code: code)
+      end
+    end
+
+    # Returns the list of supported commodity symbols with metadata. Deprecated symbols stay listed with status
+    # "inactive" and a deprecationDate.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::CommoditySymbolsV2RequestFormat, nil] :format
+    #
+    # @return [Apifreaks::Types::CommoditySymbolsV2Response]
+    def commodity_symbols_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/commodity/symbols",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Types::CommoditySymbolsV2Response.load(response.body)
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
         raise error_class.new(response.body, code: code)
@@ -1525,7 +1958,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1572,7 +2005,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1619,7 +2052,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1667,7 +2100,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1714,7 +2147,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1762,7 +2195,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1809,7 +2242,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1858,7 +2291,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1905,7 +2338,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -1956,7 +2389,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2006,7 +2439,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2056,7 +2489,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2107,7 +2540,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2158,7 +2591,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2208,7 +2641,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2258,7 +2691,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2282,7 +2715,6 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfUploadResourcesRequestFormat, nil] :format
-    # @option params [File] :file
     #
     # @return [Apifreaks::Types::PdfUploadResourcesResponse]
     def pdf_upload_resources(request_options: {}, **params)
@@ -2299,7 +2731,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2344,7 +2776,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2386,7 +2818,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2428,7 +2860,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2471,7 +2903,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2513,7 +2945,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2555,7 +2987,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2733,7 +3165,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2781,7 +3213,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2827,7 +3259,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2873,7 +3305,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2899,7 +3331,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertLatestRequestFormat, nil] :format
     # @option params [String] :from
     # @option params [String] :to
-    # @option params [String, nil] :amount
+    # @option params [Integer, nil] :amount
     # @option params [Apifreaks::Types::CurrencyConvertLatestRequestUpdates, nil] :updates
     #
     # @return [Apifreaks::Types::CurrencyConvertLatestResponse]
@@ -2921,7 +3353,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -2947,7 +3379,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertHistoricalRequestFormat, nil] :format
     # @option params [String] :from
     # @option params [String] :to
-    # @option params [String, nil] :amount
+    # @option params [Integer, nil] :amount
     # @option params [String] :date
     #
     # @return [Apifreaks::Types::CurrencyConvertHistoricalResponse]
@@ -2969,7 +3401,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3017,7 +3449,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3065,7 +3497,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3092,7 +3524,7 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertByIPRequestUpdates, nil] :updates
     # @option params [String] :from
     # @option params [String, nil] :ip
-    # @option params [String, nil] :amount
+    # @option params [Integer, nil] :amount
     #
     # @return [Apifreaks::Types::CurrencyConvertByIPResponse]
     def currency_convert_by_ip(request_options: {}, **params)
@@ -3113,7 +3545,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3153,7 +3585,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3193,7 +3625,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3233,7 +3665,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3257,7 +3689,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityLatestRatesRequestFormat, nil] :format
-    # @option params [String] :symbols
+    # @option params [String, nil] :symbols
     # @option params [Apifreaks::Types::CommodityLatestRatesRequestUpdates] :updates
     # @option params [String, nil] :quote
     #
@@ -3279,7 +3711,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3304,7 +3736,7 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityHistoricalRatesRequestFormat, nil] :format
     # @option params [String] :date
-    # @option params [String] :symbols
+    # @option params [String, nil] :symbols
     #
     # @return [Apifreaks::Types::CommodityHistoricalRatesResponse]
     def commodity_historical_rates(request_options: {}, **params)
@@ -3323,7 +3755,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3347,7 +3779,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityFluctuationRequestFormat, nil] :format
-    # @option params [String] :symbols
+    # @option params [String, nil] :symbols
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
@@ -3369,7 +3801,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3393,7 +3825,7 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommodityTimeSeriesRequestFormat, nil] :format
-    # @option params [String] :symbols
+    # @option params [String, nil] :symbols
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
@@ -3415,7 +3847,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3455,7 +3887,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3497,7 +3929,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3539,7 +3971,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3583,7 +4015,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3629,7 +4061,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3673,7 +4105,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3715,7 +4147,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3761,13 +4193,13 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        response.body
+        JSON.parse(response.body)
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
         raise error_class.new(response.body, code: code)
@@ -3803,7 +4235,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3845,7 +4277,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3890,7 +4322,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3936,7 +4368,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -3980,7 +4412,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4032,7 +4464,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4077,7 +4509,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4122,7 +4554,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4174,7 +4606,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4222,7 +4654,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4282,7 +4714,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4337,7 +4769,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4394,7 +4826,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4452,7 +4884,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4511,7 +4943,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4569,7 +5001,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4613,7 +5045,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4653,7 +5085,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4691,7 +5123,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4731,7 +5163,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4773,7 +5205,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4818,7 +5250,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4862,7 +5294,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4906,7 +5338,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4944,7 +5376,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -4992,7 +5424,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5051,66 +5483,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
-      rescue Net::HTTPRequestTimeout
-        raise Apifreaks::Errors::TimeoutError
-      end
-      code = response.code.to_i
-      if code.between?(200, 299)
-        Apifreaks::Types::TimezoneLookupResponse.load(response.body)
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
-    end
-
-    # Retrieve current time, date, and timezone-related information (v2.0) by specifying a timezone name, location
-    # address, location coordinates, IP address, or use the client IP address if no parameter is passed.
-    #
-    # @param request_options [Hash]
-    # @param params [Hash]
-    # @option request_options [String] :base_url
-    # @option request_options [Hash{String => Object}] :additional_headers
-    # @option request_options [Hash{String => Object}] :additional_query_parameters
-    # @option request_options [Hash{String => Object}] :additional_body_parameters
-    # @option request_options [Integer] :timeout_in_seconds
-    # @option params [String] :api_key
-    # @option params [Apifreaks::Types::TimezoneLookupRequestFormat, nil] :format
-    # @option params [String, nil] :ip
-    # @option params [String, nil] :tz
-    # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
-    # @option params [Apifreaks::Types::TimezoneLookupRequestLang, nil] :lang
-    # @option params [String, nil] :iata_code
-    # @option params [String, nil] :icao_code
-    # @option params [String, nil] :lo_code
-    #
-    # @return [Apifreaks::Types::TimezoneLookupResponse]
-    def timezone_lookup_v2(request_options: {}, **params)
-      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      query_params = {}
-      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["format"] = params[:format] if params.key?(:format)
-      query_params["ip"] = params[:ip] if params.key?(:ip)
-      query_params["tz"] = params[:tz] if params.key?(:tz)
-      query_params["location"] = params[:location] if params.key?(:location)
-      query_params["lat"] = params[:lat] if params.key?(:lat)
-      query_params["long"] = params[:long] if params.key?(:long)
-      query_params["lang"] = params[:lang] if params.key?(:lang)
-      query_params["iata_code"] = params[:iata_code] if params.key?(:iata_code)
-      query_params["icao_code"] = params[:icao_code] if params.key?(:icao_code)
-      query_params["lo_code"] = params[:lo_code] if params.key?(:lo_code)
-
-      request = Apifreaks::Internal::JSON::Request.new(
-        base_url: request_options[:base_url],
-        method: "GET",
-        path: "v2.0/geolocation/timezone",
-        query: query_params,
-        request_options: request_options
-      )
-      begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5181,7 +5554,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5205,7 +5578,6 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::UserAgentLookupRequestFormat, nil] :format
-    # @option params [String] :user_agent
     #
     # @return [Apifreaks::Types::UserAgentLookupResponse]
     def user_agent_lookup(request_options: {}, **params)
@@ -5214,19 +5586,15 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
 
-      headers = {}
-      headers["User-Agent"] = params[:user_agent] if params[:user_agent]
-
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
         method: "GET",
         path: "v1.0/user-agent/lookup",
-        headers: headers,
         query: query_params,
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5271,7 +5639,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5305,26 +5673,16 @@ module Apifreaks
     # @option request_options [Hash{String => Object}] :additional_body_parameters
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
-    # @option params [String, nil] :url
-    # @option params [Apifreaks::Types::OcrPredictRequestModel] :model
-    # @option params [String, nil] :page_range
-    # @option params [String, nil] :zone
-    # @option params [Integer, nil] :new_line
     #
     # @return [Apifreaks::Types::OcrPredictResponse]
     def ocr_predict(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       request_data = Apifreaks::Types::OcrPredictRequest.new(params).to_h
-      non_body_param_names = %w[apiKey url model page_range zone new_line]
+      non_body_param_names = %w[apiKey]
       body = request_data.except(*non_body_param_names)
 
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["url"] = params[:url] if params.key?(:url)
-      query_params["model"] = params[:model] if params.key?(:model)
-      query_params["page_range"] = params[:page_range] if params.key?(:page_range)
-      query_params["zone"] = params[:zone] if params.key?(:zone)
-      query_params["new_line"] = params[:new_line] if params.key?(:new_line)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -5335,7 +5693,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5379,7 +5737,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5423,7 +5781,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5467,7 +5825,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5515,7 +5873,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5572,65 +5930,7 @@ module Apifreaks
         request_options: request_options
       )
       begin
-        response = @raw_client.send(request)
-      rescue Net::HTTPRequestTimeout
-        raise Apifreaks::Errors::TimeoutError
-      end
-      code = response.code.to_i
-      if code.between?(200, 299)
-        Apifreaks::Types::AstronomyLookupResponse.load(response.body)
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
-    end
-
-    # Retrieve sunrise and sunset times, current position of the moon, and other related information (v2.0) by
-    # specifying a location address, location coordinates, IP address, or using the client IP address if no parameter
-    # is passed.
-    #
-    # @param request_options [Hash]
-    # @param params [Hash]
-    # @option request_options [String] :base_url
-    # @option request_options [Hash{String => Object}] :additional_headers
-    # @option request_options [Hash{String => Object}] :additional_query_parameters
-    # @option request_options [Hash{String => Object}] :additional_body_parameters
-    # @option request_options [Integer] :timeout_in_seconds
-    # @option params [String] :api_key
-    # @option params [Apifreaks::Types::AstronomyLookupRequestFormat, nil] :format
-    # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
-    # @option params [String, nil] :ip
-    # @option params [String, nil] :lang
-    # @option params [String, nil] :date
-    # @option params [Integer, nil] :elevation
-    # @option params [String, nil] :time_zone
-    #
-    # @return [Apifreaks::Types::AstronomyLookupResponse]
-    def astronomy_lookup_v2(request_options: {}, **params)
-      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      query_params = {}
-      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
-      query_params["format"] = params[:format] if params.key?(:format)
-      query_params["location"] = params[:location] if params.key?(:location)
-      query_params["lat"] = params[:lat] if params.key?(:lat)
-      query_params["long"] = params[:long] if params.key?(:long)
-      query_params["ip"] = params[:ip] if params.key?(:ip)
-      query_params["lang"] = params[:lang] if params.key?(:lang)
-      query_params["date"] = params[:date] if params.key?(:date)
-      query_params["elevation"] = params[:elevation] if params.key?(:elevation)
-      query_params["time_zone"] = params[:time_zone] if params.key?(:time_zone)
-
-      request = Apifreaks::Internal::JSON::Request.new(
-        base_url: request_options[:base_url],
-        method: "GET",
-        path: "v2.0/geolocation/astronomy",
-        query: query_params,
-        request_options: request_options
-      )
-      begin
-        response = @raw_client.send(request)
+        response = @client.send(request)
       rescue Net::HTTPRequestTimeout
         raise Apifreaks::Errors::TimeoutError
       end
@@ -5648,11 +5948,9 @@ module Apifreaks
     #
     # @return [void]
     def initialize(base_url: nil, max_retries: 2)
-      @raw_client = Apifreaks::Internal::Http::RawClient.new(
+      @client = Apifreaks::Internal::Http::RawClient.new(
         base_url: base_url || Apifreaks::Environment::DEFAULT,
-        headers: {
-          "X-Fern-Language" => "Ruby"
-        },
+        headers: {},
         max_retries: max_retries
       )
     end
