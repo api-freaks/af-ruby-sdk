@@ -1,0 +1,35 @@
+# frozen_string_literal: true
+
+module Apifreaks
+  module Types
+    # A contact record (registrant, administrative, technical, billing, or reseller) published in the domain's WHOIS
+    # record.
+    class BulkDomainWhoisLookupV2ResponseBulkWhoisResponseItemAbuseContactTechnicalContact < Internal::Types::Model
+      field :id, -> { String }, optional: true, nullable: false
+
+      field :name, -> { String }, optional: true, nullable: false
+
+      field :company, -> { String }, optional: true, nullable: false
+
+      field :street, -> { String }, optional: true, nullable: false
+
+      field :city, -> { String }, optional: true, nullable: false
+
+      field :state, -> { String }, optional: true, nullable: false
+
+      field :zip_code, -> { String }, optional: true, nullable: false
+
+      field :country_name, -> { String }, optional: true, nullable: false
+
+      field :country_code, -> { String }, optional: true, nullable: false
+
+      field :email_address, -> { String }, optional: true, nullable: false
+
+      field :phone, -> { String }, optional: true, nullable: false
+
+      field :fax, -> { String }, optional: true, nullable: false
+
+      field :mailing_address, -> { String }, optional: true, nullable: false
+    end
+  end
+end

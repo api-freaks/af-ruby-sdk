@@ -11,7 +11,7 @@ module Apifreaks
 
       field :to, -> { String }, optional: false, nullable: false
 
-      field :amount, -> { String }, optional: true, nullable: false
+      field :amount, -> { Integer }, optional: true, nullable: false
 
       field :updates, -> { Apifreaks::Types::CurrencyConvertLatestRequestUpdates }, optional: true, nullable: false
     end

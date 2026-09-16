@@ -11,7 +11,7 @@ module Apifreaks
 
       field :ip_address, -> { String }, optional: true, nullable: false, api_name: "ipAddress"
 
-      field :type, -> { String }, optional: false, nullable: false
+      field :type, -> { String }, optional: true, nullable: false
     end
   end
 end

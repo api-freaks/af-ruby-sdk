@@ -7,7 +7,7 @@ module Apifreaks
 
       field :format, -> { Apifreaks::Types::CommodityTimeSeriesRequestFormat }, optional: true, nullable: false
 
-      field :symbols, -> { String }, optional: false, nullable: false
+      field :symbols, -> { String }, optional: true, nullable: false
 
       field :start_date, -> { String }, optional: false, nullable: false, api_name: "startDate"
 

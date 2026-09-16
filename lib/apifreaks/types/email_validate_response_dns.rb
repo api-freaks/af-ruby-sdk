@@ -3,9 +3,9 @@
 module Apifreaks
   module Types
     class EmailValidateResponseDNS < Internal::Types::Model
-      field :mx_records, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "mxRecords"
+      field :mx_record, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "mxRecord"
 
-      field :a_records, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "aRecords"
+      field :a_record, -> { Internal::Types::Array[String] }, optional: true, nullable: false, api_name: "aRecord"
     end
   end
 end

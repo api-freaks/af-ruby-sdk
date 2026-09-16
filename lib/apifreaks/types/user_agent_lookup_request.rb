@@ -6,8 +6,6 @@ module Apifreaks
       field :api_key, -> { String }, optional: false, nullable: false, api_name: "apiKey"
 
       field :format, -> { Apifreaks::Types::UserAgentLookupRequestFormat }, optional: true, nullable: false
-
-      field :user_agent, -> { String }, optional: false, nullable: false, api_name: "User-Agent"
     end
   end
 end
