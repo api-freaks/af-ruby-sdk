@@ -3,9 +3,9 @@
 module Apifreaks
   module Types
     class DomainSslLookupResponseSslCertificatesItemExtensionsAuthorityInfoAccess < Internal::Types::Model
-      field :issuers, -> { Internal::Types::Array[String] }, optional: false, nullable: false
+      field :issuers, -> { Internal::Types::Array[String] }, optional: true, nullable: false
 
-      field :ocsp, -> { Internal::Types::Array[String] }, optional: false, nullable: false
+      field :ocsp, -> { Internal::Types::Array[String] }, optional: true, nullable: false
     end
   end
 end

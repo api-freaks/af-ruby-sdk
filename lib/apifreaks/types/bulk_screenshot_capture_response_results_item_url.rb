@@ -23,9 +23,9 @@ module Apifreaks
 
       field :fail_on_error, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
-      field :longitude, -> { Integer }, optional: true, nullable: false
+      field :longitude, -> { String }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: true, nullable: false
+      field :latitude, -> { String }, optional: true, nullable: false
 
       field :proxy, -> { String }, optional: true, nullable: false
 

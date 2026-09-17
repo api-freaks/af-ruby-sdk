@@ -10,6 +10,8 @@ module Apifreaks
       field :type, -> { String }, optional: true, nullable: false
 
       field :domain_names, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "domainNames"
+
+      field :ip_addresses, -> { Internal::Types::Array[String] }, optional: true, nullable: false, api_name: "ipAddresses"
     end
   end
 end

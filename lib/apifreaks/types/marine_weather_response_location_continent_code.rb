@@ -27,13 +27,13 @@ module Apifreaks
 
       field :zipcode, -> { String }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: false, nullable: false
+      field :latitude, -> { String }, optional: false, nullable: false
 
-      field :longitude, -> { Integer }, optional: false, nullable: false
+      field :longitude, -> { String }, optional: false, nullable: false
 
       field :locality, -> { String }, optional: true, nullable: false
 
-      field :elevation, -> { Integer }, optional: true, nullable: false
+      field :elevation, -> { String }, optional: true, nullable: false
 
       field :timezone, -> { String }, optional: false, nullable: false
 

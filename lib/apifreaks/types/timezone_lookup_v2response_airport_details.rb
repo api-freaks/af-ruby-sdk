@@ -8,9 +8,9 @@ module Apifreaks
 
       field :name, -> { String }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: true, nullable: false
+      field :latitude, -> { String }, optional: true, nullable: false
 
-      field :longitude, -> { Integer }, optional: true, nullable: false
+      field :longitude, -> { String }, optional: true, nullable: false
 
       field :elevation_ft, -> { Integer }, optional: true, nullable: false
 

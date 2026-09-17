@@ -12,6 +12,8 @@ module Apifreaks
       field :source, -> { Apifreaks::Types::DomainAvailabilitySuggestionsRequestSource }, optional: true, nullable: false
 
       field :count, -> { Integer }, optional: true, nullable: false
+
+      field :sug, -> { Internal::Types::Boolean }, optional: true, nullable: false
     end
   end
 end

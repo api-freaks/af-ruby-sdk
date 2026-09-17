@@ -1213,6 +1213,7 @@ module Apifreaks
     # @option params [String] :domain
     # @option params [Apifreaks::Types::DomainAvailabilitySuggestionsRequestSource, nil] :source
     # @option params [Integer, nil] :count
+    # @option params [Boolean, nil] :sug
     #
     # @return [Apifreaks::Types::DomainAvailabilitySuggestionsResponse]
     def domain_availability_suggestions(request_options: {}, **params)
@@ -1223,6 +1224,7 @@ module Apifreaks
       query_params["domain"] = params[:domain] if params.key?(:domain)
       query_params["source"] = params[:source] if params.key?(:source)
       query_params["count"] = params[:count] if params.key?(:count)
+      query_params["sug"] = params[:sug] if params.key?(:sug)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -5586,10 +5588,14 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
 
+      headers = {}
+      headers["User-Agent"] = params[:user_agent]
+
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
         method: "GET",
         path: "v1.0/user-agent/lookup",
+        headers: headers,
         query: query_params,
         request_options: request_options
       )
@@ -5607,7 +5613,7 @@ module Apifreaks
       end
     end
 
-    # Parse up to `50,000 User-Agent strings` at once in a single request.
+    # Parse up to `100 User-Agent strings` at once in a single request; exceeding that returns a 413, not a 400.
     #
     # @param request_options [Hash]
     # @param params [Apifreaks::Types::BulkUserAgentLookupRequest]

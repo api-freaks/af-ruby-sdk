@@ -16,9 +16,9 @@ module Apifreaks
 
       field :location_type, -> { String }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: true, nullable: false
+      field :latitude, -> { String }, optional: true, nullable: false
 
-      field :longitude, -> { Integer }, optional: true, nullable: false
+      field :longitude, -> { String }, optional: true, nullable: false
     end
   end
 end
