@@ -9,15 +9,15 @@ module Apifreaks
 
       field :key_usages, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "keyUsages"
 
-      field :extended_key_usages, -> { Internal::Types::Array[String] }, optional: false, nullable: false, api_name: "extendedKeyUsages"
+      field :extended_key_usages, -> { Internal::Types::Array[String] }, optional: true, nullable: false, api_name: "extendedKeyUsages"
 
       field :crl_distribution_points, -> { Internal::Types::Array[String] }, optional: true, nullable: false, api_name: "crlDistributionPoints"
 
-      field :authority_info_access, -> { Apifreaks::Types::DomainSslLookupResponseSslCertificatesItemExtensionsAuthorityInfoAccess }, optional: false, nullable: false, api_name: "authorityInfoAccess"
+      field :authority_info_access, -> { Apifreaks::Types::DomainSslLookupResponseSslCertificatesItemExtensionsAuthorityInfoAccess }, optional: true, nullable: false, api_name: "authorityInfoAccess"
 
       field :subject_alternative_names, -> { Apifreaks::Types::DomainSslLookupResponseSslCertificatesItemExtensionsSubjectAlternativeNames }, optional: true, nullable: false, api_name: "subjectAlternativeNames"
 
-      field :certificate_policies, -> { Apifreaks::Types::DomainSslLookupResponseSslCertificatesItemExtensionsCertificatePolicies }, optional: false, nullable: false, api_name: "certificatePolicies"
+      field :certificate_policies, -> { Internal::Types::Array[Apifreaks::Types::DomainSslLookupResponseSslCertificatesItemExtensionsCertificatePoliciesItem] }, optional: true, nullable: false, api_name: "certificatePolicies"
     end
   end
 end

@@ -7,9 +7,11 @@ module Apifreaks
 
       field :query_time, -> { String }, optional: false, nullable: false, api_name: "queryTime"
 
-      field :domain_name, -> { String }, optional: false, nullable: false, api_name: "domainName"
+      field :domain_name, -> { String }, optional: true, nullable: false, api_name: "domainName"
 
-      field :domain_registered, -> { Internal::Types::Boolean }, optional: false, nullable: false, api_name: "domainRegistered"
+      field :domain_registered, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "domainRegistered"
+
+      field :ip_address, -> { String }, optional: true, nullable: false, api_name: "ipAddress"
 
       field :dns_types, -> { Apifreaks::Types::BulkDomainDNSLookupResponseBulkDNSInfoItemDNSTypes }, optional: false, nullable: false, api_name: "dnsTypes"
 

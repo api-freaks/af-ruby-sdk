@@ -10,7 +10,7 @@ module Apifreaks
 
       field :query_time, -> { String }, optional: false, nullable: false
 
-      field :whois_server, -> { String }, optional: false, nullable: false
+      field :whois_server, -> { String }, optional: true, nullable: false
 
       field :domain_registered, -> { Apifreaks::Types::BulkDomainWhoisLookupV2ResponseBulkWhoisResponseItemAbuseContactDomainRegistered }, optional: false, nullable: false
 

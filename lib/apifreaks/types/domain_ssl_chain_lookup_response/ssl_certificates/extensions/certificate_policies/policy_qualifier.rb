@@ -2,12 +2,13 @@
 
 module Apifreaks
   module Types
-    class DomainSslChainLookupResponseSslCertificatesItemExtensionsCertificatePoliciesPolicyQualifier < Internal::Types::Model
+    # Policy qualifier details
+    class DomainSslChainLookupResponseSslCertificatesItemExtensionsCertificatePoliciesItemPolicyQualifier < Internal::Types::Model
       field :oid, -> { String }, optional: true, nullable: false
 
       field :cps_uri, -> { String }, optional: true, nullable: false, api_name: "cpsUri"
 
-      field :user_notice, -> { Apifreaks::Types::DomainSslChainLookupResponseSslCertificatesItemExtensionsCertificatePoliciesPolicyQualifierUserNotice }, optional: true, nullable: false, api_name: "userNotice"
+      field :user_notice, -> { Apifreaks::Types::DomainSslChainLookupResponseSslCertificatesItemExtensionsCertificatePoliciesItemPolicyQualifierUserNotice }, optional: true, nullable: false, api_name: "userNotice"
     end
   end
 end
