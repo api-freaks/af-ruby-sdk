@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Geographic location information for the IP.
@@ -32,7 +34,7 @@ module Apifreaks
 
       field :confidence, -> { String }, optional: true, nullable: false
 
-      field :dma_code, -> { String }, optional: true, nullable: false
+      field :dma_code, -> { String }, optional: true, nullable: true
 
       field :zipcode, -> { String }, optional: true, nullable: false
 

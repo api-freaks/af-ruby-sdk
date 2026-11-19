@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # DST transition details (used for both the DST start and DST end transitions). Always present as a key on the

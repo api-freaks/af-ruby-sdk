@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     module CommoditySymbolsV2ResponseSymbolsItemUpdateInterval
@@ -12,6 +14,7 @@ module Apifreaks
       PER_DAY = "PER_DAY"
       PER_WEEK = "PER_WEEK"
       PER_MONTH = "PER_MONTH"
+      PER6MONTHS = "PER_6_MONTHS"
     end
   end
 end

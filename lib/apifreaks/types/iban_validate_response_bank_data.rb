@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Object contains Bank and BIC details.
@@ -23,6 +25,12 @@ module Apifreaks
       field :account, -> { String }, optional: true, nullable: false
 
       field :sepa, -> { Internal::Types::Boolean }, optional: false, nullable: false
+
+      field :branch_name, -> { String }, optional: true, nullable: true
+
+      field :instit_type, -> { String }, optional: true, nullable: true
+
+      field :postal_code, -> { String }, optional: true, nullable: true
     end
   end
 end

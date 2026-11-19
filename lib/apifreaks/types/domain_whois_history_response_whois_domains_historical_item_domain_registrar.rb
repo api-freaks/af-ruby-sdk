@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class DomainWhoisHistoryResponseWhoisDomainsHistoricalItemDomainRegistrar < Internal::Types::Model
@@ -14,6 +16,8 @@ module Apifreaks
       field :email_address, -> { String }, optional: true, nullable: false
 
       field :phone_number, -> { String }, optional: true, nullable: false
+
+      field :handle, -> { String }, optional: true, nullable: false
     end
   end
 end

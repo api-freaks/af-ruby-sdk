@@ -11,7 +11,7 @@ module Apifreaks
 
       field :country, -> { String }, optional: false, nullable: false
 
-      field :distance, -> { Integer }, optional: true, nullable: false
+      field :distance, -> { Float }, optional: true, nullable: false
 
       field :unit, -> { Apifreaks::Types::ZipcodeDistanceMatchRequestUnit }, optional: true, nullable: false
     end

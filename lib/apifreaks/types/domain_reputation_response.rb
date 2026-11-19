@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Full domain reputation assessment response.
@@ -25,6 +27,10 @@ module Apifreaks
       field :evidence_summary, -> { Apifreaks::Types::DomainReputationResponseEvidenceSummary }, optional: false, nullable: false
 
       field :errors, -> { Internal::Types::Array[String] }, optional: false, nullable: false
+
+      field :backlinks, -> { Apifreaks::Types::DomainReputationResponseBacklinks }, optional: true, nullable: false
+
+      field :registration, -> { Apifreaks::Types::DomainReputationResponseRegistration }, optional: true, nullable: false
     end
   end
 end

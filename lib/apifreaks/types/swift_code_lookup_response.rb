@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class SwiftCodeLookupResponse < Internal::Types::Model
@@ -16,6 +18,12 @@ module Apifreaks
       field :city, -> { String }, optional: false, nullable: false
 
       field :country, -> { String }, optional: false, nullable: false
+
+      field :branch_name, -> { String }, optional: true, nullable: true, api_name: "branchName"
+
+      field :instit_type, -> { String }, optional: true, nullable: false, api_name: "institType"
+
+      field :postal_code, -> { String }, optional: true, nullable: true, api_name: "postalCode"
     end
   end
 end

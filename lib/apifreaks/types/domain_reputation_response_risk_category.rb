@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Overall risk assessment for the domain.
     class DomainReputationResponseRiskCategory < Internal::Types::Model
       field :verdict, -> { Apifreaks::Types::DomainReputationResponseRiskCategoryVerdict }, optional: false, nullable: false
 
-      field :confidence, -> { Integer }, optional: false, nullable: false
+      field :confidence, -> { Float }, optional: false, nullable: false
 
       field :primary_threat, -> { String }, optional: false, nullable: true
 

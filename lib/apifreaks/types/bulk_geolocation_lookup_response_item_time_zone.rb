@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class BulkGeolocationLookupResponseItemTimeZone < Internal::Types::Model
       field :name, -> { String }, optional: true, nullable: false
 
-      field :offset, -> { Integer }, optional: true, nullable: false
+      field :offset, -> { Float }, optional: true, nullable: false
 
-      field :offset_with_dst, -> { Integer }, optional: true, nullable: false
+      field :offset_with_dst, -> { Float }, optional: true, nullable: false
 
       field :current_time, -> { String }, optional: true, nullable: false
 
-      field :current_time_unix, -> { Integer }, optional: true, nullable: false
+      field :current_time_unix, -> { Float }, optional: true, nullable: false
 
       field :current_tz_abbreviation, -> { String }, optional: true, nullable: false
 
@@ -23,7 +25,7 @@ module Apifreaks
 
       field :is_dst, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
-      field :dst_savings, -> { Integer }, optional: true, nullable: false
+      field :dst_savings, -> { Float }, optional: true, nullable: false
 
       field :dst_exists, -> { Internal::Types::Boolean }, optional: true, nullable: false
 

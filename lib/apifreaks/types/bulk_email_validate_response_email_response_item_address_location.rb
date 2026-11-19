@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class BulkEmailValidateResponseEmailResponseItemAddressLocation < Internal::Types::Model

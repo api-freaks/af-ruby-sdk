@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class BulkEmailValidateResponseEmailResponseItemAddressSecurity < Internal::Types::Model
-      field :threat_score, -> { Integer }, optional: false, nullable: false
+      field :threat_score, -> { Float }, optional: false, nullable: false
 
       field :is_tor, -> { Internal::Types::Boolean }, optional: false, nullable: false
 

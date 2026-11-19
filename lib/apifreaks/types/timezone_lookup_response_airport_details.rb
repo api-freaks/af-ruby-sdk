@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class TimezoneLookupResponseAirportDetails < Internal::Types::Model
@@ -11,7 +13,7 @@ module Apifreaks
 
       field :latitude, -> { String }, optional: false, nullable: false
 
-      field :elevation_ft, -> { Integer }, optional: false, nullable: false
+      field :elevation_ft, -> { Float }, optional: false, nullable: false
 
       field :continent_code, -> { String }, optional: false, nullable: false
 

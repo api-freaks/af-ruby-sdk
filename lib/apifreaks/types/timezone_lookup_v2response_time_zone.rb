@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Timezone and date/time information for the location.
     class TimezoneLookupV2ResponseTimeZone < Internal::Types::Model
       field :name, -> { String }, optional: false, nullable: false
 
-      field :offset, -> { Integer }, optional: false, nullable: false
+      field :offset, -> { Float }, optional: false, nullable: false
 
-      field :offset_with_dst, -> { Integer }, optional: false, nullable: false
+      field :offset_with_dst, -> { Float }, optional: false, nullable: false
 
       field :current_time, -> { String }, optional: false, nullable: false
 
-      field :current_time_unix, -> { Integer }, optional: false, nullable: false
+      field :current_time_unix, -> { Float }, optional: false, nullable: false
 
       field :date, -> { String }, optional: false, nullable: false
 
@@ -50,7 +52,7 @@ module Apifreaks
 
       field :dst_tz_full_name, -> { String }, optional: true, nullable: false
 
-      field :dst_savings, -> { Integer }, optional: false, nullable: false
+      field :dst_savings, -> { Float }, optional: false, nullable: false
 
       field :dst_exists, -> { Internal::Types::Boolean }, optional: false, nullable: false
 

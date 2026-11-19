@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class BulkZipcodeLookupResponseResultsItem < Internal::Types::Model
@@ -15,9 +17,9 @@ module Apifreaks
 
       field :locality, -> { String }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: true, nullable: false
+      field :latitude, -> { Float }, optional: true, nullable: false
 
-      field :longitude, -> { Integer }, optional: true, nullable: false
+      field :longitude, -> { Float }, optional: true, nullable: false
     end
   end
 end

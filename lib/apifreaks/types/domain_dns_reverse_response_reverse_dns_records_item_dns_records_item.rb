@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class DomainDNSReverseResponseReverseDNSRecordsItemDNSRecordsItem < Internal::Types::Model
@@ -7,9 +9,9 @@ module Apifreaks
 
       member -> { Apifreaks::Types::DomainDNSReverseResponseReverseDNSRecordsItemDNSRecordsItemAddress }
 
-      member -> { Apifreaks::Types::DomainDNSReverseResponseReverseDNSRecordsItemDNSRecordsItemOne }
-
       member -> { Apifreaks::Types::DomainDNSReverseResponseReverseDNSRecordsItemDNSRecordsItemPriority }
+
+      member -> { Apifreaks::Types::DomainDNSReverseResponseReverseDNSRecordsItemDNSRecordsItemOne }
 
       member -> { Apifreaks::Types::DomainDNSReverseResponseReverseDNSRecordsItemDNSRecordsItemSingleName }
 

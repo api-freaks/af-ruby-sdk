@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Domain Generation Algorithm (DGA) detection results.
     class DomainReputationResponseDgaScore < Internal::Types::Model
-      field :score, -> { Integer }, optional: false, nullable: false
+      field :score, -> { Float }, optional: false, nullable: false
 
       field :is_dga, -> { Internal::Types::Boolean }, optional: false, nullable: false
 

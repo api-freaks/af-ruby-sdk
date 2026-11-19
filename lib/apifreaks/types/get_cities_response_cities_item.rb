@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class GetCitiesResponseCitiesItem < Internal::Types::Model
       field :name, -> { String }, optional: false, nullable: false
 
-      field :latitude, -> { Integer }, optional: false, nullable: false
+      field :latitude, -> { Float }, optional: false, nullable: false
 
-      field :longitude, -> { Integer }, optional: false, nullable: false
+      field :longitude, -> { Float }, optional: false, nullable: false
 
       field :admin_unit, -> { Apifreaks::Types::GetCitiesResponseCitiesItemAdminUnit }, optional: false, nullable: false
 

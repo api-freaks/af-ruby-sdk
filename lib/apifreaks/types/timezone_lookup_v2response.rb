@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Timezone lookup result. time_zone is always present. Exactly which other object accompanies it depends on the

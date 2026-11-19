@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class IPWhoisLookupResponseOrganization < Internal::Types::Model
@@ -25,9 +27,9 @@ module Apifreaks
 
       field :country, -> { Internal::Types::Array[String] }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: true, nullable: false
+      field :latitude, -> { Float }, optional: true, nullable: false
 
-      field :longitude, -> { Integer }, optional: true, nullable: false
+      field :longitude, -> { Float }, optional: true, nullable: false
 
       field :email, -> { Internal::Types::Array[String] }, optional: true, nullable: false
 
@@ -48,6 +50,20 @@ module Apifreaks
       field :languages, -> { Internal::Types::Array[String] }, optional: true, nullable: false
 
       field :remarks, -> { Internal::Types::Array[String] }, optional: true, nullable: false
+
+      field :notify, -> { Internal::Types::Array[String] }, optional: true, nullable: true
+
+      field :ref_nfy, -> { Internal::Types::Array[String] }, optional: true, nullable: true
+
+      field :mnt_by, -> { Internal::Types::Array[String] }, optional: true, nullable: true
+
+      field :mnt_ref, -> { Internal::Types::Array[String] }, optional: true, nullable: true
+
+      field :date_created, -> { String }, optional: true, nullable: true
+
+      field :date_updated, -> { String }, optional: true, nullable: true
+
+      field :source, -> { String }, optional: true, nullable: false
     end
   end
 end

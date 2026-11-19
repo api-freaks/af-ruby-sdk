@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Per-item error, returned in place of a WHOIS result when an individual domain's extension is unsupported or its

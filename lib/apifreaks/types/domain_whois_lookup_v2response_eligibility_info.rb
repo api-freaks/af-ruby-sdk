@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Domain eligibility information (populated for TLDs with registrant eligibility requirements, e.g. .eu).

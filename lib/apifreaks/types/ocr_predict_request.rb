@@ -5,9 +5,9 @@ module Apifreaks
     class OcrPredictRequest < Internal::Types::Model
       field :api_key, -> { String }, optional: false, nullable: false, api_name: "apiKey"
 
-      field :url, -> { String }, optional: true, nullable: false
-
       field :model, -> { Apifreaks::Types::OcrPredictRequestModel }, optional: false, nullable: false
+
+      field :url, -> { String }, optional: true, nullable: false
 
       field :page_range, -> { String }, optional: true, nullable: false
 

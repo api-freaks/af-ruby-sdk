@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class DomainDNSLookupResponseDNSRecordsItem < Internal::Types::Model
@@ -7,9 +9,9 @@ module Apifreaks
 
       member -> { Apifreaks::Types::DomainDNSLookupResponseDNSRecordsItemAddress }
 
-      member -> { Apifreaks::Types::DomainDNSLookupResponseDNSRecordsItemOne }
-
       member -> { Apifreaks::Types::DomainDNSLookupResponseDNSRecordsItemPriority }
+
+      member -> { Apifreaks::Types::DomainDNSLookupResponseDNSRecordsItemOne }
 
       member -> { Apifreaks::Types::DomainDNSLookupResponseDNSRecordsItemSingleName }
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class DomainWhoisReverseResponseWhoisDomainsHistoricalItemAdministrativeContact < Internal::Types::Model
@@ -9,11 +11,11 @@ module Apifreaks
 
       field :domain_name, -> { String }, optional: false, nullable: false
 
-      field :query_time, -> { String }, optional: false, nullable: false
+      field :query_time, -> { String }, optional: true, nullable: false
 
-      field :whois_server, -> { String }, optional: false, nullable: false
+      field :whois_server, -> { String }, optional: true, nullable: false
 
-      field :domain_registered, -> { Apifreaks::Types::DomainWhoisReverseResponseWhoisDomainsHistoricalItemAdministrativeContactDomainRegistered }, optional: false, nullable: false
+      field :domain_registered, -> { Apifreaks::Types::DomainWhoisReverseResponseWhoisDomainsHistoricalItemAdministrativeContactDomainRegistered }, optional: true, nullable: false
 
       field :create_date, -> { String }, optional: true, nullable: false
 

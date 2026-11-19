@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Standard readability formula scores, keyed by metric name. Metrics that cannot be computed for the supplied text

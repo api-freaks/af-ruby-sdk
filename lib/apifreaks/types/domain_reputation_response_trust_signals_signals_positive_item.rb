@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # A single trust signal contributing to the trust score.
@@ -14,7 +16,7 @@ module Apifreaks
 
       field :evidence, -> { String }, optional: false, nullable: false
 
-      field :confidence, -> { Integer }, optional: false, nullable: false
+      field :confidence, -> { Float }, optional: false, nullable: false
     end
   end
 end

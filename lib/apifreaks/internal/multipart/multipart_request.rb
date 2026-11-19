@@ -24,15 +24,25 @@ module Apifreaks
         # @param protected_keys [Array<String>] Header keys set by the SDK client (e.g. auth, metadata)
         #   that must not be overridden by additional_headers from request_options.
         def encode_headers(protected_keys: [])
-          sdk_headers = {
-            "Content-Type" => @body.content_type
-          }.merge(@headers)
-          merge_additional_headers(sdk_headers, protected_keys:)
+          # Patched (fix_ruby_empty_multipart.py): a form without parts (a file_id-only call) is sent
+          # with no body, so it must not claim a multipart Content-Type either.
+          sdk_headers = empty_form? ? {} : { "Content-Type" => @body.content_type }
+          merge_additional_headers(sdk_headers.merge(@headers), protected_keys:)
         end
 
         # @return [String, nil] The encoded HTTP request body.
+        # Note: additional_body_parameters from request_options are not applied to multipart requests.
         def encode_body
-          @body&.encode
+          return nil if empty_form?
+
+          @body.encode
+        end
+
+        private
+
+        # @return [Boolean] Whether there is nothing to send (no form, or a form without parts).
+        def empty_form?
+          @body.nil? || @body.parts.empty?
         end
       end
     end

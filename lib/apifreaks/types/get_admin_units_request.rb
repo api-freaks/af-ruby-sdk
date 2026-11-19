@@ -9,7 +9,7 @@ module Apifreaks
 
       field :country, -> { String }, optional: false, nullable: false
 
-      field :admin_levels, -> { String }, optional: true, nullable: false, api_name: "adminLevels"
+      field :admin_level, -> { String }, optional: true, nullable: false
     end
   end
 end

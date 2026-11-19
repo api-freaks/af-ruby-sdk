@@ -15,7 +15,7 @@ module Apifreaks
 
       field :file_password, -> { String }, optional: false, nullable: false
 
-      field :user_password, -> { String }, optional: true, nullable: false
+      field :user_password, -> { String }, optional: false, nullable: false
 
       field :owner_password, -> { String }, optional: true, nullable: false
 
