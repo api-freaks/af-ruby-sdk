@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Registry-level (as opposed to registrar-level) WHOIS data, sourced directly from the TLD registry.

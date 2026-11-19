@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class DomainWhoisReverseResponseWhoisDomainsHistoricalItem < Internal::Types::Model
@@ -7,7 +9,7 @@ module Apifreaks
 
       member -> { Apifreaks::Types::DomainWhoisReverseResponseWhoisDomainsHistoricalItemAdministrativeContact }
 
-      member -> { Apifreaks::Types::DomainWhoisReverseResponseWhoisDomainsHistoricalItemCompanyname }
+      member -> { Apifreaks::Types::DomainWhoisReverseResponseWhoisDomainsHistoricalItemCompanyName }
     end
   end
 end

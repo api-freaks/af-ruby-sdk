@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # A contact record (registrant, administrative, technical, billing, or reseller) published in the domain's WHOIS

@@ -1,51 +1,53 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
+    # A single browser scraping step. Exactly one of these action fields is set per instruction; every other field is
+    # absent.
     class WebScrapeRequestBodyBlockURLInstructionsItem < Internal::Types::Model
-      extend Apifreaks::Internal::Types::Union
+      field :fill, -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemFill }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemFill }
+      field :click, -> { String }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemClick }
+      field :click_if_exist, -> { String }, optional: true, nullable: false, api_name: "clickIfExist"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemClickIfExist }
+      field :enter, -> { String }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemEnter }
+      field :new_tab, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "newTab"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemNewTab }
+      field :move_to_relative_tab, -> { Integer }, optional: true, nullable: false, api_name: "moveToRelativeTab"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemMoveToRelativeTab }
+      field :wait, -> { Integer }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemWait }
+      field :wait_for, -> { String }, optional: true, nullable: false, api_name: "waitFor"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemWaitFor }
+      field :select, -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemSelect }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemSelect }
+      field :js_exe, -> { String }, optional: true, nullable: false, api_name: "jsExe"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemJsExe }
+      field :conditional_check, -> { Internal::Types::Array[Internal::Types::Hash[String, Object]] }, optional: true, nullable: false, api_name: "conditionalCheck"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemConditionalCheck }
+      field :click_button_by_value, -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemClickButtonByValue }, optional: true, nullable: false, api_name: "clickButtonByValue"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemClickButtonByValue }
+      field :general_image_captcha, -> { Internal::Types::Array[Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemGeneralImageCaptchaItem] }, optional: true, nullable: false, api_name: "generalImageCaptcha"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemGeneralImageCaptcha }
+      field :block_element, -> { Internal::Types::Array[String] }, optional: true, nullable: false, api_name: "blockElement"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemBlockElement }
+      field :extract, -> { Internal::Types::Hash[String, String] }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemExtract }
+      field :fill_image_captcha, -> { Internal::Types::Array[Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemFillImageCaptchaItem] }, optional: true, nullable: false, api_name: "fillImageCaptcha"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemFillImageCaptcha }
+      field :switch_to_iframe, -> { String }, optional: true, nullable: false, api_name: "switchToIframe"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemSwitchToIframe }
+      field :switch_to_parent_frame, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "switchToParentFrame"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemSwitchToParentFrame }
+      field :resolve_audio_captcha, -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemResolveAudioCaptcha }, optional: true, nullable: false, api_name: "resolveAudioCaptcha"
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemResolveAudioCaptcha }
+      field :screenshot, -> { String }, optional: true, nullable: false
 
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemScreenshot }
-
-      member -> { Apifreaks::Types::WebScrapeRequestBodyBlockURLInstructionsItemSaveimage }
+      field :saveimage, -> { String }, optional: true, nullable: false
     end
   end
 end

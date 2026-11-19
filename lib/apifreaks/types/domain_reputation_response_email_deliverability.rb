@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Assessment of the domain's ability to send and receive email reliably.

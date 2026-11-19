@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class GeocoderSearchResponseItem < Internal::Types::Model
-      field :lat, -> { Integer }, optional: false, nullable: false
+      field :lat, -> { Float }, optional: false, nullable: false
 
-      field :lon, -> { Integer }, optional: false, nullable: false
+      field :lon, -> { Float }, optional: false, nullable: false
 
       field :name, -> { String }, optional: true, nullable: false
 

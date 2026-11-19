@@ -20,6 +20,9 @@ module Apifreaks
     # @option params [String, nil] :excludes
     # @option params [String, nil] :include
     #
+    # @example
+    #   client.geolocation_lookup(api_key: "apiKey")
+    #
     # @return [Apifreaks::Types::GeolocationLookupResponse]
     def geolocation_lookup(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -46,10 +49,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GeolocationLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GeolocationLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          423 => Apifreaks::Types::LockedErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -69,6 +86,12 @@ module Apifreaks
     # @option params [String, nil] :fields
     # @option params [String, nil] :excludes
     # @option params [String, nil] :include
+    #
+    # @example
+    #   client.bulk_geolocation_lookup(
+    #     api_key: "apiKey",
+    #     ips: ["ips"]
+    #   )
     #
     # @return [Array[Apifreaks::Types::BulkGeolocationLookupResponseItem]]
     def bulk_geolocation_lookup(request_options: {}, **params)
@@ -100,10 +123,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkGeolocationLookupResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkGeolocationLookupResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -122,6 +158,9 @@ module Apifreaks
     # @option params [String, nil] :ip
     # @option params [String, nil] :fields
     # @option params [String, nil] :excludes
+    #
+    # @example
+    #   client.ip_security_lookup(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::IPSecurityLookupResponse]
     def ip_security_lookup(request_options: {}, **params)
@@ -147,10 +186,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::IPSecurityLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::IPSecurityLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          423 => Apifreaks::Types::LockedErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -168,6 +221,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::BulkIPSecurityLookupRequestFormat, nil] :format
     # @option params [String, nil] :fields
     # @option params [String, nil] :excludes
+    #
+    # @example
+    #   client.bulk_ip_security_lookup(
+    #     api_key: "apiKey",
+    #     ips: ["ips"]
+    #   )
     #
     # @return [Array[Apifreaks::Types::BulkIPSecurityLookupResponseItem]]
     def bulk_ip_security_lookup(request_options: {}, **params)
@@ -197,10 +256,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkIPSecurityLookupResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkIPSecurityLookupResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -217,11 +289,17 @@ module Apifreaks
     # @option params [Apifreaks::Types::GeocoderSearchRequestFormat, nil] :format
     # @option params [String] :query
     # @option params [Integer, nil] :limit
-    # @option params [Integer, nil] :min_lat
-    # @option params [Integer, nil] :max_lat
-    # @option params [Integer, nil] :min_lon
-    # @option params [Integer, nil] :max_lon
+    # @option params [Float, nil] :min_lat
+    # @option params [Float, nil] :max_lat
+    # @option params [Float, nil] :min_lon
+    # @option params [Float, nil] :max_lon
     # @option params [String, nil] :accept_language
+    #
+    # @example
+    #   client.geocoder_search(
+    #     api_key: "apiKey",
+    #     query: "query"
+    #   )
     #
     # @return [Array[Apifreaks::Types::GeocoderSearchResponseItem]]
     def geocoder_search(request_options: {}, **params)
@@ -237,7 +315,7 @@ module Apifreaks
       query_params["max_lon"] = params[:max_lon] if params.key?(:max_lon)
 
       headers = {}
-      headers["Accept-Language"] = params[:accept_language] if params[:accept_language]
+      headers["Accept-Language"] = params[:accept_language] unless params[:accept_language].nil?
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -254,10 +332,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GeocoderSearchResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::GeocoderSearchResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -272,9 +363,16 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::GeocoderReverseRequestFormat, nil] :format
-    # @option params [Integer] :lat
-    # @option params [Integer] :lon
+    # @option params [Float] :lat
+    # @option params [Float] :lon
     # @option params [String, nil] :accept_language
+    #
+    # @example
+    #   client.geocoder_reverse(
+    #     api_key: "apiKey",
+    #     lat: 1.1,
+    #     lon: 1.1
+    #   )
     #
     # @return [Apifreaks::Types::GeocoderReverseResponse]
     def geocoder_reverse(request_options: {}, **params)
@@ -286,7 +384,7 @@ module Apifreaks
       query_params["lon"] = params[:lon] if params.key?(:lon)
 
       headers = {}
-      headers["Accept-Language"] = params[:accept_language] if params[:accept_language]
+      headers["Accept-Language"] = params[:accept_language] unless params[:accept_language].nil?
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -303,10 +401,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GeocoderReverseResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GeocoderReverseResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -324,6 +435,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::DomainWhoisLookupRequestFormat, nil] :format
     # @option params [String] :domain_name
+    #
+    # @example
+    #   client.domain_whois_lookup(
+    #     api_key: "apiKey",
+    #     domain_name: "domainName"
+    #   )
     #
     # @return [Apifreaks::Types::DomainWhoisLookupResponse]
     def domain_whois_lookup(request_options: {}, **params)
@@ -347,10 +464,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainWhoisLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainWhoisLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -365,6 +496,12 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkDomainWhoisLookupRequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_domain_whois_lookup(
+    #     api_key: "apiKey",
+    #     domain_names: ["domainNames"]
+    #   )
     #
     # @return [Apifreaks::Types::BulkDomainWhoisLookupResponse]
     def bulk_domain_whois_lookup(request_options: {}, **params)
@@ -392,10 +529,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkDomainWhoisLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkDomainWhoisLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -411,6 +561,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::IPWhoisLookupRequestFormat, nil] :format
     # @option params [String] :ip
+    #
+    # @example
+    #   client.ip_whois_lookup(
+    #     api_key: "apiKey",
+    #     ip: "ip"
+    #   )
     #
     # @return [Apifreaks::Types::IPWhoisLookupResponse]
     def ip_whois_lookup(request_options: {}, **params)
@@ -434,10 +590,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::IPWhoisLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::IPWhoisLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -453,6 +622,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::AsnWhoisLookupRequestFormat, nil] :format
     # @option params [String] :asn
+    #
+    # @example
+    #   client.asn_whois_lookup(
+    #     api_key: "apiKey",
+    #     asn: "asn"
+    #   )
     #
     # @return [Apifreaks::Types::AsnWhoisLookupResponse]
     def asn_whois_lookup(request_options: {}, **params)
@@ -476,10 +651,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::AsnWhoisLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::AsnWhoisLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -496,6 +684,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::DomainWhoisHistoryRequestFormat, nil] :format
     # @option params [String] :domain_name
+    #
+    # @example
+    #   client.domain_whois_history(
+    #     api_key: "apiKey",
+    #     domain_name: "domainName"
+    #   )
     #
     # @return [Apifreaks::Types::DomainWhoisHistoryResponse]
     def domain_whois_history(request_options: {}, **params)
@@ -519,10 +713,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainWhoisHistoryResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainWhoisHistoryResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -544,6 +751,9 @@ module Apifreaks
     # @option params [Boolean, nil] :exact
     # @option params [Apifreaks::Types::DomainWhoisReverseRequestMode, nil] :mode
     # @option params [Integer, nil] :page
+    #
+    # @example
+    #   client.domain_whois_reverse(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::DomainWhoisReverseResponse]
     def domain_whois_reverse(request_options: {}, **params)
@@ -573,10 +783,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainWhoisReverseResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainWhoisReverseResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -596,6 +819,12 @@ module Apifreaks
     # @option params [String, nil] :ip_address
     # @option params [String, nil] :type
     #
+    # @example
+    #   client.domain_dns_lookup(
+    #     api_key: "apiKey",
+    #     type: ["type"]
+    #   )
+    #
     # @return [Apifreaks::Types::DomainDNSLookupResponse]
     def domain_dns_lookup(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -604,7 +833,7 @@ module Apifreaks
       query_params["format"] = params[:format] if params.key?(:format)
       query_params["host-name"] = params[:host_name] if params.key?(:host_name)
       query_params["ipAddress"] = params[:ip_address] if params.key?(:ip_address)
-      query_params["type"] = params[:type] if params.key?(:type)
+      query_params["type"] = Array(params[:type]).join(",") if params.key?(:type)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -620,10 +849,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainDNSLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainDNSLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -641,6 +884,13 @@ module Apifreaks
     # @option params [Apifreaks::Types::BulkDomainDNSLookupRequestFormat, nil] :format
     # @option params [String, nil] :type
     #
+    # @example
+    #   client.bulk_domain_dns_lookup(
+    #     api_key: "apiKey",
+    #     type: ["type"],
+    #     domain_names: ["domainNames"]
+    #   )
+    #
     # @return [Apifreaks::Types::BulkDomainDNSLookupResponse]
     def bulk_domain_dns_lookup(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -651,7 +901,7 @@ module Apifreaks
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["type"] = params[:type] if params.key?(:type)
+      query_params["type"] = Array(params[:type]).join(",") if params.key?(:type)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -668,10 +918,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkDomainDNSLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkDomainDNSLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -692,6 +956,13 @@ module Apifreaks
     # @option params [String, nil] :type
     # @option params [Integer, nil] :page
     #
+    # @example
+    #   client.domain_dns_history(
+    #     api_key: "apiKey",
+    #     host_name: "host-name",
+    #     type: ["type"]
+    #   )
+    #
     # @return [Apifreaks::Types::DomainDNSHistoryResponse]
     def domain_dns_history(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -699,7 +970,7 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
       query_params["host-name"] = params[:host_name] if params.key?(:host_name)
-      query_params["type"] = params[:type] if params.key?(:type)
+      query_params["type"] = Array(params[:type]).join(",") if params.key?(:type)
       query_params["page"] = params[:page] if params.key?(:page)
 
       request = Apifreaks::Internal::JSON::Request.new(
@@ -716,10 +987,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainDNSHistoryResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainDNSHistoryResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -740,6 +1025,13 @@ module Apifreaks
     # @option params [String] :value
     # @option params [Boolean, nil] :exact
     # @option params [Integer, nil] :page
+    #
+    # @example
+    #   client.domain_dns_reverse(
+    #     api_key: "apiKey",
+    #     type: "A",
+    #     value: "value"
+    #   )
     #
     # @return [Apifreaks::Types::DomainDNSReverseResponse]
     def domain_dns_reverse(request_options: {}, **params)
@@ -766,10 +1058,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainDNSReverseResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainDNSReverseResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -793,6 +1099,19 @@ module Apifreaks
     # @option params [String, nil] :window_size
     # @option params [Boolean, nil] :ad_block
     # @option params [Boolean, nil] :captcha
+    #
+    # @example
+    #   client.web_scrape(
+    #     api_key: "apiKey",
+    #     url: "https://example.com",
+    #     instructions: [{}, {}, {}, {}, {
+    #       extract: {
+    #         profile: "#profile",
+    #         welcomeMessage: "#welcome-message",
+    #         userInfo: "#user-info"
+    #       }
+    #     }, {}, {}]
+    #   )
     #
     # @return [Apifreaks::Types::WebScrapeResponse]
     def web_scrape(request_options: {}, **params)
@@ -826,10 +1145,25 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::WebScrapeResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::WebScrapeResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          405 => Apifreaks::Types::MethodNotAllowedErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -844,6 +1178,12 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::EmailValidateRequestFormat, nil] :format
+    #
+    # @example
+    #   client.email_validate(
+    #     api_key: "apiKey",
+    #     email: "email"
+    #   )
     #
     # @return [Apifreaks::Types::EmailValidateResponse]
     def email_validate(request_options: {}, **params)
@@ -871,10 +1211,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::EmailValidateResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::EmailValidateResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -889,6 +1242,14 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkEmailValidateRequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_email_validate(
+    #     api_key: "apiKey",
+    #     email_data: [{
+    #       email: "email"
+    #     }]
+    #   )
     #
     # @return [Apifreaks::Types::BulkEmailValidateResponse]
     def bulk_email_validate(request_options: {}, **params)
@@ -916,10 +1277,161 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkEmailValidateResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkEmailValidateResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+    end
+
+    # Validates email syntax and checks the domain for disposable, free, spam, and role-account signals, plus MX/A DNS
+    # records. Send the email (and optionally an ip) as a JSON request body. When an ip is included, the response also
+    # carries geolocation and security data for it.
+    #
+    # @param request_options [Hash]
+    # @param params [Apifreaks::Types::DisposableEmailCheckV2Request]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::DisposableEmailCheckV2RequestFormat, nil] :format
+    #
+    # @example
+    #   client.disposable_email_check_v2(
+    #     api_key: "apiKey",
+    #     email: "test@sogetthis.com"
+    #   )
+    #
+    # @return [Apifreaks::Types::DisposableEmailCheckV2Response]
+    def disposable_email_check_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      request_data = Apifreaks::Types::DisposableEmailCheckV2Request.new(params).to_h
+      non_body_param_names = %w[apiKey format]
+      body = request_data.except(*non_body_param_names)
+
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v2.0/email/disposable-check",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DisposableEmailCheckV2Response.load(response.body))
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+    end
+
+    # Checks a bulk of email addresses (each with an optional ip) and returns a disposable email check result for each,
+    # in the same order as the request. Maximum `100` entries per request.
+    #
+    # @param request_options [Hash]
+    # @param params [Apifreaks::Types::BulkDisposableEmailCheckV2Request]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::BulkDisposableEmailCheckV2RequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_disposable_email_check_v2(
+    #     api_key: "apiKey",
+    #     email_data: [{
+    #       email: "abc"
+    #     }, {
+    #       email: "john@microsoft.com",
+    #       ip: "8.8.8.8"
+    #     }, {
+    #       email: "test@mailinator.com"
+    #     }]
+    #   )
+    #
+    # @return [Apifreaks::Types::BulkDisposableEmailCheckV2Response]
+    def bulk_disposable_email_check_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      request_data = Apifreaks::Types::BulkDisposableEmailCheckV2Request.new(params).to_h
+      non_body_param_names = %w[apiKey format]
+      body = request_data.except(*non_body_param_names)
+
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v2.0/email/disposable-check/bulk",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkDisposableEmailCheckV2Response.load(response.body))
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -935,6 +1447,12 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PhoneValidateRequestFormat, nil] :format
+    #
+    # @example
+    #   client.phone_validate(
+    #     api_key: "apiKey",
+    #     number: "+14155552671"
+    #   )
     #
     # @return [Apifreaks::Types::PhoneValidateResponse]
     def phone_validate(request_options: {}, **params)
@@ -962,10 +1480,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PhoneValidateResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PhoneValidateResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -981,6 +1512,18 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkPhoneValidateRequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_phone_validate(
+    #     api_key: "apiKey",
+    #     numbers: [{
+    #       number: "+14155552671"
+    #     }, {
+    #       number: "+447911123456"
+    #     }, {
+    #       number: "+919876543210"
+    #     }]
+    #   )
     #
     # @return [Array[Apifreaks::Types::BulkPhoneValidateResponseItem]]
     def bulk_phone_validate(request_options: {}, **params)
@@ -1008,10 +1551,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkPhoneValidateResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkPhoneValidateResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1030,6 +1586,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::DomainSslLookupRequestFormat, nil] :format
     # @option params [String] :domain_name
     # @option params [Boolean, nil] :ssl_raw
+    #
+    # @example
+    #   client.domain_ssl_lookup(
+    #     api_key: "apiKey",
+    #     domain_name: "domainName"
+    #   )
     #
     # @return [Apifreaks::Types::DomainSslLookupResponse]
     def domain_ssl_lookup(request_options: {}, **params)
@@ -1054,10 +1616,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainSslLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainSslLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1075,6 +1650,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::DomainSslChainLookupRequestFormat, nil] :format
     # @option params [String] :domain_name
     # @option params [Boolean, nil] :ssl_raw
+    #
+    # @example
+    #   client.domain_ssl_chain_lookup(
+    #     api_key: "apiKey",
+    #     domain_name: "domainName"
+    #   )
     #
     # @return [Apifreaks::Types::DomainSslChainLookupResponse]
     def domain_ssl_chain_lookup(request_options: {}, **params)
@@ -1099,10 +1680,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainSslChainLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainSslChainLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1120,6 +1714,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::DomainAvailabilityCheckRequestFormat, nil] :format
     # @option params [String] :domain
     # @option params [Apifreaks::Types::DomainAvailabilityCheckRequestSource, nil] :source
+    #
+    # @example
+    #   client.domain_availability_check(
+    #     api_key: "apiKey",
+    #     domain: "domain"
+    #   )
     #
     # @return [Apifreaks::Types::DomainAvailabilityCheckResponse]
     def domain_availability_check(request_options: {}, **params)
@@ -1144,10 +1744,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainAvailabilityCheckResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainAvailabilityCheckResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1163,6 +1777,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkDomainAvailabilityCheckRequestFormat, nil] :format
     # @option params [Apifreaks::Types::BulkDomainAvailabilityCheckRequestSource, nil] :source
+    #
+    # @example
+    #   client.bulk_domain_availability_check(
+    #     api_key: "apiKey",
+    #     domain_names: ["domainNames"]
+    #   )
     #
     # @return [Apifreaks::Types::BulkDomainAvailabilityCheckResponse]
     def bulk_domain_availability_check(request_options: {}, **params)
@@ -1191,10 +1811,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkDomainAvailabilityCheckResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkDomainAvailabilityCheckResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1214,6 +1847,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::DomainAvailabilitySuggestionsRequestSource, nil] :source
     # @option params [Integer, nil] :count
     # @option params [Boolean, nil] :sug
+    #
+    # @example
+    #   client.domain_availability_suggestions(
+    #     api_key: "apiKey",
+    #     domain: "domain"
+    #   )
     #
     # @return [Apifreaks::Types::DomainAvailabilitySuggestionsResponse]
     def domain_availability_suggestions(request_options: {}, **params)
@@ -1240,10 +1879,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainAvailabilitySuggestionsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainAvailabilitySuggestionsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1264,6 +1917,12 @@ module Apifreaks
     # @option params [String, nil] :before
     # @option params [Apifreaks::Types::SubdomainsLookupRequestStatus, nil] :status
     # @option params [String, nil] :page
+    #
+    # @example
+    #   client.subdomains_lookup(
+    #     api_key: "apiKey",
+    #     domain: "domain"
+    #   )
     #
     # @return [Apifreaks::Types::SubdomainsLookupResponse]
     def subdomains_lookup(request_options: {}, **params)
@@ -1291,10 +1950,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::SubdomainsLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::SubdomainsLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1314,6 +1986,9 @@ module Apifreaks
     # @option params [String, nil] :keyword
     # @option params [String, nil] :pattern
     # @option params [String, nil] :page_token
+    #
+    # @example
+    #   client.domain_typosquatting(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::DomainTyposquattingResponse]
     def domain_typosquatting(request_options: {}, **params)
@@ -1339,10 +2014,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainTyposquattingResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainTyposquattingResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1360,6 +2048,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::DomainReputationRequestFormat, nil] :format
     # @option params [String] :domain_name
+    #
+    # @example
+    #   client.domain_reputation(
+    #     api_key: "apiKey",
+    #     domain_name: "domainName"
+    #   )
     #
     # @return [Apifreaks::Types::DomainReputationResponse]
     def domain_reputation(request_options: {}, **params)
@@ -1383,10 +2077,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainReputationResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainReputationResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1403,13 +2110,16 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::AstronomyLookupV2RequestFormat, nil] :format
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::AstronomyLookupV2RequestLang, nil] :lang
     # @option params [String, nil] :date
-    # @option params [Integer, nil] :elevation
+    # @option params [Float, nil] :elevation
     # @option params [String, nil] :time_zone
+    #
+    # @example
+    #   client.astronomy_lookup_v2(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::AstronomyLookupV2Response]
     def astronomy_lookup_v2(request_options: {}, **params)
@@ -1440,10 +2150,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::AstronomyLookupV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::AstronomyLookupV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1462,12 +2185,15 @@ module Apifreaks
     # @option params [String, nil] :ip
     # @option params [String, nil] :tz
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [Apifreaks::Types::TimezoneLookupV2RequestLang, nil] :lang
     # @option params [String, nil] :iata_code
     # @option params [String, nil] :icao_code
     # @option params [String, nil] :lo_code
+    #
+    # @example
+    #   client.timezone_lookup_v2(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::TimezoneLookupV2Response]
     def timezone_lookup_v2(request_options: {}, **params)
@@ -1499,10 +2225,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::TimezoneLookupV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::TimezoneLookupV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1523,6 +2262,9 @@ module Apifreaks
     # @option params [String, nil] :fields
     # @option params [String, nil] :excludes
     # @option params [String, nil] :include
+    #
+    # @example
+    #   client.geolocation_lookup_v2(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::GeolocationLookupV2Response]
     def geolocation_lookup_v2(request_options: {}, **params)
@@ -1550,10 +2292,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GeolocationLookupV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GeolocationLookupV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          423 => Apifreaks::Types::LockedErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1573,6 +2329,12 @@ module Apifreaks
     # @option params [String, nil] :fields
     # @option params [String, nil] :excludes
     # @option params [String, nil] :include
+    #
+    # @example
+    #   client.bulk_geolocation_lookup_v2(
+    #     api_key: "apiKey",
+    #     ips: ["ips"]
+    #   )
     #
     # @return [Array[Apifreaks::Types::BulkGeolocationLookupV2ResponseItem]]
     def bulk_geolocation_lookup_v2(request_options: {}, **params)
@@ -1604,10 +2366,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkGeolocationLookupV2ResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkGeolocationLookupV2ResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1624,6 +2399,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::DomainWhoisLookupV2RequestFormat, nil] :format
     # @option params [String] :domain_name
+    #
+    # @example
+    #   client.domain_whois_lookup_v2(
+    #     api_key: "apiKey",
+    #     domain_name: "domainName"
+    #   )
     #
     # @return [Apifreaks::Types::DomainWhoisLookupV2Response]
     def domain_whois_lookup_v2(request_options: {}, **params)
@@ -1647,10 +2428,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::DomainWhoisLookupV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::DomainWhoisLookupV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1666,6 +2460,12 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkDomainWhoisLookupV2RequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_domain_whois_lookup_v2(
+    #     api_key: "apiKey",
+    #     domain_names: ["domainNames"]
+    #   )
     #
     # @return [Apifreaks::Types::BulkDomainWhoisLookupV2Response]
     def bulk_domain_whois_lookup_v2(request_options: {}, **params)
@@ -1693,10 +2493,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkDomainWhoisLookupV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkDomainWhoisLookupV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1715,13 +2528,19 @@ module Apifreaks
     # @option params [String, nil] :symbols
     # @option params [String, nil] :quote
     #
+    # @example
+    #   client.commodity_latest_rates_v2(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"]
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityLatestRatesV2Response]
     def commodity_latest_rates_v2(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["quote"] = params[:quote] if params.key?(:quote)
 
       request = Apifreaks::Internal::JSON::Request.new(
@@ -1738,10 +2557,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityLatestRatesV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityLatestRatesV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1761,13 +2593,20 @@ module Apifreaks
     # @option params [String, nil] :symbols
     # @option params [String] :date
     #
+    # @example
+    #   client.commodity_historical_rates_v2(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"],
+    #     date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityHistoricalRatesV2Response]
     def commodity_historical_rates_v2(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["date"] = params[:date] if params.key?(:date)
 
       request = Apifreaks::Internal::JSON::Request.new(
@@ -1784,10 +2623,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityHistoricalRatesV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityHistoricalRatesV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1808,13 +2660,21 @@ module Apifreaks
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
+    # @example
+    #   client.commodity_fluctuation_v2(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"],
+    #     start_date: "2023-01-15",
+    #     end_date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityFluctuationV2Response]
     def commodity_fluctuation_v2(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["startDate"] = params[:start_date] if params.key?(:start_date)
       query_params["endDate"] = params[:end_date] if params.key?(:end_date)
 
@@ -1832,10 +2692,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityFluctuationV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityFluctuationV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1855,13 +2728,21 @@ module Apifreaks
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
+    # @example
+    #   client.commodity_time_series_v2(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"],
+    #     start_date: "2023-01-15",
+    #     end_date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityTimeSeriesV2Response]
     def commodity_time_series_v2(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["startDate"] = params[:start_date] if params.key?(:start_date)
       query_params["endDate"] = params[:end_date] if params.key?(:end_date)
 
@@ -1879,10 +2760,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityTimeSeriesV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityTimeSeriesV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1898,6 +2792,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommoditySymbolsV2RequestFormat, nil] :format
+    #
+    # @example
+    #   client.commodity_symbols_v2(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::CommoditySymbolsV2Response]
     def commodity_symbols_v2(request_options: {}, **params)
@@ -1920,10 +2817,93 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommoditySymbolsV2Response.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommoditySymbolsV2Response.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+    end
+
+    # Returns the prices of one commodity through a UTC day at the requested interval, keyed by UTC timestamp. Each
+    # request costs a flat 50 credits however many points it returns.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [String] :symbols
+    # @option params [Apifreaks::Types::CommodityIntradayRatesV2RequestInterval] :interval
+    # @option params [String] :date
+    # @option params [String, nil] :start_time
+    # @option params [Boolean, nil] :metadata
+    #
+    # @example
+    #   client.commodity_intraday_rates_v2(
+    #     api_key: "apiKey",
+    #     symbols: "symbols",
+    #     interval: "1m",
+    #     date: "2023-01-15"
+    #   )
+    #
+    # @return [Apifreaks::Types::CommodityIntradayRatesV2Response]
+    def commodity_intraday_rates_v2(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["interval"] = params[:interval] if params.key?(:interval)
+      query_params["date"] = params[:date] if params.key?(:date)
+      query_params["startTime"] = params[:start_time] if params.key?(:start_time)
+      query_params["metadata"] = params[:metadata] if params.key?(:metadata)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v2.0/commodity/rates/intraday",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityIntradayRatesV2Response.load(response.body))
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1945,17 +2925,34 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_merge(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfMergeResponse]
     def pdf_merge(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/merge",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -1966,10 +2963,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfMergeResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfMergeResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -1992,17 +3003,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_remove_pages(
+    #     api_key: "apiKey",
+    #     pages: "pages"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfRemovePagesResponse]
     def pdf_remove_pages(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/remove-pages",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2013,10 +3045,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfRemovePagesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfRemovePagesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2039,17 +3085,35 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_split(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfSplitResponse]
     def pdf_split(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/split",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2060,10 +3124,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfSplitResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfSplitResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2087,17 +3165,39 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_rotate(
+    #     api_key: "apiKey",
+    #     rotate: 1
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfRotateResponse]
     def pdf_rotate(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["rotate"] = params[:rotate] if params.key?(:rotate)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/rotate",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2108,10 +3208,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfRotateResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfRotateResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2134,17 +3248,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_compress(
+    #     api_key: "apiKey",
+    #     compression_level: "low"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfCompressResponse]
     def pdf_compress(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["compression_level"] = params[:compression_level] if params.key?(:compression_level)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/compress",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2155,10 +3290,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfCompressResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfCompressResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2182,17 +3331,39 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_extract_pages(
+    #     api_key: "apiKey",
+    #     pages: "pages"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfExtractPagesResponse]
     def pdf_extract_pages(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["separated"] = params[:separated] if params.key?(:separated)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/extract-pages",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2203,10 +3374,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfExtractPagesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfExtractPagesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2229,17 +3413,34 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_linearize(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfLinearizeResponse]
     def pdf_linearize(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/linearize",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2250,10 +3451,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfLinearizeResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfLinearizeResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2278,17 +3492,40 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_encrypt(
+    #     api_key: "apiKey",
+    #     user_password: "user_password"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfEncryptResponse]
     def pdf_encrypt(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["file_password"] = params[:file_password] if params.key?(:file_password)
+      query_params["user_password"] = params[:user_password] if params.key?(:user_password)
+      query_params["owner_password"] = params[:owner_password] if params.key?(:owner_password)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/encrypt",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2299,10 +3536,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfEncryptResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfEncryptResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2325,17 +3576,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_decrypt(
+    #     api_key: "apiKey",
+    #     file_password: "file_password"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfDecryptResponse]
     def pdf_decrypt(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["file_password"] = params[:file_password] if params.key?(:file_password)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/decrypt",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2346,10 +3618,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfDecryptResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfDecryptResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2376,17 +3662,42 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_restrict(
+    #     api_key: "apiKey",
+    #     user_password: "user_password",
+    #     restrictions: ["print_high"]
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfRestrictResponse]
     def pdf_restrict(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["file_password"] = params[:file_password] if params.key?(:file_password)
+      query_params["user_password"] = params[:user_password] if params.key?(:user_password)
+      query_params["owner_password"] = params[:owner_password] if params.key?(:owner_password)
+      query_params["restrictions"] = params[:restrictions] if params.key?(:restrictions)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/restrict",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2397,10 +3708,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfRestrictResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfRestrictResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2420,23 +3745,47 @@ module Apifreaks
     # @option params [Boolean, nil] :destroy
     # @option params [String, nil] :output
     # @option params [String] :file_password
-    # @option params [String, nil] :user_password
+    # @option params [String] :user_password
     # @option params [String, nil] :owner_password
     # @option params [String, nil] :webhook_url
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_unrestrict(
+    #     api_key: "apiKey",
+    #     file_password: "file_password",
+    #     user_password: "user_password"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfUnrestrictResponse]
     def pdf_unrestrict(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["file_password"] = params[:file_password] if params.key?(:file_password)
+      query_params["user_password"] = params[:user_password] if params.key?(:user_password)
+      query_params["owner_password"] = params[:owner_password] if params.key?(:owner_password)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/unrestrict",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2447,10 +3796,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfUnrestrictResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfUnrestrictResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2476,17 +3839,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_convert_to_png(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfConvertToPngResponse]
     def pdf_convert_to_png(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["resolution"] = params[:resolution] if params.key?(:resolution)
+      query_params["image_smoothing"] = params[:image_smoothing] if params.key?(:image_smoothing)
+      query_params["profile"] = params[:profile] if params.key?(:profile)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/png",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2497,10 +3881,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfConvertToPngResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfConvertToPngResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2527,17 +3924,39 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_convert_to_jpg(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfConvertToJpgResponse]
     def pdf_convert_to_jpg(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["quality"] = params[:quality] if params.key?(:quality)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["resolution"] = params[:resolution] if params.key?(:resolution)
+      query_params["image_smoothing"] = params[:image_smoothing] if params.key?(:image_smoothing)
+      query_params["profile"] = params[:profile] if params.key?(:profile)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/jpg",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2548,10 +3967,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfConvertToJpgResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfConvertToJpgResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2578,17 +4010,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_convert_to_tiff(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfConvertToTiffResponse]
     def pdf_convert_to_tiff(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["resolution"] = params[:resolution] if params.key?(:resolution)
+      query_params["image_smoothing"] = params[:image_smoothing] if params.key?(:image_smoothing)
+      query_params["profile"] = params[:profile] if params.key?(:profile)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/tif",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2599,10 +4052,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfConvertToTiffResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfConvertToTiffResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2628,17 +4094,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_convert_to_bmp(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfConvertToBmpResponse]
     def pdf_convert_to_bmp(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["resolution"] = params[:resolution] if params.key?(:resolution)
+      query_params["image_smoothing"] = params[:image_smoothing] if params.key?(:image_smoothing)
+      query_params["profile"] = params[:profile] if params.key?(:profile)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/bmp",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2649,10 +4136,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfConvertToBmpResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfConvertToBmpResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2678,17 +4178,38 @@ module Apifreaks
     # @option params [Boolean, nil] :webhook_failure_notification
     # @option params [String, nil] :webhook_authorization
     #
+    # @example
+    #   client.pdf_convert_to_gif(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfConvertToGifResponse]
     def pdf_convert_to_gif(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["file_id"] = params[:file_id] if params.key?(:file_id)
+      query_params["destroy"] = params[:destroy] if params.key?(:destroy)
+      query_params["output"] = params[:output] if params.key?(:output)
+      query_params["pages"] = params[:pages] if params.key?(:pages)
+      query_params["resolution"] = params[:resolution] if params.key?(:resolution)
+      query_params["image_smoothing"] = params[:image_smoothing] if params.key?(:image_smoothing)
+      query_params["profile"] = params[:profile] if params.key?(:profile)
+      query_params["webhook_url"] = params[:webhook_url] if params.key?(:webhook_url)
+      query_params["webhook_failure_notification"] = params[:webhook_failure_notification] if params.key?(:webhook_failure_notification)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      headers = {}
+      headers["X-Webhook-Authorization"] = params[:webhook_authorization] if params[:webhook_authorization]
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/gif",
+        headers: headers,
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2699,10 +4220,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfConvertToGifResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfConvertToGifResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2718,17 +4252,25 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfUploadResourcesRequestFormat, nil] :format
     #
+    # @example
+    #   client.pdf_upload_resources(api_key: "apiKey")
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
     # @return [Apifreaks::Types::PdfUploadResourcesResponse]
     def pdf_upload_resources(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      body = Internal::Multipart::FormData.new
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
 
-      body.add_part(params[:file].to_form_data_part(name: "file")) if params[:file]
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
 
       request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/resource/upload",
+        query: query_params,
         body: body,
         request_options: request_options
       )
@@ -2739,10 +4281,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfUploadResourcesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfUploadResourcesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2758,6 +4314,7 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfUploadBinaryRequestFormat, nil] :format
     # @option params [String] :file_name
+    # @option params [IO, String, Pathname] :file The PDF to upload: a File/IO or a file path
     #
     # @return [Apifreaks::Types::PdfUploadBinaryResponse]
     def pdf_upload_binary(request_options: {}, **params)
@@ -2769,12 +4326,13 @@ module Apifreaks
       query_params["file_name"] = params[:file_name] if params.key?(:file_name)
       params = params.except(*query_param_names)
 
-      request = Apifreaks::Internal::JSON::Request.new(
+      # Patched (fix_ruby_binary_upload.py, RB-05): send the raw file bytes.
+      request = Apifreaks::Internal::Http::BinaryRequest.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/pdf/resource/upload-binary",
         query: query_params,
-        body: params,
+        body: Apifreaks::Internal::Http::BinaryRequest.read_file(params[:file]),
         request_options: request_options
       )
       begin
@@ -2784,10 +4342,24 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfUploadBinaryResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfUploadBinaryResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2804,7 +4376,13 @@ module Apifreaks
     # @option params [Apifreaks::Types::PdfDownloadResourceRequestFormat, nil] :format
     # @option params [String] :resource_id
     #
-    # @return [untyped]
+    # @example
+    #   client.pdf_download_resource(
+    #     api_key: "apiKey",
+    #     resource_id: "resource_id"
+    #   )
+    #
+    # @return [String]
     def pdf_download_resource(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
@@ -2825,12 +4403,23 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      if code.between?(200, 299)
-        response.body
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
+      return response.body if code.between?(200, 299)
+
+      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+      error_types = {
+        400 => Apifreaks::Types::BadRequestErrorBody,
+        401 => Apifreaks::Types::UnauthorizedErrorBody,
+        402 => Apifreaks::Types::PaymentRequiredErrorBody,
+        403 => Apifreaks::Types::ForbiddenErrorBody,
+        406 => Apifreaks::Types::NotAcceptableErrorBody,
+        413 => Apifreaks::Types::ContentTooLargeErrorBody,
+        429 => Apifreaks::Types::TooManyRequestsErrorBody,
+        500 => Apifreaks::Types::InternalServerErrorBody,
+        503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+        504 => Apifreaks::Types::GatewayTimeoutErrorBody
+      }
+      error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+      raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
     end
 
     # This API checks the status of a previously initiated PDF processing task using its unique task ID.
@@ -2845,6 +4434,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfGetTaskStatusRequestFormat, nil] :format
     # @option params [String] :task_id
+    #
+    # @example
+    #   client.pdf_get_task_status(
+    #     api_key: "apiKey",
+    #     task_id: "task_id"
+    #   )
     #
     # @return [Apifreaks::Types::PdfGetTaskStatusResponse]
     def pdf_get_task_status(request_options: {}, **params)
@@ -2868,10 +4463,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfGetTaskStatusResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfGetTaskStatusResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2888,6 +4496,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfGetFileStatusRequestFormat, nil] :format
     # @option params [String] :file_id
+    #
+    # @example
+    #   client.pdf_get_file_status(
+    #     api_key: "apiKey",
+    #     file_id: "file_id"
+    #   )
     #
     # @return [Apifreaks::Types::PdfGetFileStatusResponse]
     def pdf_get_file_status(request_options: {}, **params)
@@ -2911,10 +4525,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfGetFileStatusResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfGetFileStatusResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2931,6 +4558,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfListFilesRequestFormat, nil] :format
+    #
+    # @example
+    #   client.pdf_list_files(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::PdfListFilesResponse]
     def pdf_list_files(request_options: {}, **params)
@@ -2953,10 +4583,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfListFilesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfListFilesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -2972,6 +4615,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::PdfDeleteFileRequestFormat, nil] :format
     # @option params [String] :file_id
+    #
+    # @example
+    #   client.pdf_delete_file(
+    #     api_key: "apiKey",
+    #     file_id: "file_id"
+    #   )
     #
     # @return [Apifreaks::Types::PdfDeleteFileResponse]
     def pdf_delete_file(request_options: {}, **params)
@@ -2995,10 +4644,218 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::PdfDeleteFileResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfDeleteFileResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+    end
+
+    # Renders the template identified by template_id with the JSON data supplied in the request body (or fetched from
+    # data_url). Returns a hosted URL for the generated PDF. Provide either a request body or a data_url; one of the two
+    # is required. The keys of the data object are the fields you bound when you designed the template in the APIFreaks
+    # PDF Template Builder, so the exact shape is up to you. Pin the version parameter to a specific template version
+    # (e.g. version=v2) so later design changes never touch what is already live; omit it to use the latest version.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [String] :template_id
+    # @option params [String, nil] :version
+    # @option params [String, nil] :data_url
+    #
+    # @example
+    #   client.pdf_generate_from_template(
+    #     api_key: "apiKey",
+    #     template_id: "template_id",
+    #     body: {
+    #       candidate_name: "Ava Thompson",
+    #       candidate_title: "Senior Operations Analyst",
+    #       email: "ava.thompson@example.com",
+    #       phone: "+1 (555) 381-2048",
+    #       city: "Austin, TX",
+    #       portfolio_url: "portfolio.example.com",
+    #       profile_summary: "Analytical operations professional with 8+ years of experience improving reporting pipelines, streamlining process documentation, and coordinating cross-functional delivery for distributed teams across multiple time zones.",
+    #       company_name: "Northwind Logistics",
+    #       job_title: "Operations Analyst",
+    #       employment_period: "2021 - Present",
+    #       job_achievement_1: "Led weekly KPI reporting for finance, fulfillment, and customer success stakeholders across three business units.",
+    #       job_achievement_2: "Reduced manual reconciliation work by 35% through workflow redesign and documentation automation.",
+    #       job_achievement_3: "Spearheaded a cross-team initiative that improved on-time delivery metrics by 18% within six months.",
+    #       skills: [{
+    #         skill: "Process Improvement",
+    #         level: "Advanced",
+    #         years: "7"
+    #       }, {
+    #         skill: "Stakeholder Reporting",
+    #         level: "Expert",
+    #         years: "8"
+    #       }, {
+    #         skill: "Cross-functional Coordination",
+    #         level: "Advanced",
+    #         years: "5"
+    #       }, {
+    #         skill: "Workflow Documentation",
+    #         level: "Advanced",
+    #         years: "6"
+    #       }],
+    #       degree: "B.S. in Information Systems",
+    #       institution: "University of Texas",
+    #       graduation_year: "2018",
+    #       certification_1: "Certified Business Analysis Professional (CBAP)",
+    #       certification_2: "Six Sigma Green Belt",
+    #       languages: "English (Native), Spanish (Professional)"
+    #     }
+    #   )
+    #
+    # @return [Apifreaks::Types::PdfGenerateFromTemplateResponse]
+    def pdf_generate_from_template(request_options: {}, **params)
+      # Patched (fix_ruby_freeform_body.py): the body's keys are template field names, so
+      # keep the caller's spelling instead of snake_casing them with normalize_keys.
+      body_key = [:body, "body", :request, "request"].find { |key| params.key?(key) }
+      if body_key
+        body_value = params[body_key]
+      else
+        body_value = params.reject do |key, _|
+          %i[api_key template_id version data_url].include?(
+            Apifreaks::Internal::Types::Utils.normalize_keys({ key => nil }).keys.first
+          )
+        end
+        body_value = nil if body_value.empty?
+      end
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+
+      query_param_names = %i[api_key template_id version data_url]
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["template_id"] = params[:template_id] if params.key?(:template_id)
+      query_params["version"] = params[:version] if params.key?(:version)
+      query_params["data_url"] = params[:data_url] if params.key?(:data_url)
+      params = params.except(*query_param_names)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v1.0/pdf/template/generate",
+        query: query_params,
+        body: body_value,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::PdfGenerateFromTemplateResponse.load(response.body))
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          422 => Apifreaks::Types::UnprocessableEntityErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+    end
+
+    # Upload a CSV file where each row is one record. The API generates one PDF per row and returns an array of results,
+    # each with its own pdf_url. Rows are processed independently, so a failure in one row does not block the rest of
+    # the batch. The response gives a row-by-row breakdown of which PDFs succeeded and which failed.
+    #
+    # @param request_options [Hash]
+    # @param params [void]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [String] :template_id
+    # @option params [String, nil] :version
+    #
+    # @example
+    #   client.bulk_pdf_generate_from_template(
+    #     api_key: "apiKey",
+    #     template_id: "template_id",
+    #     file: "/path/to/your/file"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
+    #
+    # @return [Array[Apifreaks::Types::BulkPdfGenerateFromTemplateResponseItem]]
+    def bulk_pdf_generate_from_template(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["template_id"] = params[:template_id] if params.key?(:template_id)
+      query_params["version"] = params[:version] if params.key?(:version)
+
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
+
+      request = Apifreaks::Internal::Multipart::Request.new(
+        base_url: request_options[:base_url],
+        method: "POST",
+        path: "v1.0/pdf/template/generate/bulk",
+        query: query_params,
+        body: body,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkPdfGenerateFromTemplateResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          415 => Apifreaks::Types::UnsupportedMediaTypeErrorBody,
+          422 => Apifreaks::Types::UnprocessableEntityErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3070,10 +4927,10 @@ module Apifreaks
     # @option params [Boolean, nil] :start_immediately
     # @option params [Boolean, nil] :multiple_scrolling
     # @option params [String, nil] :sizes
-    # @option params [Integer, nil] :duration
+    # @option params [Float, nil] :duration
     # @option params [Boolean, nil] :fail_on_error
-    # @option params [Integer, nil] :longitude
-    # @option params [Integer, nil] :latitude
+    # @option params [Float, nil] :longitude
+    # @option params [Float, nil] :latitude
     # @option params [String, nil] :proxy
     # @option params [String, nil] :headers
     # @option params [String, nil] :cookies
@@ -3082,9 +4939,42 @@ module Apifreaks
     # @option params [String, nil] :user_agent
     # @option params [String, nil] :accept_languages
     # @option params [String, nil] :custom_html
-    # @option params [Integer, nil] :image_quality
+    # @option params [Float, nil] :image_quality
+    # @option params [String, nil] :captcha_error
+    # @option params [String, nil] :captcha_image
+    # @option params [String, nil] :captcha_input
+    # @option params [String, nil] :captcha_refresh
+    # @option params [Integer, nil] :captcha_retries
+    # @option params [String, nil] :captcha_submit
+    # @option params [Boolean, nil] :classic_proxy
+    # @option params [Integer, nil] :click_recursion
+    # @option params [String, nil] :country
+    # @option params [Boolean, nil] :extract_markdown
+    # @option params [Apifreaks::Types::ScreenshotCaptureRequestFormat, nil] :format
+    # @option params [Boolean, nil] :get_image_urls
+    # @option params [Boolean, nil] :gpu
+    # @option params [String, nil] :markdown
+    # @option params [Apifreaks::Types::ScreenshotCaptureRequestOcrModel, nil] :ocr_model
+    # @option params [Apifreaks::Types::ScreenshotCaptureRequestPdfOptionsFormat, nil] :pdf_options_format
+    # @option params [Boolean, nil] :pdf_options_landscape
+    # @option params [Apifreaks::Types::ScreenshotCaptureRequestPdfOptionsMedia, nil] :pdf_options_media
+    # @option params [String, nil] :pdf_options_page_range
+    # @option params [Boolean, nil] :pdf_options_print_background
+    # @option params [Boolean, nil] :premium_proxy
+    # @option params [Integer, nil] :scroll_delay
+    # @option params [String, nil] :selector_to_click
+    # @option params [Boolean, nil] :solve_captcha
+    # @option params [Boolean, nil] :stealth
+    # @option params [String, nil] :timezone
+    # @option params [Boolean, nil] :video
     #
-    # @return [untyped]
+    # @example
+    #   client.screenshot_capture(
+    #     api_key: "apiKey",
+    #     url: "url"
+    #   )
+    #
+    # @return [Apifreaks::Types::ScreenshotCaptureResponse]
     def screenshot_capture(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
@@ -3144,7 +5034,7 @@ module Apifreaks
       query_params["scroll_back"] = params[:scroll_back] if params.key?(:scroll_back)
       query_params["start_immediately"] = params[:start_immediately] if params.key?(:start_immediately)
       query_params["multiple_scrolling"] = params[:multiple_scrolling] if params.key?(:multiple_scrolling)
-      query_params["sizes"] = params[:sizes] if params.key?(:sizes)
+      query_params["sizes"] = Array(params[:sizes]).join(",") if params.key?(:sizes)
       query_params["duration"] = params[:duration] if params.key?(:duration)
       query_params["fail_on_error"] = params[:fail_on_error] if params.key?(:fail_on_error)
       query_params["longitude"] = params[:longitude] if params.key?(:longitude)
@@ -3158,6 +5048,33 @@ module Apifreaks
       query_params["accept_languages"] = params[:accept_languages] if params.key?(:accept_languages)
       query_params["custom_html"] = params[:custom_html] if params.key?(:custom_html)
       query_params["image_quality"] = params[:image_quality] if params.key?(:image_quality)
+      query_params["captcha_error"] = params[:captcha_error] if params.key?(:captcha_error)
+      query_params["captcha_image"] = params[:captcha_image] if params.key?(:captcha_image)
+      query_params["captcha_input"] = params[:captcha_input] if params.key?(:captcha_input)
+      query_params["captcha_refresh"] = params[:captcha_refresh] if params.key?(:captcha_refresh)
+      query_params["captcha_retries"] = params[:captcha_retries] if params.key?(:captcha_retries)
+      query_params["captcha_submit"] = params[:captcha_submit] if params.key?(:captcha_submit)
+      query_params["classic_proxy"] = params[:classic_proxy] if params.key?(:classic_proxy)
+      query_params["click_recursion"] = params[:click_recursion] if params.key?(:click_recursion)
+      query_params["country"] = params[:country] if params.key?(:country)
+      query_params["extract_markdown"] = params[:extract_markdown] if params.key?(:extract_markdown)
+      query_params["format"] = params[:format] if params.key?(:format)
+      query_params["get_image_urls"] = params[:get_image_urls] if params.key?(:get_image_urls)
+      query_params["gpu"] = params[:gpu] if params.key?(:gpu)
+      query_params["markdown"] = params[:markdown] if params.key?(:markdown)
+      query_params["ocr_model"] = params[:ocr_model] if params.key?(:ocr_model)
+      query_params["pdf_options[format]"] = params[:pdf_options_format] if params.key?(:pdf_options_format)
+      query_params["pdf_options[landscape]"] = params[:pdf_options_landscape] if params.key?(:pdf_options_landscape)
+      query_params["pdf_options[media]"] = params[:pdf_options_media] if params.key?(:pdf_options_media)
+      query_params["pdf_options[page_range]"] = params[:pdf_options_page_range] if params.key?(:pdf_options_page_range)
+      query_params["pdf_options[print_background]"] = params[:pdf_options_print_background] if params.key?(:pdf_options_print_background)
+      query_params["premium_proxy"] = params[:premium_proxy] if params.key?(:premium_proxy)
+      query_params["scroll_delay"] = params[:scroll_delay] if params.key?(:scroll_delay)
+      query_params["selector_to_click"] = params[:selector_to_click] if params.key?(:selector_to_click)
+      query_params["solve_captcha"] = params[:solve_captcha] if params.key?(:solve_captcha)
+      query_params["stealth"] = params[:stealth] if params.key?(:stealth)
+      query_params["timezone"] = params[:timezone] if params.key?(:timezone)
+      query_params["video"] = params[:video] if params.key?(:video)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -3173,10 +5090,26 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        response.body
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ScreenshotCaptureResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          407 => Apifreaks::Types::ProxyAuthenticationRequiredErrorBody,
+          408 => Apifreaks::Types::RequestTimeoutErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          444 => Apifreaks::Types::NoResponseErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3194,6 +5127,14 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkScreenshotCaptureRequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_screenshot_capture(
+    #     api_key: "apiKey",
+    #     urls: [{
+    #       url: "url"
+    #     }]
+    #   )
     #
     # @return [Apifreaks::Types::BulkScreenshotCaptureResponse]
     def bulk_screenshot_capture(request_options: {}, **params)
@@ -3221,10 +5162,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkScreenshotCaptureResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkScreenshotCaptureResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3243,6 +5197,9 @@ module Apifreaks
     # @option params [String, nil] :symbols
     # @option params [Apifreaks::Types::CurrencyLatestRatesRequestUpdates, nil] :updates
     #
+    # @example
+    #   client.currency_latest_rates(api_key: "apiKey")
+    #
     # @return [Apifreaks::Types::CurrencyLatestRatesResponse]
     def currency_latest_rates(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -3250,7 +5207,7 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
       query_params["base"] = params[:base] if params.key?(:base)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["updates"] = params[:updates] if params.key?(:updates)
 
       request = Apifreaks::Internal::JSON::Request.new(
@@ -3267,10 +5224,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyLatestRatesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyLatestRatesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3289,6 +5259,12 @@ module Apifreaks
     # @option params [String, nil] :symbols
     # @option params [String] :date
     #
+    # @example
+    #   client.currency_historical_rates(
+    #     api_key: "apiKey",
+    #     date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CurrencyHistoricalRatesResponse]
     def currency_historical_rates(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -3296,7 +5272,7 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
       query_params["base"] = params[:base] if params.key?(:base)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["date"] = params[:date] if params.key?(:date)
 
       request = Apifreaks::Internal::JSON::Request.new(
@@ -3313,10 +5289,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyHistoricalRatesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyHistoricalRatesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3333,8 +5322,15 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertLatestRequestFormat, nil] :format
     # @option params [String] :from
     # @option params [String] :to
-    # @option params [Integer, nil] :amount
+    # @option params [Float, nil] :amount
     # @option params [Apifreaks::Types::CurrencyConvertLatestRequestUpdates, nil] :updates
+    #
+    # @example
+    #   client.currency_convert_latest(
+    #     api_key: "apiKey",
+    #     from: "from",
+    #     to: "to"
+    #   )
     #
     # @return [Apifreaks::Types::CurrencyConvertLatestResponse]
     def currency_convert_latest(request_options: {}, **params)
@@ -3361,10 +5357,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyConvertLatestResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyConvertLatestResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3381,8 +5390,16 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertHistoricalRequestFormat, nil] :format
     # @option params [String] :from
     # @option params [String] :to
-    # @option params [Integer, nil] :amount
+    # @option params [Float, nil] :amount
     # @option params [String] :date
+    #
+    # @example
+    #   client.currency_convert_historical(
+    #     api_key: "apiKey",
+    #     from: "from",
+    #     to: "to",
+    #     date: "2023-01-15"
+    #   )
     #
     # @return [Apifreaks::Types::CurrencyConvertHistoricalResponse]
     def currency_convert_historical(request_options: {}, **params)
@@ -3409,10 +5426,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyConvertHistoricalResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyConvertHistoricalResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3432,6 +5462,12 @@ module Apifreaks
     # @option params [String, nil] :base
     # @option params [String, nil] :symbols
     #
+    # @example
+    #   client.currency_time_series(
+    #     api_key: "apiKey",
+    #     start_date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CurrencyTimeSeriesResponse]
     def currency_time_series(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -3441,7 +5477,7 @@ module Apifreaks
       query_params["startDate"] = params[:start_date] if params.key?(:start_date)
       query_params["endDate"] = params[:end_date] if params.key?(:end_date)
       query_params["base"] = params[:base] if params.key?(:base)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -3457,10 +5493,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyTimeSeriesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyTimeSeriesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3480,6 +5529,13 @@ module Apifreaks
     # @option params [String, nil] :base
     # @option params [String, nil] :symbols
     #
+    # @example
+    #   client.currency_fluctuation(
+    #     api_key: "apiKey",
+    #     start_date: "2023-01-15",
+    #     base: "USD"
+    #   )
+    #
     # @return [Apifreaks::Types::CurrencyFluctuationResponse]
     def currency_fluctuation(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -3489,7 +5545,7 @@ module Apifreaks
       query_params["startDate"] = params[:start_date] if params.key?(:start_date)
       query_params["endDate"] = params[:end_date] if params.key?(:end_date)
       query_params["base"] = params[:base] if params.key?(:base)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -3505,10 +5561,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyFluctuationResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyFluctuationResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3526,7 +5595,13 @@ module Apifreaks
     # @option params [Apifreaks::Types::CurrencyConvertByIPRequestUpdates, nil] :updates
     # @option params [String] :from
     # @option params [String, nil] :ip
-    # @option params [Integer, nil] :amount
+    # @option params [Float, nil] :amount
+    #
+    # @example
+    #   client.currency_convert_by_ip(
+    #     api_key: "apiKey",
+    #     from: "from"
+    #   )
     #
     # @return [Apifreaks::Types::CurrencyConvertByIPResponse]
     def currency_convert_by_ip(request_options: {}, **params)
@@ -3553,10 +5628,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyConvertByIPResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyConvertByIPResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3571,6 +5659,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CurrencySupportedRequestFormat, nil] :format
+    #
+    # @example
+    #   client.currency_supported(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::CurrencySupportedResponse]
     def currency_supported(request_options: {}, **params)
@@ -3593,10 +5684,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencySupportedResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencySupportedResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3611,6 +5715,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CurrencySymbolsRequestFormat, nil] :format
+    #
+    # @example
+    #   client.currency_symbols(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::CurrencySymbolsResponse]
     def currency_symbols(request_options: {}, **params)
@@ -3633,10 +5740,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencySymbolsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencySymbolsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3651,6 +5771,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CurrencyHistoricalLimitsRequestFormat, nil] :format
+    #
+    # @example
+    #   client.currency_historical_limits(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::CurrencyHistoricalLimitsResponse]
     def currency_historical_limits(request_options: {}, **params)
@@ -3673,10 +5796,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrencyHistoricalLimitsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrencyHistoricalLimitsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3695,13 +5831,20 @@ module Apifreaks
     # @option params [Apifreaks::Types::CommodityLatestRatesRequestUpdates] :updates
     # @option params [String, nil] :quote
     #
+    # @example
+    #   client.commodity_latest_rates(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"],
+    #     updates: "10m"
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityLatestRatesResponse]
     def commodity_latest_rates(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["updates"] = params[:updates] if params.key?(:updates)
       query_params["quote"] = params[:quote] if params.key?(:quote)
 
@@ -3719,10 +5862,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityLatestRatesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityLatestRatesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3740,6 +5896,13 @@ module Apifreaks
     # @option params [String] :date
     # @option params [String, nil] :symbols
     #
+    # @example
+    #   client.commodity_historical_rates(
+    #     api_key: "apiKey",
+    #     date: "2023-01-15",
+    #     symbols: ["symbols"]
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityHistoricalRatesResponse]
     def commodity_historical_rates(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
@@ -3747,7 +5910,7 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
       query_params["date"] = params[:date] if params.key?(:date)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -3763,10 +5926,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityHistoricalRatesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityHistoricalRatesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3785,13 +5961,21 @@ module Apifreaks
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
+    # @example
+    #   client.commodity_fluctuation(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"],
+    #     start_date: "2023-01-15",
+    #     end_date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityFluctuationResponse]
     def commodity_fluctuation(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["startDate"] = params[:start_date] if params.key?(:start_date)
       query_params["endDate"] = params[:end_date] if params.key?(:end_date)
 
@@ -3809,10 +5993,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityFluctuationResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityFluctuationResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3831,13 +6028,21 @@ module Apifreaks
     # @option params [String] :start_date
     # @option params [String] :end_date
     #
+    # @example
+    #   client.commodity_time_series(
+    #     api_key: "apiKey",
+    #     symbols: ["symbols"],
+    #     start_date: "2023-01-15",
+    #     end_date: "2023-01-15"
+    #   )
+    #
     # @return [Apifreaks::Types::CommodityTimeSeriesResponse]
     def commodity_time_series(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
-      query_params["symbols"] = params[:symbols] if params.key?(:symbols)
+      query_params["symbols"] = Array(params[:symbols]).join(",") if params.key?(:symbols)
       query_params["startDate"] = params[:start_date] if params.key?(:start_date)
       query_params["endDate"] = params[:end_date] if params.key?(:end_date)
 
@@ -3855,10 +6060,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommodityTimeSeriesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommodityTimeSeriesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3873,6 +6091,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CommoditySymbolsRequestFormat, nil] :format
+    #
+    # @example
+    #   client.commodity_symbols(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::CommoditySymbolsResponse]
     def commodity_symbols(request_options: {}, **params)
@@ -3895,10 +6116,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CommoditySymbolsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CommoditySymbolsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3914,6 +6148,9 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::VatSupportedCountriesRequestFormat, nil] :format
     # @option params [Apifreaks::Types::VatSupportedCountriesRequestType, nil] :type
+    #
+    # @example
+    #   client.vat_supported_countries(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::VatSupportedCountriesResponse]
     def vat_supported_countries(request_options: {}, **params)
@@ -3937,10 +6174,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::VatSupportedCountriesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::VatSupportedCountriesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3956,6 +6206,9 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::VatRateByIPRequestFormat, nil] :format
     # @option params [String, nil] :ip_address
+    #
+    # @example
+    #   client.vat_rate_by_ip(api_key: "apiKey")
     #
     # @return [Array[Apifreaks::Types::VatRateByIPResponseItem]]
     def vat_rate_by_ip(request_options: {}, **params)
@@ -3979,10 +6232,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::VatRateByIPResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::VatRateByIPResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -3999,6 +6265,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::VatRateByCountryRequestFormat, nil] :format
     # @option params [String] :country
     # @option params [String, nil] :state
+    #
+    # @example
+    #   client.vat_rate_by_country(
+    #     api_key: "apiKey",
+    #     country: "country"
+    #   )
     #
     # @return [Array[Apifreaks::Types::VatRateByCountryResponseItem]]
     def vat_rate_by_country(request_options: {}, **params)
@@ -4023,10 +6295,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::VatRateByCountryResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::VatRateByCountryResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4043,7 +6328,18 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkVatRateByCountryRequestFormat, nil] :format
     #
-    # @return [Apifreaks::Types::BulkVatRateByCountryResponse]
+    # @example
+    #   client.bulk_vat_rate_by_country(
+    #     api_key: "apiKey",
+    #     countries: [{
+    #       country: "PAK"
+    #     }, {
+    #       country: "United_States",
+    #       state: "New_York"
+    #     }]
+    #   )
+    #
+    # @return [Array[Apifreaks::Types::BulkVatRateByCountryResponseItem]]
     def bulk_vat_rate_by_country(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       request_data = Apifreaks::Types::BulkVatRateByCountryRequest.new(params).to_h
@@ -4069,10 +6365,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkVatRateByCountryResponse.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkVatRateByCountryResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4089,6 +6398,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::VatValidateRequestFormat, nil] :format
     # @option params [String] :vat_number
     # @option params [String, nil] :requester_vat_number
+    #
+    # @example
+    #   client.vat_validate(
+    #     api_key: "apiKey",
+    #     vat_number: "vatNumber"
+    #   )
     #
     # @return [Apifreaks::Types::VatValidateResponse]
     def vat_validate(request_options: {}, **params)
@@ -4113,10 +6428,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::VatValidateResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::VatValidateResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4132,6 +6460,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::IbanValidateRequestFormat, nil] :format
     # @option params [String] :iban
+    #
+    # @example
+    #   client.iban_validate(
+    #     api_key: "apiKey",
+    #     iban: "iban"
+    #   )
     #
     # @return [Apifreaks::Types::IbanValidateResponse]
     def iban_validate(request_options: {}, **params)
@@ -4155,10 +6489,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::IbanValidateResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::IbanValidateResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4176,6 +6523,9 @@ module Apifreaks
     # @option params [String, nil] :country
     # @option params [String, nil] :bank
     # @option params [String, nil] :city
+    #
+    # @example
+    #   client.swift_code_find(api_key: "apiKey")
     #
     # @return [Array[String]]
     def swift_code_find(request_options: {}, **params)
@@ -4201,10 +6551,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        JSON.parse(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[String], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4220,6 +6583,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::SwiftCodeLookupRequestFormat, nil] :format
     # @option params [String] :swift_code
+    #
+    # @example
+    #   client.swift_code_lookup(
+    #     api_key: "apiKey",
+    #     swift_code: "swiftCode"
+    #   )
     #
     # @return [Apifreaks::Types::SwiftCodeLookupResponse]
     def swift_code_lookup(request_options: {}, **params)
@@ -4243,10 +6612,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::SwiftCodeLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::SwiftCodeLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4261,6 +6643,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::ZipcodeLookupRequestFormat, nil] :format
     # @option params [String] :code
     # @option params [String, nil] :country
+    #
+    # @example
+    #   client.zipcode_lookup(
+    #     api_key: "apiKey",
+    #     code: "code"
+    #   )
     #
     # @return [Apifreaks::Types::ZipcodeLookupResponse]
     def zipcode_lookup(request_options: {}, **params)
@@ -4285,10 +6673,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ZipcodeLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ZipcodeLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4303,6 +6704,12 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkZipcodeLookupRequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_zipcode_lookup(
+    #     api_key: "apiKey",
+    #     codes: ["codes"]
+    #   )
     #
     # @return [Apifreaks::Types::BulkZipcodeLookupResponse]
     def bulk_zipcode_lookup(request_options: {}, **params)
@@ -4330,10 +6737,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkZipcodeLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkZipcodeLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4350,6 +6770,13 @@ module Apifreaks
     # @option params [String] :country
     # @option params [String, nil] :state_name
     # @option params [Integer, nil] :page
+    #
+    # @example
+    #   client.zipcode_search_by_city(
+    #     api_key: "apiKey",
+    #     city: "city",
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::ZipcodeSearchByCityResponse]
     def zipcode_search_by_city(request_options: {}, **params)
@@ -4376,10 +6803,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ZipcodeSearchByCityResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ZipcodeSearchByCityResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4393,8 +6833,15 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::ZipcodeSearchByRegionRequestFormat, nil] :format
     # @option params [String] :country
-    # @option params [String] :region
+    # @option params [String, nil] :region
     # @option params [Integer, nil] :page
+    # @option params [String, nil] :region_code
+    #
+    # @example
+    #   client.zipcode_search_by_region(
+    #     api_key: "apiKey",
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::ZipcodeSearchByRegionResponse]
     def zipcode_search_by_region(request_options: {}, **params)
@@ -4405,6 +6852,7 @@ module Apifreaks
       query_params["country"] = params[:country] if params.key?(:country)
       query_params["region"] = params[:region] if params.key?(:region)
       query_params["page"] = params[:page] if params.key?(:page)
+      query_params["region_code"] = params[:region_code] if params.key?(:region_code)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -4420,10 +6868,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ZipcodeSearchByRegionResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ZipcodeSearchByRegionResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4437,12 +6898,18 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::ZipcodeSearchByRadiusRequestFormat, nil] :format
     # @option params [String, nil] :code
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :country
-    # @option params [Integer] :radius
+    # @option params [Float] :radius
     # @option params [Apifreaks::Types::ZipcodeSearchByRadiusRequestUnit, nil] :unit
     # @option params [Integer, nil] :page
+    #
+    # @example
+    #   client.zipcode_search_by_radius(
+    #     api_key: "apiKey",
+    #     radius: 1.1
+    #   )
     #
     # @return [Apifreaks::Types::ZipcodeSearchByRadiusResponse]
     def zipcode_search_by_radius(request_options: {}, **params)
@@ -4472,10 +6939,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ZipcodeSearchByRadiusResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ZipcodeSearchByRadiusResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4490,6 +6970,13 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::ZipcodeDistanceRequestFormat, nil] :format
+    #
+    # @example
+    #   client.zipcode_distance(
+    #     api_key: "apiKey",
+    #     compare: ["compare"],
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::ZipcodeDistanceResponse]
     def zipcode_distance(request_options: {}, **params)
@@ -4517,10 +7004,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ZipcodeDistanceResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ZipcodeDistanceResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4535,6 +7035,13 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::ZipcodeDistanceMatchRequestFormat, nil] :format
+    #
+    # @example
+    #   client.zipcode_distance_match(
+    #     api_key: "apiKey",
+    #     codes: ["codes"],
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::ZipcodeDistanceMatchResponse]
     def zipcode_distance_match(request_options: {}, **params)
@@ -4562,10 +7069,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ZipcodeDistanceMatchResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ZipcodeDistanceMatchResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4583,10 +7103,13 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::CurrentWeatherRequestFormat, nil] :format
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.current_weather(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::CurrentWeatherResponse]
     def current_weather(request_options: {}, **params)
@@ -4614,10 +7137,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::CurrentWeatherResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::CurrentWeatherResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4634,6 +7170,21 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkCurrentWeatherRequestFormat, nil] :format
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.bulk_current_weather(
+    #     api_key: "apiKey",
+    #     locations: [{
+    #       location: "lahore"
+    #     }, {
+    #       lat: 32.5,
+    #       long: 74.5
+    #     }, {
+    #       ip: "8.8.8.8"
+    #     }, {
+    #       location: "seoul"
+    #     }]
+    #   )
     #
     # @return [Apifreaks::Types::BulkCurrentWeatherResponse]
     def bulk_current_weather(request_options: {}, **params)
@@ -4662,10 +7213,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkCurrentWeatherResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::BulkCurrentWeatherResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4686,11 +7250,14 @@ module Apifreaks
     # @option params [String, nil] :end_date
     # @option params [Integer, nil] :forecast_days
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::WeatherForecastRequestPrecision, nil] :precision
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.weather_forecast(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::WeatherForecastResponse]
     def weather_forecast(request_options: {}, **params)
@@ -4722,10 +7289,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::WeatherForecastResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::WeatherForecastResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4743,11 +7323,17 @@ module Apifreaks
     # @option params [Apifreaks::Types::HistoricalWeatherRequestFormat, nil] :format
     # @option params [String] :date
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::HistoricalWeatherRequestPrecision, nil] :precision
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.historical_weather(
+    #     api_key: "apiKey",
+    #     date: "2023-01-15"
+    #   )
     #
     # @return [Apifreaks::Types::HistoricalWeatherResponse]
     def historical_weather(request_options: {}, **params)
@@ -4777,10 +7363,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::HistoricalWeatherResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::HistoricalWeatherResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4799,11 +7398,18 @@ module Apifreaks
     # @option params [String] :start_date
     # @option params [String] :end_date
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::WeatherTimeSeriesRequestPrecision, nil] :precision
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.weather_time_series(
+    #     api_key: "apiKey",
+    #     start_date: "2023-01-15",
+    #     end_date: "2023-01-15"
+    #   )
     #
     # @return [Apifreaks::Types::WeatherTimeSeriesResponse]
     def weather_time_series(request_options: {}, **params)
@@ -4834,10 +7440,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::WeatherTimeSeriesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::WeatherTimeSeriesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4857,11 +7476,14 @@ module Apifreaks
     # @option params [String, nil] :start_date
     # @option params [String, nil] :end_date
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::MarineWeatherRequestPrecision, nil] :precision
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.marine_weather(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::MarineWeatherResponse]
     def marine_weather(request_options: {}, **params)
@@ -4892,10 +7514,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::MarineWeatherResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::MarineWeatherResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4916,11 +7551,14 @@ module Apifreaks
     # @option params [String, nil] :start_date
     # @option params [String, nil] :end_date
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::AirQualityRequestPrecision, nil] :precision
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.air_quality(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::AirQualityResponse]
     def air_quality(request_options: {}, **params)
@@ -4951,10 +7589,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::AirQualityResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::AirQualityResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -4974,11 +7625,18 @@ module Apifreaks
     # @option params [String] :start_date
     # @option params [String] :end_date
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [Apifreaks::Types::FloodForecastRequestPrecision, nil] :precision
     # @option params [String, nil] :timezone
+    #
+    # @example
+    #   client.flood_forecast(
+    #     api_key: "apiKey",
+    #     start_date: "2023-01-15",
+    #     end_date: "2023-01-15"
+    #   )
     #
     # @return [Apifreaks::Types::FloodForecastResponse]
     def flood_forecast(request_options: {}, **params)
@@ -5009,10 +7667,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::FloodForecastResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::FloodForecastResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5029,6 +7700,9 @@ module Apifreaks
     # @option params [Apifreaks::Types::GetCountriesRequestFormat, nil] :format
     # @option params [String, nil] :region
     # @option params [String, nil] :subregion
+    #
+    # @example
+    #   client.get_countries(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::GetCountriesResponse]
     def get_countries(request_options: {}, **params)
@@ -5053,10 +7727,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetCountriesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetCountriesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5070,6 +7757,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::GetCountryDetailsRequestFormat, nil] :format
     # @option params [String] :country
+    #
+    # @example
+    #   client.get_country_details(
+    #     api_key: "apiKey",
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::GetCountryDetailsResponse]
     def get_country_details(request_options: {}, **params)
@@ -5093,10 +7786,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetCountryDetailsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetCountryDetailsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5109,6 +7815,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::GetRegionsRequestFormat, nil] :format
+    #
+    # @example
+    #   client.get_regions(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::GetRegionsResponse]
     def get_regions(request_options: {}, **params)
@@ -5131,10 +7840,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetRegionsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetRegionsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5147,7 +7869,10 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::GetSubregionsRequestFormat, nil] :format
-    # @option params [String] :region
+    # @option params [String, nil] :region
+    #
+    # @example
+    #   client.get_subregions(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::GetSubregionsResponse]
     def get_subregions(request_options: {}, **params)
@@ -5171,10 +7896,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetSubregionsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetSubregionsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5190,6 +7928,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::GetAdminLevelsRequestFormat, nil] :format
     # @option params [String] :country
+    #
+    # @example
+    #   client.get_admin_levels(
+    #     api_key: "apiKey",
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::GetAdminLevelsResponse]
     def get_admin_levels(request_options: {}, **params)
@@ -5213,10 +7957,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetAdminLevelsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetAdminLevelsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5233,7 +7990,13 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::GetAdminUnitsRequestFormat, nil] :format
     # @option params [String] :country
-    # @option params [String, nil] :admin_levels
+    # @option params [String, nil] :admin_level
+    #
+    # @example
+    #   client.get_admin_units(
+    #     api_key: "apiKey",
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::GetAdminUnitsResponse]
     def get_admin_units(request_options: {}, **params)
@@ -5242,7 +8005,7 @@ module Apifreaks
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
       query_params["format"] = params[:format] if params.key?(:format)
       query_params["country"] = params[:country] if params.key?(:country)
-      query_params["adminLevels"] = params[:admin_levels] if params.key?(:admin_levels)
+      query_params["admin_level"] = Array(params[:admin_level]).join(",") if params.key?(:admin_level)
 
       request = Apifreaks::Internal::JSON::Request.new(
         base_url: request_options[:base_url],
@@ -5258,10 +8021,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetAdminUnitsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetAdminUnitsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5278,6 +8054,13 @@ module Apifreaks
     # @option params [Apifreaks::Types::GetAdminUnitDetailsRequestFormat, nil] :format
     # @option params [String] :country
     # @option params [String] :admin_unit
+    #
+    # @example
+    #   client.get_admin_unit_details(
+    #     api_key: "apiKey",
+    #     country: "country",
+    #     admin_unit: "admin_unit"
+    #   )
     #
     # @return [Apifreaks::Types::GetAdminUnitDetailsResponse]
     def get_admin_unit_details(request_options: {}, **params)
@@ -5302,10 +8085,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetAdminUnitDetailsResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetAdminUnitDetailsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5322,6 +8118,12 @@ module Apifreaks
     # @option params [Apifreaks::Types::GetCitiesRequestFormat, nil] :format
     # @option params [String] :country
     # @option params [String, nil] :admin_unit
+    #
+    # @example
+    #   client.get_cities(
+    #     api_key: "apiKey",
+    #     country: "country"
+    #   )
     #
     # @return [Apifreaks::Types::GetCitiesResponse]
     def get_cities(request_options: {}, **params)
@@ -5346,10 +8148,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetCitiesResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetCitiesResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5364,7 +8179,10 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     #
-    # @return [Array[Apifreaks::Types::GetSupportedFlagsResponseItem]]
+    # @example
+    #   client.get_supported_flags(api_key: "apiKey")
+    #
+    # @return [Apifreaks::Types::GetSupportedFlagsResponse]
     def get_supported_flags(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
@@ -5384,10 +8202,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GetSupportedFlagsResponseItem.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetSupportedFlagsResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5407,7 +8238,15 @@ module Apifreaks
     # @option params [Apifreaks::Types::GetFlagsRequestSize, nil] :size
     # @option params [Apifreaks::Types::GetFlagsRequestType] :type
     #
-    # @return [untyped]
+    # @example
+    #   client.get_flags(
+    #     api_key: "apiKey",
+    #     name: "name",
+    #     shape: "flat",
+    #     type: "country"
+    #   )
+    #
+    # @return [String]
     def get_flags(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
       query_params = {}
@@ -5431,12 +8270,23 @@ module Apifreaks
         raise Apifreaks::Errors::TimeoutError
       end
       code = response.code.to_i
-      if code.between?(200, 299)
-        response.body
-      else
-        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
-      end
+      return response.body if code.between?(200, 299)
+
+      error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+      error_types = {
+        400 => Apifreaks::Types::BadRequestErrorBody,
+        401 => Apifreaks::Types::UnauthorizedErrorBody,
+        402 => Apifreaks::Types::PaymentRequiredErrorBody,
+        403 => Apifreaks::Types::ForbiddenErrorBody,
+        406 => Apifreaks::Types::NotAcceptableErrorBody,
+        413 => Apifreaks::Types::ContentTooLargeErrorBody,
+        429 => Apifreaks::Types::TooManyRequestsErrorBody,
+        500 => Apifreaks::Types::InternalServerErrorBody,
+        503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+        504 => Apifreaks::Types::GatewayTimeoutErrorBody
+      }
+      error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+      raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
     end
 
     # Retrieve current time, date, and timezone-related information by specifying a timezone name, location address,
@@ -5454,12 +8304,15 @@ module Apifreaks
     # @option params [String, nil] :ip
     # @option params [String, nil] :tz
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [Apifreaks::Types::TimezoneLookupRequestLang, nil] :lang
     # @option params [String, nil] :iata_code
     # @option params [String, nil] :icao_code
     # @option params [String, nil] :lo_code
+    #
+    # @example
+    #   client.timezone_lookup(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::TimezoneLookupResponse]
     def timezone_lookup(request_options: {}, **params)
@@ -5491,10 +8344,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::TimezoneLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::TimezoneLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5513,10 +8379,10 @@ module Apifreaks
     # @option params [String, nil] :time
     # @option params [String, nil] :tz_from
     # @option params [String, nil] :tz_to
-    # @option params [Integer, nil] :lat_from
-    # @option params [Integer, nil] :long_from
-    # @option params [Integer, nil] :lat_to
-    # @option params [Integer, nil] :long_to
+    # @option params [Float, nil] :lat_from
+    # @option params [Float, nil] :long_from
+    # @option params [Float, nil] :lat_to
+    # @option params [Float, nil] :long_to
     # @option params [String, nil] :location_from
     # @option params [String, nil] :location_to
     # @option params [String, nil] :iata_from
@@ -5525,6 +8391,9 @@ module Apifreaks
     # @option params [String, nil] :icao_to
     # @option params [String, nil] :locode_from
     # @option params [String, nil] :locode_to
+    #
+    # @example
+    #   client.timezone_convert(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::TimezoneConvertResponse]
     def timezone_convert(request_options: {}, **params)
@@ -5562,10 +8431,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::TimezoneConvertResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::TimezoneConvertResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5580,6 +8462,9 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::UserAgentLookupRequestFormat, nil] :format
+    #
+    # @example
+    #   client.user_agent_lookup(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::UserAgentLookupResponse]
     def user_agent_lookup(request_options: {}, **params)
@@ -5606,10 +8491,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::UserAgentLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::UserAgentLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5624,6 +8522,12 @@ module Apifreaks
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::BulkUserAgentLookupRequestFormat, nil] :format
+    #
+    # @example
+    #   client.bulk_user_agent_lookup(
+    #     api_key: "apiKey",
+    #     ua_strings: ["uaStrings"]
+    #   )
     #
     # @return [Array[Apifreaks::Types::BulkUserAgentLookupResponseItem]]
     def bulk_user_agent_lookup(request_options: {}, **params)
@@ -5651,10 +8555,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::BulkUserAgentLookupResponseItem.load(response.body)
+        Apifreaks::Internal::Types::Utils.coerce(Internal::Types::Array[Apifreaks::Types::BulkUserAgentLookupResponseItem], (response.body.to_s.empty? ? nil : JSON.parse(response.body, symbolize_names: true)))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5672,25 +8589,41 @@ module Apifreaks
     #     - `zone`
     #
     # @param request_options [Hash]
-    # @param params [Apifreaks::Types::OcrPredictRequest]
+    # @param params [void]
     # @option request_options [String] :base_url
     # @option request_options [Hash{String => Object}] :additional_headers
     # @option request_options [Hash{String => Object}] :additional_query_parameters
     # @option request_options [Hash{String => Object}] :additional_body_parameters
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
+    # @option params [Apifreaks::Types::OcrPredictRequestModel] :model
+    # @option params [String, nil] :url
+    # @option params [String, nil] :page_range
+    # @option params [String, nil] :zone
+    # @option params [Integer, nil] :new_line
+    #
+    # @example
+    #   client.ocr_predict(
+    #     api_key: "apiKey",
+    #     model: "mini-ocr-v1"
+    #   )
+    # @option params [IO, String, Pathname, Hash, Array, nil] :file A File/IO, a file path, `{io:, filename:}`, or an Array of these
     #
     # @return [Apifreaks::Types::OcrPredictResponse]
     def ocr_predict(request_options: {}, **params)
       params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
-      request_data = Apifreaks::Types::OcrPredictRequest.new(params).to_h
-      non_body_param_names = %w[apiKey]
-      body = request_data.except(*non_body_param_names)
-
       query_params = {}
       query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["model"] = params[:model] if params.key?(:model)
+      query_params["url"] = params[:url] if params.key?(:url)
+      query_params["page_range"] = params[:page_range] if params.key?(:page_range)
+      query_params["zone"] = params[:zone] if params.key?(:zone)
+      query_params["new_line"] = params[:new_line] if params.key?(:new_line)
 
-      request = Apifreaks::Internal::JSON::Request.new(
+      body = Internal::Multipart::FormData.new
+      body.add_file_param(name: "file", value: params[:file])
+
+      request = Apifreaks::Internal::Multipart::Request.new(
         base_url: request_options[:base_url],
         method: "POST",
         path: "v1.0/ocr/predict",
@@ -5705,10 +8638,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::OcrPredictResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::OcrPredictResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5723,6 +8669,12 @@ module Apifreaks
     # @option request_options [Hash{String => Object}] :additional_body_parameters
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
+    #
+    # @example
+    #   client.grammar_detect(
+    #     api_key: "apiKey",
+    #     text: "The global mental is health crisis is now a serious and compelex problem. It need quick and ongoing action from policymakers, healthcare workers, and the whole society."
+    #   )
     #
     # @return [Apifreaks::Types::GrammarDetectResponse]
     def grammar_detect(request_options: {}, **params)
@@ -5749,10 +8701,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GrammarDetectResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GrammarDetectResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5767,6 +8732,12 @@ module Apifreaks
     # @option request_options [Hash{String => Object}] :additional_body_parameters
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
+    #
+    # @example
+    #   client.grammar_correct(
+    #     api_key: "apiKey",
+    #     text: "The global mental is health crisis is now a serious and compelex problem. It need quick and ongoing action from policymakers, healthcare workers, and the whole society."
+    #   )
     #
     # @return [Apifreaks::Types::GrammarCorrectResponse]
     def grammar_correct(request_options: {}, **params)
@@ -5793,10 +8764,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::GrammarCorrectResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GrammarCorrectResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5811,6 +8795,12 @@ module Apifreaks
     # @option request_options [Hash{String => Object}] :additional_body_parameters
     # @option request_options [Integer] :timeout_in_seconds
     # @option params [String] :api_key
+    #
+    # @example
+    #   client.weak_words_detect(
+    #     api_key: "apiKey",
+    #     text: "Many people cannot get the support they need to handle their conditions well."
+    #   )
     #
     # @return [Apifreaks::Types::WeakWordsDetectResponse]
     def weak_words_detect(request_options: {}, **params)
@@ -5837,10 +8827,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::WeakWordsDetectResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::WeakWordsDetectResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5857,6 +8860,12 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::ReadabilityScoreRequestTarget, nil] :target
     # @option params [String, nil] :exclude
+    #
+    # @example
+    #   client.readability_score(
+    #     api_key: "apiKey",
+    #     text: "The global mental is health crisis is now a serious and compelex problem. It needs quick and ongoing action from policymakers, healthcare workers, and the whole society."
+    #   )
     #
     # @return [Apifreaks::Types::ReadabilityScoreResponse]
     def readability_score(request_options: {}, **params)
@@ -5885,10 +8894,23 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::ReadabilityScoreResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::ReadabilityScoreResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
@@ -5905,13 +8927,16 @@ module Apifreaks
     # @option params [String] :api_key
     # @option params [Apifreaks::Types::AstronomyLookupRequestFormat, nil] :format
     # @option params [String, nil] :location
-    # @option params [Integer, nil] :lat
-    # @option params [Integer, nil] :long
+    # @option params [Float, nil] :lat
+    # @option params [Float, nil] :long
     # @option params [String, nil] :ip
     # @option params [String, nil] :lang
     # @option params [String, nil] :date
-    # @option params [Integer, nil] :elevation
+    # @option params [Float, nil] :elevation
     # @option params [String, nil] :time_zone
+    #
+    # @example
+    #   client.astronomy_lookup(api_key: "apiKey")
     #
     # @return [Apifreaks::Types::AstronomyLookupResponse]
     def astronomy_lookup(request_options: {}, **params)
@@ -5942,22 +8967,94 @@ module Apifreaks
       end
       code = response.code.to_i
       if code.between?(200, 299)
-        Apifreaks::Types::AstronomyLookupResponse.load(response.body)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::AstronomyLookupResponse.load(response.body))
       else
         error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
-        raise error_class.new(response.body, code: code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
+      end
+    end
+
+    # Returns subscription, subscription-surcharge, and one-off credit balances for the authenticated organization's
+    # account.
+    #
+    # @param request_options [Hash]
+    # @param params [Hash]
+    # @option request_options [String] :base_url
+    # @option request_options [Hash{String => Object}] :additional_headers
+    # @option request_options [Hash{String => Object}] :additional_query_parameters
+    # @option request_options [Hash{String => Object}] :additional_body_parameters
+    # @option request_options [Integer] :timeout_in_seconds
+    # @option params [String] :api_key
+    # @option params [Apifreaks::Types::GetCreditsUsageRequestFormat, nil] :format
+    #
+    # @example
+    #   client.get_credits_usage(api_key: "apiKey")
+    #
+    # @return [Apifreaks::Types::GetCreditsUsageResponse]
+    def get_credits_usage(request_options: {}, **params)
+      params = Apifreaks::Internal::Types::Utils.normalize_keys(params)
+      query_params = {}
+      query_params["apiKey"] = params[:api_key] if params.key?(:api_key)
+      query_params["format"] = params[:format] if params.key?(:format)
+
+      request = Apifreaks::Internal::JSON::Request.new(
+        base_url: request_options[:base_url],
+        method: "GET",
+        path: "v1.0/credits/usage/info",
+        query: query_params,
+        request_options: request_options
+      )
+      begin
+        response = @client.send(request)
+      rescue Net::HTTPRequestTimeout
+        raise Apifreaks::Errors::TimeoutError
+      end
+      code = response.code.to_i
+      if code.between?(200, 299)
+        (response.body.to_s.empty? ? nil : Apifreaks::Types::GetCreditsUsageResponse.load(response.body))
+      else
+        error_class = Apifreaks::Errors::ResponseError.subclass_for_code(code)
+        error_types = {
+          400 => Apifreaks::Types::BadRequestErrorBody,
+          401 => Apifreaks::Types::UnauthorizedErrorBody,
+          402 => Apifreaks::Types::PaymentRequiredErrorBody,
+          403 => Apifreaks::Types::ForbiddenErrorBody,
+          406 => Apifreaks::Types::NotAcceptableErrorBody,
+          413 => Apifreaks::Types::ContentTooLargeErrorBody,
+          429 => Apifreaks::Types::TooManyRequestsErrorBody,
+          500 => Apifreaks::Types::InternalServerErrorBody,
+          503 => Apifreaks::Types::ServiceUnavailableErrorBody,
+          504 => Apifreaks::Types::GatewayTimeoutErrorBody
+        }
+        error_body = Apifreaks::Errors::ResponseError.load_error_body(code, response.body, error_types)
+        raise error_class.new(response.body, code: code, body: error_body, headers: response.to_hash)
       end
     end
 
     # @param base_url [String, nil]
     # @param max_retries [Integer]
+    # @param timeout [Numeric]
     #
     # @return [void]
-    def initialize(base_url: nil, max_retries: 2)
+    def initialize(base_url: nil, max_retries: 2, timeout: 60)
       @client = Apifreaks::Internal::Http::RawClient.new(
         base_url: base_url || Apifreaks::Environment::DEFAULT,
         headers: {},
-        max_retries: max_retries
+        max_retries: max_retries,
+        timeout: timeout
       )
     end
   end

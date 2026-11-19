@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Wrapper object containing one WHOIS result or error per requested domain, in request order.

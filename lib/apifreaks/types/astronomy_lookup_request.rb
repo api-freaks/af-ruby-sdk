@@ -9,9 +9,9 @@ module Apifreaks
 
       field :location, -> { String }, optional: true, nullable: false
 
-      field :lat, -> { Integer }, optional: true, nullable: false
+      field :lat, -> { Float }, optional: true, nullable: false
 
-      field :long, -> { Integer }, optional: true, nullable: false
+      field :long, -> { Float }, optional: true, nullable: false
 
       field :ip, -> { String }, optional: true, nullable: false
 
@@ -19,7 +19,7 @@ module Apifreaks
 
       field :date, -> { String }, optional: true, nullable: false
 
-      field :elevation, -> { Integer }, optional: true, nullable: false
+      field :elevation, -> { Float }, optional: true, nullable: false
 
       field :time_zone, -> { String }, optional: true, nullable: false
     end

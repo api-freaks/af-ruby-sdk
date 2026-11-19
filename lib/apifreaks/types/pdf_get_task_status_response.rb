@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class PdfGetTaskStatusResponse < Internal::Types::Model
@@ -24,6 +26,8 @@ module Apifreaks
       field :message, -> { String }, optional: true, nullable: false
 
       field :expires_at, -> { String }, optional: true, nullable: false, api_name: "expiresAt"
+
+      field :zip_file_url, -> { String }, optional: true, nullable: false, api_name: "zipFileUrl"
     end
   end
 end

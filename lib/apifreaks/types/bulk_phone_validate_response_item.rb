@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class BulkPhoneValidateResponseItem < Internal::Types::Model
@@ -30,6 +32,10 @@ module Apifreaks
       field :ndc_length, -> { Integer }, optional: true, nullable: false
 
       field :can_be_internationally_dialled, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :error, -> { String }, optional: true, nullable: false
+
+      field :message, -> { String }, optional: true, nullable: false
     end
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class WebScrapeRequestProxy < Internal::Types::Model
@@ -8,8 +10,6 @@ module Apifreaks
       member -> { Internal::Types::Boolean }
 
       member -> { String }
-
-      member -> { Internal::Types::Hash[String, Object] }
     end
   end
 end

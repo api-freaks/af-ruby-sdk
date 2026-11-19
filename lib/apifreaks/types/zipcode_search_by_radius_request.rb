@@ -9,13 +9,13 @@ module Apifreaks
 
       field :code, -> { String }, optional: true, nullable: false
 
-      field :lat, -> { Integer }, optional: true, nullable: false
+      field :lat, -> { Float }, optional: true, nullable: false
 
-      field :long, -> { Integer }, optional: true, nullable: false
+      field :long, -> { Float }, optional: true, nullable: false
 
       field :country, -> { String }, optional: true, nullable: false
 
-      field :radius, -> { Integer }, optional: false, nullable: false
+      field :radius, -> { Float }, optional: false, nullable: false
 
       field :unit, -> { Apifreaks::Types::ZipcodeSearchByRadiusRequestUnit }, optional: true, nullable: false
 

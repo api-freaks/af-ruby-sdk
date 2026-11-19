@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class IPWhoisLookupResponseIrt < Internal::Types::Model
@@ -54,6 +56,14 @@ module Apifreaks
       field :date_updated, -> { String }, optional: true, nullable: false
 
       field :source, -> { String }, optional: true, nullable: false
+
+      field :abuse_contacts, -> { Internal::Types::Array[Apifreaks::Types::IPWhoisLookupResponseIrtAbuseContactsItem] }, optional: true, nullable: true
+
+      field :administrative_contacts, -> { Internal::Types::Array[Apifreaks::Types::IPWhoisLookupResponseIrtAdministrativeContactsItem] }, optional: true, nullable: true
+
+      field :organization, -> { Apifreaks::Types::IPWhoisLookupResponseIrtOrganization }, optional: true, nullable: false
+
+      field :technical_contacts, -> { Internal::Types::Array[Apifreaks::Types::IPWhoisLookupResponseIrtTechnicalContactsItem] }, optional: true, nullable: true
     end
   end
 end

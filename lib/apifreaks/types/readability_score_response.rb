@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class ReadabilityScoreResponse < Internal::Types::Model
@@ -7,7 +9,7 @@ module Apifreaks
 
       field :sentence_readability, -> { Internal::Types::Array[Apifreaks::Types::ReadabilityScoreResponseSentenceReadabilityItem] }, optional: true, nullable: false
 
-      field :readability_grade, -> { Integer }, optional: true, nullable: false
+      field :readability_grade, -> { Float }, optional: true, nullable: false
     end
   end
 end

@@ -117,13 +117,13 @@ module Apifreaks
 
       field :sizes, -> { String }, optional: true, nullable: false
 
-      field :duration, -> { Integer }, optional: true, nullable: false
+      field :duration, -> { Float }, optional: true, nullable: false
 
       field :fail_on_error, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
-      field :longitude, -> { Integer }, optional: true, nullable: false
+      field :longitude, -> { Float }, optional: true, nullable: false
 
-      field :latitude, -> { Integer }, optional: true, nullable: false
+      field :latitude, -> { Float }, optional: true, nullable: false
 
       field :proxy, -> { String }, optional: true, nullable: false
 
@@ -141,7 +141,61 @@ module Apifreaks
 
       field :custom_html, -> { String }, optional: true, nullable: false
 
-      field :image_quality, -> { Integer }, optional: true, nullable: false
+      field :image_quality, -> { Float }, optional: true, nullable: false
+
+      field :captcha_error, -> { String }, optional: true, nullable: false
+
+      field :captcha_image, -> { String }, optional: true, nullable: false
+
+      field :captcha_input, -> { String }, optional: true, nullable: false
+
+      field :captcha_refresh, -> { String }, optional: true, nullable: false
+
+      field :captcha_retries, -> { Integer }, optional: true, nullable: false
+
+      field :captcha_submit, -> { String }, optional: true, nullable: false
+
+      field :classic_proxy, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :click_recursion, -> { Integer }, optional: true, nullable: false
+
+      field :country, -> { String }, optional: true, nullable: false
+
+      field :extract_markdown, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :format, -> { Apifreaks::Types::ScreenshotCaptureRequestFormat }, optional: true, nullable: false
+
+      field :get_image_urls, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :gpu, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :markdown, -> { String }, optional: true, nullable: false
+
+      field :ocr_model, -> { Apifreaks::Types::ScreenshotCaptureRequestOcrModel }, optional: true, nullable: false
+
+      field :pdf_options_format, -> { Apifreaks::Types::ScreenshotCaptureRequestPdfOptionsFormat }, optional: true, nullable: false, api_name: "pdf_options[format]"
+
+      field :pdf_options_landscape, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "pdf_options[landscape]"
+
+      field :pdf_options_media, -> { Apifreaks::Types::ScreenshotCaptureRequestPdfOptionsMedia }, optional: true, nullable: false, api_name: "pdf_options[media]"
+
+      field :pdf_options_page_range, -> { String }, optional: true, nullable: false, api_name: "pdf_options[page_range]"
+
+      field :pdf_options_print_background, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "pdf_options[print_background]"
+
+      field :premium_proxy, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :scroll_delay, -> { Integer }, optional: true, nullable: false
+
+      field :selector_to_click, -> { String }, optional: true, nullable: false
+
+      field :solve_captcha, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :stealth, -> { Internal::Types::Boolean }, optional: true, nullable: false
+
+      field :timezone, -> { String }, optional: true, nullable: false
+
+      field :video, -> { Internal::Types::Boolean }, optional: true, nullable: false
     end
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Complete astronomical data for the specified location and date.
@@ -30,11 +32,11 @@ module Apifreaks
 
       field :day_length, -> { String }, optional: false, nullable: false
 
-      field :sun_altitude, -> { Integer }, optional: false, nullable: false
+      field :sun_altitude, -> { Float }, optional: false, nullable: false
 
-      field :sun_distance, -> { Integer }, optional: false, nullable: false
+      field :sun_distance, -> { Float }, optional: false, nullable: false
 
-      field :sun_azimuth, -> { Integer }, optional: false, nullable: false
+      field :sun_azimuth, -> { Float }, optional: false, nullable: false
 
       field :moon_phase, -> { String }, optional: false, nullable: false
 
@@ -44,17 +46,17 @@ module Apifreaks
 
       field :moon_status, -> { String }, optional: false, nullable: false
 
-      field :moon_altitude, -> { Integer }, optional: false, nullable: false
+      field :moon_altitude, -> { Float }, optional: false, nullable: false
 
-      field :moon_distance, -> { Integer }, optional: false, nullable: false
+      field :moon_distance, -> { Float }, optional: false, nullable: false
 
-      field :moon_azimuth, -> { Integer }, optional: false, nullable: false
+      field :moon_azimuth, -> { Float }, optional: false, nullable: false
 
-      field :moon_parallactic_angle, -> { Integer }, optional: false, nullable: false
+      field :moon_parallactic_angle, -> { Float }, optional: false, nullable: false
 
       field :moon_illumination_percentage, -> { String }, optional: false, nullable: false
 
-      field :moon_angle, -> { Integer }, optional: false, nullable: false
+      field :moon_angle, -> { Float }, optional: false, nullable: false
     end
   end
 end

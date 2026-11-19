@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class CommoditySymbolsV2ResponseSymbolsItem < Internal::Types::Model
@@ -22,6 +24,14 @@ module Apifreaks
       field :currency, -> { Apifreaks::Types::CommoditySymbolsV2ResponseSymbolsItemCurrency }, optional: false, nullable: false
 
       field :unit, -> { Apifreaks::Types::CommoditySymbolsV2ResponseSymbolsItemUnit }, optional: false, nullable: false
+
+      field :contract, -> { String }, optional: true, nullable: false
+
+      field :delivery_month, -> { String }, optional: true, nullable: false, api_name: "deliveryMonth"
+
+      field :expires_at, -> { String }, optional: true, nullable: false, api_name: "expiresAt"
+
+      field :underlying, -> { String }, optional: true, nullable: false
     end
   end
 end

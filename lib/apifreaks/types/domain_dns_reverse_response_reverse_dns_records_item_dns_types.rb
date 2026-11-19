@@ -1,23 +1,27 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class DomainDNSReverseResponseReverseDNSRecordsItemDNSTypes < Internal::Types::Model
-      field :a, -> { Integer }, optional: true, nullable: false, api_name: "A"
+      field :a, -> { Float }, optional: true, nullable: false, api_name: "A"
 
-      field :aaaa, -> { Integer }, optional: true, nullable: false, api_name: "AAAA"
+      field :aaaa, -> { Float }, optional: true, nullable: false, api_name: "AAAA"
 
-      field :cname, -> { Integer }, optional: true, nullable: false, api_name: "CNAME"
+      field :cname, -> { Float }, optional: true, nullable: false, api_name: "CNAME"
 
-      field :mx, -> { Integer }, optional: true, nullable: false, api_name: "MX"
+      field :mx, -> { Float }, optional: true, nullable: false, api_name: "MX"
 
-      field :ns, -> { Integer }, optional: true, nullable: false, api_name: "NS"
+      field :ns, -> { Float }, optional: true, nullable: false, api_name: "NS"
 
-      field :soa, -> { Integer }, optional: true, nullable: false, api_name: "SOA"
+      field :soa, -> { Float }, optional: true, nullable: false, api_name: "SOA"
 
-      field :txt, -> { Integer }, optional: true, nullable: false, api_name: "TXT"
+      field :txt, -> { Float }, optional: true, nullable: false, api_name: "TXT"
 
-      field :spf, -> { Integer }, optional: true, nullable: false, api_name: "SPF"
+      field :spf, -> { Float }, optional: true, nullable: false, api_name: "SPF"
+
+      field :ptr, -> { Float }, optional: true, nullable: false, api_name: "PTR"
     end
   end
 end

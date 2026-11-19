@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class AsnWhoisLookupResponseRouteObjectsItem < Internal::Types::Model
@@ -11,7 +13,7 @@ module Apifreaks
 
       field :isp, -> { String }, optional: false, nullable: false
 
-      field :number_of_ips, -> { Integer }, optional: false, nullable: false, api_name: "numberOfIps"
+      field :number_of_ips, -> { Float }, optional: false, nullable: false, api_name: "numberOfIps"
     end
   end
 end

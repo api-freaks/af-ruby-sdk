@@ -13,13 +13,13 @@ module Apifreaks
 
       field :tz_to, -> { String }, optional: true, nullable: false
 
-      field :lat_from, -> { Integer }, optional: true, nullable: false
+      field :lat_from, -> { Float }, optional: true, nullable: false
 
-      field :long_from, -> { Integer }, optional: true, nullable: false
+      field :long_from, -> { Float }, optional: true, nullable: false
 
-      field :lat_to, -> { Integer }, optional: true, nullable: false
+      field :lat_to, -> { Float }, optional: true, nullable: false
 
-      field :long_to, -> { Integer }, optional: true, nullable: false
+      field :long_to, -> { Float }, optional: true, nullable: false
 
       field :location_from, -> { String }, optional: true, nullable: false
 

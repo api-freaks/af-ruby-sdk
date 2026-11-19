@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class EmailValidateResponseDomain < Internal::Types::Model
@@ -11,7 +13,7 @@ module Apifreaks
 
       field :free, -> { Internal::Types::Boolean }, optional: false, nullable: false
 
-      field :catch_all, -> { Internal::Types::Boolean }, optional: false, nullable: false, api_name: "catchAll"
+      field :catch_all, -> { Internal::Types::Boolean }, optional: true, nullable: false, api_name: "catchAll"
 
       field :valid_domain, -> { Internal::Types::Boolean }, optional: false, nullable: false, api_name: "validDomain"
     end

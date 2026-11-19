@@ -21,17 +21,29 @@ module Apifreaks
         # @param max_retries [Integer] The number of times to retry a failed request, defaults to 2.
         # @param timeout [Float] The timeout for the request, defaults to 60.0 seconds.
         # @param headers [Hash] The headers for the request.
-        def initialize(base_url:, max_retries: 2, timeout: 60.0, headers: {})
+        # @param overridable_headers [Array<String>] The names of the client-level headers a request
+        #   may replace via `additional_headers`. Holds the API's global headers; SDK metadata and
+        #   auth headers are absent from it and so stay protected.
+        # @param auth_provider [Object, nil] An optional auth provider responding to
+        #   `auth_headers`. When present its headers are resolved on every request so
+        #   token-based schemes (e.g. OAuth) can refresh an expired token mid-session.
+        def initialize(base_url:, max_retries: 2, timeout: 60.0, headers: {}, overridable_headers: [], auth_provider: nil)
           @base_url = base_url
           @max_retries = max_retries
           @timeout = timeout
+          @auth_provider = auth_provider
           @default_headers = headers
+          @overridable_headers = overridable_headers.to_set { |name| name.to_s.downcase }
         end
 
         # @param request [Apifreaks::Internal::Http::BaseRequest] The HTTP request.
         # @return [HTTP::Response] The HTTP response.
         def send(request)
           url = build_url(request)
+          # Resolve auth headers once per request (not per retry) so token-based
+          # providers refresh at most once here; static providers are cheap.
+          auth_headers = resolve_auth_headers
+          timeout = request_timeout(request)
           attempt = 0
           response = nil
 
@@ -39,17 +51,18 @@ module Apifreaks
             http_request = build_http_request(
               url:,
               method: request.method,
-              headers: request.encode_headers(protected_keys: @default_headers.keys),
-              body: request.encode_body
+              headers: request.encode_headers(protected_keys: protected_header_keys + auth_headers.keys),
+              body: request.encode_body,
+              auth_headers: auth_headers
             )
 
             conn = connect(url)
-            conn.open_timeout = @timeout
-            conn.read_timeout = @timeout
-            conn.write_timeout = @timeout
-            conn.continue_timeout = @timeout
+            conn.open_timeout = timeout
+            conn.read_timeout = timeout
+            conn.write_timeout = timeout
+            conn.continue_timeout = timeout
 
-            response = conn.request(http_request)
+            response = wrap_transport_errors { conn.request(http_request) }
 
             break unless should_retry?(response, attempt)
 
@@ -59,6 +72,44 @@ module Apifreaks
           end
 
           response
+        end
+
+        # Socket-level `Errno` failures. Other `SystemCallError`s, such as file errors raised by a
+        # custom HTTP client, are not connection failures and propagate unchanged.
+        NETWORK_ERRNOS = [
+          Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::ECONNABORTED, Errno::EPIPE,
+          Errno::EHOSTUNREACH, Errno::ENETUNREACH, Errno::ENETDOWN, Errno::EHOSTDOWN,
+          Errno::EADDRNOTAVAIL
+        ].freeze
+
+        # Runs a single request attempt, re-raising transport failures as SDK errors so that
+        # rescuing `Errors::ApiError` covers them. The original exception is kept as `cause`.
+        # These failures are not retried: the server may already have processed the request.
+        # @return [Net::HTTPResponse] The HTTP response.
+        def wrap_transport_errors
+          yield
+        rescue Net::OpenTimeout, Net::ReadTimeout, Net::WriteTimeout, Errno::ETIMEDOUT => e
+          raise Apifreaks::Errors::TimeoutError, e.message
+        rescue EOFError, SocketError, OpenSSL::SSL::SSLError, *NETWORK_ERRNOS,
+               Net::ProtocolError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError => e
+          raise Apifreaks::Errors::ConnectionError, e.message
+        end
+
+        # @param request [Apifreaks::Internal::Http::BaseRequest] The HTTP request.
+        # @return [Float] The request's `timeout_in_seconds` option, or the client-level timeout.
+        def request_timeout(request)
+          options = request.request_options || {}
+          timeout = options.key?(:timeout_in_seconds) ? options[:timeout_in_seconds] : options["timeout_in_seconds"]
+          (timeout.nil? ? @timeout : timeout).to_f
+        end
+
+        # The client-level header names that `additional_headers` must not replace: every default
+        # header except the API's global headers, which are overridable per request.
+        # @return [Array<Symbol, String>] The protected header names.
+        def protected_header_keys
+          return @default_headers.keys if @overridable_headers.empty?
+
+          @default_headers.keys.reject { |name| @overridable_headers.include?(name.to_s.downcase) }
         end
 
         # Determines if a request should be retried based on the response status code.
@@ -121,7 +172,8 @@ module Apifreaks
         # @param request [Apifreaks::Internal::Http::BaseRequest] The HTTP request.
         # @return [URI::Generic] The URL.
         def build_url(request)
-          encoded_query = request.encode_query
+          # A nil value means the parameter is omitted (e.g. the cursor of a first page), not sent as a bare key.
+          encoded_query = request.encode_query&.compact
 
           # If the path is already an absolute URL, use it directly
           if request.path.start_with?("http://", "https://")
@@ -153,12 +205,27 @@ module Apifreaks
                 "HTTP is only allowed for localhost. Use HTTPS or pass a localhost URL."
         end
 
+        # Resolves the auth headers to send with the next request. Delegates to the
+        # configured auth provider (if any) on every call so that token-based
+        # providers (e.g. OAuth client-credentials) can refresh an expired token
+        # before the request is sent. Returns an empty hash when no provider is set,
+        # which keeps the api-key / basic / bearer / no-auth paths unchanged.
+        # @return [Hash] The auth headers for the current request.
+        def resolve_auth_headers
+          return {} if @auth_provider.nil?
+
+          @auth_provider.auth_headers
+        end
+
         # @param url [URI::Generic] The url to the resource.
         # @param method [String] The HTTP method to use.
         # @param headers [Hash] The headers for the request.
         # @param body [String, nil] The body for the request.
+        # @param auth_headers [Hash] The auth headers resolved for this request. These
+        #   take precedence over the static default headers but not over per-request
+        #   headers, mirroring the previous baked-header precedence.
         # @return [HTTP::Request] The HTTP request.
-        def build_http_request(url:, method:, headers: {}, body: nil)
+        def build_http_request(url:, method:, headers: {}, body: nil, auth_headers: {})
           request = Net::HTTPGenericRequest.new(
             method,
             !body.nil?,
@@ -166,11 +233,25 @@ module Apifreaks
             url
           )
 
-          request_headers = @default_headers.merge(headers)
-          request_headers.each { |name, value| request[name] = value }
+          request_headers = @default_headers.merge(auth_headers).merge(headers)
+          request_headers.each { |name, value| request[name] = value == false ? "false" : value }
           request.body = body if body
 
+          # Net::HTTP disables its transparent gzip/deflate decoding as soon as an
+          # Accept-Encoding header is set explicitly on the request. Re-enable it so
+          # that compressed response bodies are still inflated.
+          request.extend(DecodeContent) if request_headers.keys.any? { |name| name.to_s.casecmp("accept-encoding").zero? }
+
           request
+        end
+
+        # Keeps Net::HTTP's transparent gzip/deflate response decoding enabled
+        # even when an Accept-Encoding header is set explicitly on the request.
+        # @api private
+        module DecodeContent
+          def decode_content # rubocop:disable Naming/PredicateMethod
+            true
+          end
         end
 
         # @param query [Hash] The query for the request.

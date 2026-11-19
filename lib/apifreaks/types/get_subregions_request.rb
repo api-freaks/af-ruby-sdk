@@ -7,7 +7,7 @@ module Apifreaks
 
       field :format, -> { Apifreaks::Types::GetSubregionsRequestFormat }, optional: true, nullable: false
 
-      field :region, -> { String }, optional: false, nullable: false
+      field :region, -> { String }, optional: true, nullable: false
     end
   end
 end

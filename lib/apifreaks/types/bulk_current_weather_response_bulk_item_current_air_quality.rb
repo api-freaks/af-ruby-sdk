@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Air quality metrics including pollutant concentrations and AQI values.
@@ -10,25 +12,25 @@ module Apifreaks
 
       field :us_aqi, -> { Integer }, optional: false, nullable: false
 
-      field :pm10, -> { Integer }, optional: false, nullable: false
+      field :pm10, -> { Float }, optional: false, nullable: false
 
-      field :pm25, -> { Integer }, optional: false, nullable: false, api_name: "pm2_5"
+      field :pm25, -> { Float }, optional: false, nullable: false, api_name: "pm2_5"
 
-      field :carbon_monoxide, -> { Integer }, optional: false, nullable: false
+      field :carbon_monoxide, -> { Float }, optional: false, nullable: false
 
-      field :nitrogen_dioxide, -> { Integer }, optional: false, nullable: false
+      field :nitrogen_dioxide, -> { Float }, optional: false, nullable: false
 
-      field :sulphur_dioxide, -> { Integer }, optional: false, nullable: false
+      field :sulphur_dioxide, -> { Float }, optional: false, nullable: false
 
-      field :ozone, -> { Integer }, optional: false, nullable: false
+      field :ozone, -> { Float }, optional: false, nullable: false
 
-      field :dust, -> { Integer }, optional: false, nullable: false
+      field :dust, -> { Float }, optional: false, nullable: false
 
-      field :uv_index, -> { Integer }, optional: false, nullable: false
+      field :uv_index, -> { Float }, optional: false, nullable: false
 
-      field :aerosol_optical_depth, -> { Integer }, optional: false, nullable: false
+      field :aerosol_optical_depth, -> { Float }, optional: false, nullable: false
 
-      field :uv_index_clear_sky, -> { Integer }, optional: false, nullable: false
+      field :uv_index_clear_sky, -> { Float }, optional: false, nullable: false
     end
   end
 end

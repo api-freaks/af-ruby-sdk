@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Geographic location information. Only present for location (address) and ip (or client-IP fallback) lookups;

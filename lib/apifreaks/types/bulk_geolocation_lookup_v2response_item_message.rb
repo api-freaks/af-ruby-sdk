@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Per-item error, returned in place of a location result when an individual IP is invalid, bogon/reserved, or not

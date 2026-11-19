@@ -9,12 +9,14 @@ The Apifreaks Ruby library provides convenient access to the Apifreaks APIs from
 - [Reference](#reference)
 - [Usage](#usage)
 - [Environments](#environments)
+- [File uploads](#file-uploads)
 - [Errors](#errors)
 - [Advanced](#advanced)
   - [Retries](#retries)
   - [Timeouts](#timeouts)
   - [Additional Headers](#additional-headers)
   - [Additional Query Parameters](#additional-query-parameters)
+  - [Additional Body Properties](#additional-body-properties)
 - [Contributing](#contributing)
 
 ## Reference
@@ -39,10 +41,15 @@ require "apifreaks"
 client = Apifreaks::Client.new
 
 client.bulk_geolocation_lookup(
-  api_key: "apiKey",
-  ips: ["ips"]
+  api_key: "YOUR_API_KEY",
+  ips: ["8.8.8.8", "1.1.1.1"]
 )
 ```
+
+Every method takes your API key as `api_key:`. Array parameters take a Ruby Array, e.g.
+`client.domain_dns_lookup(api_key: "YOUR_API_KEY", host_name: "google.com", type: ["A", "MX"])`.
+
+`get_credits_usage` needs an organization admin API key; any other key gets a 403 (`Apifreaks::Errors::ForbiddenError`).
 
 ## Environments
 
@@ -65,6 +72,20 @@ client = Apifreaks::Client.new(
 )
 ```
 
+## File uploads
+
+PDF, OCR and bulk template methods take the file as `file:`. It can be a `File` (or any IO), a file path,
+or a Hash `{ io:, filename:, content_type: }`. `pdf_merge` and `pdf_upload_resources` also take an Array of these.
+
+```ruby
+client.pdf_merge(api_key: "YOUR_API_KEY", file: ["first.pdf", File.open("second.pdf", "rb")])
+
+client.ocr_predict(api_key: "YOUR_API_KEY", model: "ocr-v1", file: File.open("scan.png", "rb"))
+
+# pdf_upload_binary sends the raw bytes; wrap bytes you already hold in StringIO
+client.pdf_upload_binary(api_key: "YOUR_API_KEY", file_name: "report.pdf", file: StringIO.new(pdf_bytes))
+```
+
 ## Errors
 
 Failed API calls will raise errors that can be rescued from granularly.
@@ -77,9 +98,11 @@ client = Apifreaks::Client.new(
 )
 
 begin
-    result = client.bulk_geolocation_lookup
+    result = client.bulk_geolocation_lookup(api_key: "YOUR_API_KEY", ips: ["8.8.8.8"])
 rescue Apifreaks::Errors::TimeoutError
     puts "API didn't respond before our timeout elapsed"
+rescue Apifreaks::Errors::ConnectionError => e
+    puts "Could not reach the API (connection refused, reset, DNS or TLS failure): #{e.message}"
 rescue Apifreaks::Errors::ServiceUnavailableError
     puts "API returned status 503, is probably overloaded, try again later"
 rescue Apifreaks::Errors::ServerError
@@ -98,18 +121,10 @@ end
 The SDK is instrumented with automatic retries. A request will be retried as long as the request is deemed
 retryable and the number of retry attempts has not grown larger than the configured retry limit (default: 2).
 
-A request is deemed retryable when any of the following HTTP status codes is returned:
+A request is retried when the API returns one of these HTTP status codes: `408`, `429`, `500`, `502`, `503`,
+`504`, `521`, `522`, `524`. Retries use exponential backoff and respect a `Retry-After` header.
 
-- [408](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408) (Timeout)
-- [429](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429) (Too Many Requests)
-- [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) (Internal Server Error)
-
-The `retryStatusCodes` configuration controls which [5XX](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses) status codes are retried:
-
-- `legacy` (default): Retries `408`, `429`, `500`, `502`, `503`, `504`, `521`, `522`, `524`
-- `recommended`: Retries `408`, `429`, `502`, `503`, `504` only (excludes `500 Internal Server Error` to avoid retrying non-idempotent failures)
-
-Use the `max_retries` option to configure this behavior.
+Use the `max_retries` option to configure this behavior (`max_retries: 0` disables retries).
 
 ```ruby
 require "apifreaks"
@@ -122,14 +137,23 @@ client = Apifreaks::Client.new(
 
 ### Timeouts
 
-The SDK defaults to a 60 second timeout. Use the `timeout` option to configure this behavior.
+The SDK defaults to a 60 second timeout. Use the `timeout:` client option to change it for every call, or the
+`timeout_in_seconds` request option to change it for one call.
+A timeout raises `Apifreaks::Errors::TimeoutError`.
 
 ```ruby
 require "apifreaks"
 
+# Set the default timeout (in seconds) for every request made by the client.
+client = Apifreaks::Client.new(
+    base_url: "https://example.com",
+    timeout: 30
+)
+
+# Override the timeout for an individual request.
 response = client.bulk_geolocation_lookup(
     ...,
-    timeout: 30  # 30 second timeout
+    request_options: { timeout_in_seconds: 30 }
 )
 ```
 
@@ -162,6 +186,25 @@ response = client.bulk_geolocation_lookup(
     request_options: {
         additional_query_parameters: {
             "custom_param" => "custom-value"
+        }
+    }
+)
+```
+
+### Additional Body Properties
+
+If you would like to send additional body properties as part of the request, use the `additional_body_parameters` request option.
+Properties are merged into the serialized request body using their API (wire-format) names and override any field the SDK sets with the same name. If the endpoint has no body, one is created from these properties, except for GET and HEAD requests, which are always sent without a body (the properties are ignored).
+This applies to JSON and form-urlencoded requests; it is not applied to multipart (file upload) requests.
+
+```ruby
+require "apifreaks"
+
+response = client.bulk_geolocation_lookup(
+    ...,
+    request_options: {
+        additional_body_parameters: {
+            "custom_field" => "custom-value"
         }
     }
 )

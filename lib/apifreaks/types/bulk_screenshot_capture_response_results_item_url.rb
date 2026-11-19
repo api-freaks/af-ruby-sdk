@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class BulkScreenshotCaptureResponseResultsItemURL < Internal::Types::Model
@@ -9,7 +11,7 @@ module Apifreaks
 
       field :created_at, -> { String }, optional: false, nullable: false
 
-      field :format, -> { String }, optional: false, nullable: false
+      field :format, -> { String }, optional: true, nullable: false
 
       field :ttl, -> { String }, optional: false, nullable: false
 
@@ -57,9 +59,9 @@ module Apifreaks
 
       field :accept_languages, -> { String }, optional: true, nullable: false
 
-      field :delay, -> { Integer }, optional: true, nullable: false
+      field :delay, -> { Float }, optional: true, nullable: false
 
-      field :thumbnail_width, -> { Integer }, optional: true, nullable: false
+      field :thumbnail_width, -> { Float }, optional: true, nullable: false
 
       field :output, -> { String }, optional: true, nullable: false
 
@@ -73,9 +75,9 @@ module Apifreaks
 
       field :retina, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
-      field :height, -> { Integer }, optional: true, nullable: false
+      field :height, -> { Float }, optional: true, nullable: false
 
-      field :width, -> { Integer }, optional: true, nullable: false
+      field :width, -> { Float }, optional: true, nullable: false
 
       field :custom_html, -> { String }, optional: true, nullable: false
 
@@ -105,9 +107,9 @@ module Apifreaks
 
       field :block_specific_requests, -> { String }, optional: true, nullable: false
 
-      field :adjust_top, -> { Integer }, optional: true, nullable: false
+      field :adjust_top, -> { Float }, optional: true, nullable: false
 
-      field :image_quality, -> { Integer }, optional: true, nullable: false
+      field :image_quality, -> { Float }, optional: true, nullable: false
 
       field :extract_html, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
@@ -119,13 +121,13 @@ module Apifreaks
 
       field :wait_for_event, -> { String }, optional: true, nullable: false
 
-      field :grayscale, -> { Integer }, optional: true, nullable: false
+      field :grayscale, -> { Float }, optional: true, nullable: false
 
       field :result_file_name, -> { String }, optional: true, nullable: false
 
       field :enable_incognito, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
-      field :timeout, -> { Integer }, optional: true, nullable: false
+      field :timeout, -> { Float }, optional: true, nullable: false
 
       field :scrolling_screenshot, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
@@ -133,7 +135,7 @@ module Apifreaks
 
       field :scroll_speed, -> { String }, optional: true, nullable: false
 
-      field :duration, -> { Integer }, optional: true, nullable: false
+      field :duration, -> { Float }, optional: true, nullable: false
 
       field :scroll_back, -> { Internal::Types::Boolean }, optional: true, nullable: false
 
@@ -141,7 +143,7 @@ module Apifreaks
 
       field :clip, -> { Internal::Types::Hash[String, Object] }, optional: true, nullable: false
 
-      field :sizes, -> { Internal::Types::Array[Internal::Types::Hash[String, Object]] }, optional: true, nullable: false
+      field :sizes, -> { Internal::Types::Array[Internal::Types::Hash[String, Object]] }, optional: true, nullable: true
     end
   end
 end

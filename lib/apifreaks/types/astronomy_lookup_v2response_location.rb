@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     # Geographic location information for the astronomy calculation. The set of populated fields depends on which lookup

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     module DomainReputationResponseRiskCategoryVerdict
@@ -7,6 +9,7 @@ module Apifreaks
 
       SAFE = "safe"
       SUSPICIOUS = "suspicious"
+      UNKNOWN = "unknown"
     end
   end
 end

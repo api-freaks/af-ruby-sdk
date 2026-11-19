@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "../../apifreaks"
+
 module Apifreaks
   module Types
     class CommoditySymbolsV2ResponseSymbolsItemUnit < Internal::Types::Model
