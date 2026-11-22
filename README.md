@@ -74,13 +74,11 @@ client = Apifreaks::Client.new(
 
 ## File uploads
 
-PDF, OCR and bulk template methods take the file as `file:`. It can be a `File` (or any IO), a file path,
+PDF and bulk template methods take the file as `file:`. It can be a `File` (or any IO), a file path,
 or a Hash `{ io:, filename:, content_type: }`. `pdf_merge` and `pdf_upload_resources` also take an Array of these.
 
 ```ruby
 client.pdf_merge(api_key: "YOUR_API_KEY", file: ["first.pdf", File.open("second.pdf", "rb")])
-
-client.ocr_predict(api_key: "YOUR_API_KEY", model: "ocr-v1", file: File.open("scan.png", "rb"))
 
 # pdf_upload_binary sends the raw bytes; wrap bytes you already hold in StringIO
 client.pdf_upload_binary(api_key: "YOUR_API_KEY", file_name: "report.pdf", file: StringIO.new(pdf_bytes))

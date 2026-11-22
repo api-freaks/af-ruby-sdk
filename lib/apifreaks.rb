@@ -162,7 +162,6 @@ require_relative "apifreaks/types/timezone_lookup_request"
 require_relative "apifreaks/types/timezone_convert_request"
 require_relative "apifreaks/types/user_agent_lookup_request"
 require_relative "apifreaks/types/bulk_user_agent_lookup_request"
-require_relative "apifreaks/types/ocr_predict_request"
 require_relative "apifreaks/types/grammar_detect_request"
 require_relative "apifreaks/types/grammar_correct_request"
 require_relative "apifreaks/types/weak_words_detect_request"
@@ -956,9 +955,6 @@ module Apifreaks
     autoload :BulkUserAgentLookupResponseItemEngine, ::File.join(__dir__, "apifreaks/types/bulk_user_agent_lookup_response_item_engine")
     autoload :BulkUserAgentLookupResponseItemOperatingSystem, ::File.join(__dir__, "apifreaks/types/bulk_user_agent_lookup_response_item_operating_system")
     autoload :BulkUserAgentLookupResponseItem, ::File.join(__dir__, "apifreaks/types/bulk_user_agent_lookup_response_item")
-    autoload :OcrPredictRequestModel, ::File.join(__dir__, "apifreaks/types/ocr_predict_request_model")
-    autoload :OcrPredictResponseOcrText, ::File.join(__dir__, "apifreaks/types/ocr_predict_response_ocr_text")
-    autoload :OcrPredictResponse, ::File.join(__dir__, "apifreaks/types/ocr_predict_response")
     autoload :GrammarDetectResponseGrammarErrorsItem, ::File.join(__dir__, "apifreaks/types/grammar_detect_response_grammar_errors_item")
     autoload :GrammarDetectResponse, ::File.join(__dir__, "apifreaks/types/grammar_detect_response")
     autoload :GrammarCorrectResponse, ::File.join(__dir__, "apifreaks/types/grammar_correct_response")
