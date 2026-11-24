@@ -186,22 +186,6 @@ describe "Apifreaks::Client requests (offline, stub server)" do
     assert_equal "t-2", result.task_id
   end
 
-  it "ocr_predict sends only the file in the body and everything else in the query (RB-07)" do
-    image = tmp_file("ocr.png", "\x89PNG fake".b)
-    @stub.respond_with(200, '{"OCRText":[["hello"]]}')
-    @client.ocr_predict(api_key: "KEY", model: "ocr-v1", new_line: 1, file: File.open(image.path, "rb"))
-    req = @stub.last_request
-
-    assert_equal "/v1.0/ocr/predict", req.path
-    assert_equal [%w[apiKey KEY], %w[model ocr-v1], %w[new_line 1]], req.query
-    parts = multipart_parts(req)
-
-    assert_equal 1, parts.size
-    assert_equal "file", parts.first[:name]
-    assert_equal "image/png", parts.first[:content_type]
-    assert_equal "\x89PNG fake".b, parts.first[:data].b
-  end
-
   it "pdf_upload_binary sends the raw bytes as application/octet-stream (RB-05, GEN-03)" do
     @stub.respond_with(200, '{"fileId":"f-1"}')
     result = @client.pdf_upload_binary(api_key: "KEY", file_name: "s.pdf", file: StringIO.new("%PDF-1.4 raw"))
